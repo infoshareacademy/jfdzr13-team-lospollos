@@ -32,8 +32,26 @@ lista urlopów,
 dane uzytkownika, lista requestów (uzytkownik zwykly)
 panel kierownika rozbudowany (to samo co wyzej + requesty)
 panel admina
+
 Firebase dane dostępowe:
 jfdzr13lospollos@gmail.com
 LosPollosHermanos2024
 
 kolekcja userów, kolekcja requestów, kolekcja wnosków urlopowych
+
+Logika folderów:
+assets - załączniki do stylów i pliki pomocnicze
+authentication - komponent do audentykacji
+
+componnets - główne komponenty funckjonalne aplikacji, wstępny zarys:
+Strona logowania
+Nawigacja
+Kalendarz podsumowujący jako cześć panelu lub osobny komponent do tych paneli lub landing pa
+Dane uzytkownika jako cześć panelu lub osobny komponent do tych paneli
+Panel uzytkownika
+Panel kierownika
+Panel admina
+
+context - Context komponent
+services - komunikacja z firestore
+types - komponenty do typowania TS
