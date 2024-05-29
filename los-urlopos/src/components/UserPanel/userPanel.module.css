@@ -18,7 +18,17 @@
 }
 
 .userAndListContainer {
+  display: flex;
   border: 1px blue solid;
   height: 92.5%;
   width: 99.9%;
+}
+
+.userAndCallendarContainer {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+  height: 100%;
+  width: 40%;
+  justify-content: space-evenly;
 }

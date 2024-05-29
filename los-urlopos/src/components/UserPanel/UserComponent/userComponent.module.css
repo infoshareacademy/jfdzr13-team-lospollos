@@ -1,20 +1,25 @@
 .profilePictureWrapper {
-  border: 1px solid blueviolet;
+  background-color: rgb(220, 220, 220);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   height: 40%;
-  width: 30%;
-  margin-top: 2%;
-  margin-left: 2%;
+  width: 90%;
+  margin: 5%;
   position: relative;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 10px;
+  box-shadow: 1px 4px 24px 1px rgba(66, 68, 90, 1);
 }
 
 .profilePictureCont {
-  position: relative;
-  width: 165px;
-  height: 165px;
   display: flex;
-  margin-top: 10%;
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  padding: 2%;
 }
 
 .profilePictureCont input {
@@ -22,8 +27,8 @@
 }
 
 .profilePicture {
-  width: 165px;
-  height: 165px;
+  width: 130px;
+  height: 130px;
   object-fit: cover;
   border-radius: 100px;
   box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
@@ -31,8 +36,8 @@
 
 .label {
   position: absolute;
-  width: 165px;
-  height: 165px;
+  width: 130px;
+  height: 130px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,4 +61,17 @@
 
 .glyphicon-camera {
   margin-right: 5px;
+}
+
+.userName {
+  font-size: 1.7vw;
+}
+
+.userDepartment {
+  font-size: 1.5vw;
+}
+
+.userDays {
+  font-size: 1.3vw;
+  padding-bottom: 3%;
 }

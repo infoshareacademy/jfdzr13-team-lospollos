@@ -1,0 +1,14 @@
+.calendarComponentContainer {
+  background-color: rgb(220, 220, 220);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 40%;
+  width: 90%;
+  margin: 5%;
+  position: relative;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 10px;
+  box-shadow: 1px 4px 24px 1px rgba(66, 68, 90, 1);
+}

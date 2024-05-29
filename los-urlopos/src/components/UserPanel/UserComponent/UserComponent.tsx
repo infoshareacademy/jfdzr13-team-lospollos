@@ -13,12 +13,16 @@ export function UserComponent() {
   }, []);
 
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const image = document.getElementById("output") as HTMLImageElement;
     if (event.target.files && event.target.files[0]) {
-      const imageUrl = URL.createObjectURL(event.target.files[0]);
-      image.src = imageUrl;
-      setProfileImage(imageUrl);
-      localStorage.setItem("profileImage", imageUrl);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.result) {
+          const imageUrl = reader.result.toString();
+          setProfileImage(imageUrl);
+          localStorage.setItem("profileImage", imageUrl);
+        }
+      };
+      reader.readAsDataURL(event.target.files[0]);
     }
   };
 
@@ -27,17 +31,19 @@ export function UserComponent() {
       <div className={styles.profilePictureCont}>
         <label className={styles.label} htmlFor="file">
           <span className="glyphicon glyphicon-camera"></span>
-          <span className="changeImage">Change Image</span>
+          <span className={styles.changeImage}>Change Image</span>
         </label>
         <input id="file" type="file" onChange={loadFile} />
         <img
           className={styles.profilePicture}
           src={profileImage}
           id="output"
-          width="200"
           alt="Profile"
         />
       </div>
+      <h1 className={styles.userName}>Klaudia Gajewska</h1>
+      <h2 className={styles.userDepartment}>Customer Service</h2>
+      <h3 className={styles.userDays}>You've got ___ days left.</h3>
     </div>
   );
 }
