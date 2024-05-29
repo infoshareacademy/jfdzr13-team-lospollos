@@ -1,0 +1,59 @@
+.profilePictureWrapper {
+  border: 1px solid blueviolet;
+  display: flex;
+  justify-content: center;
+  height: 40%;
+  width: 30%;
+  margin-top: 2%;
+  margin-left: 2%;
+  position: relative;
+}
+
+.profilePictureCont {
+  position: relative;
+  width: 165px;
+  height: 165px;
+  display: flex;
+  margin-top: 10%;
+}
+
+.profilePictureCont input {
+  display: none;
+}
+
+.profilePicture {
+  width: 165px;
+  height: 165px;
+  object-fit: cover;
+  border-radius: 100px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+}
+
+.label {
+  position: absolute;
+  width: 165px;
+  height: 165px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 100px;
+  color: transparent;
+}
+
+.label:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.changeImage {
+  display: inline-flex;
+  padding: 0.2em;
+  height: 2em;
+}
+
+.glyphicon-camera {
+  margin-right: 5px;
+}

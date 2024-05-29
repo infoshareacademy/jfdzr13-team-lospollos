@@ -48,9 +48,9 @@ Strona logowania
 Nawigacja
 Kalendarz podsumowujący jako cześć panelu lub osobny komponent do tych paneli lub landing pa
 Dane uzytkownika jako cześć panelu lub osobny komponent do tych paneli
-Panel uzytkownika
-Panel kierownika
-Panel admina
+Panel uzytkownika- ilośc dni wolnych, urlopy, lista requestow- dopoki pending mozna wywalic,
+Panel kierownika- lista requestow wszystkich pracownikow (approve, dorzucic) + swoich,
+Panel admina-
 
 context - Context komponent
 services - komunikacja z firestore
