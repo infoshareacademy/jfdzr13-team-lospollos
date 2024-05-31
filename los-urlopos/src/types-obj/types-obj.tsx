@@ -1,0 +1,30 @@
+export let daysOff: { day: string };
+export let departments: { dept: string; head: string };
+export let request: {
+  dayFrom: string;
+  dayTo: string;
+  daysReq: number;
+  daysLeft: number;
+  dept: string;
+  requestType: string;
+  status: string;
+  supervisor: string;
+  user: string;
+  comment: string;
+  createdAt: number;
+};
+export let types: { typ: string };
+export let user: {
+  createdAt: number;
+  createdBy: string;
+  currentDays: number;
+  days: number;
+  dept: string;
+  email: string;
+  name: string;
+  onDemand: number;
+  roleAdmin: boolean;
+  roleUser: boolean;
+  roleSupervisor: boolean;
+  supervisor: string;
+};
