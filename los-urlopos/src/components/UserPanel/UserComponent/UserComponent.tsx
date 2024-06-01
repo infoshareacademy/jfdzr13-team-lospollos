@@ -26,8 +26,10 @@ export function UserComponent() {
     <div className={styles.profilePictureWrapper}>
       <div className={styles.profilePictureCont}>
         <label className={styles.label} htmlFor="file">
-          <span className="glyphicon glyphicon-camera"></span>
-          <span className="changeImage">Change Image</span>
+          <span
+            className={`${styles.glyphicon} ${styles.glyphiconCamera}`}
+          ></span>
+          <span>Change</span>
         </label>
         <input id="file" type="file" onChange={loadFile} />
         <img
@@ -37,6 +39,14 @@ export function UserComponent() {
           width="200"
           alt="Profile"
         />
+      </div>
+      <div className={styles.userDetails}>
+        <span>Janusz Kukułka</span>
+        <span>janusz.kukulka@urlopos.com</span>
+        <span>Department</span>
+      </div>
+      <div className={styles.daysLeft}>
+        U have <span>XX</span> days left
       </div>
     </div>
   );

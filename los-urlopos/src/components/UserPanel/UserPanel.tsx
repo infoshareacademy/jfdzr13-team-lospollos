@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./userPanel.module.css";
 import { UserComponent } from "./UserComponent/UserComponent";
-import { ListComponent } from "./ListComponent/ListComponent";
+import ListComponent from "./ListComponent/ListComponent";
 
 export function UserPanel() {
   return (
