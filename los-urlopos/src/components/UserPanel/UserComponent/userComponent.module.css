@@ -1,11 +1,9 @@
 .profilePictureWrapper {
   background-color: rgb(220, 220, 220);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 40%;
-  width: 90%;
-  margin: 5%;
+  padding: 10px 0 0 40px;
+  height: 120px;
+  width: 100%;
   position: relative;
   align-items: center;
   justify-content: space-evenly;
@@ -16,10 +14,9 @@
 .profilePictureCont {
   display: flex;
   position: relative;
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
   display: flex;
-  padding: 2%;
 }
 
 .profilePictureCont input {
@@ -27,8 +24,8 @@
 }
 
 .profilePicture {
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 100px;
   box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
@@ -36,8 +33,8 @@
 
 .label {
   position: absolute;
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,25 +50,30 @@
   color: white;
 }
 
-.changeImage {
-  display: inline-flex;
-  padding: 0.2em;
-  height: 2em;
-}
-
-.glyphicon-camera {
+.glyphiconCamera {
   margin-right: 5px;
 }
 
-.userName {
-  font-size: 1.7vw;
+.userDetails {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0 0 30px;
+  gap: 5px;
+  width: auto;
+  height: 100%;
+  font-size: 1.2em;
 }
 
-.userDepartment {
-  font-size: 1.5vw;
+.daysLeft {
+  font-size: 1.5em;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 30px;
+  top: 40px;
 }
 
-.userDays {
-  font-size: 1.3vw;
-  padding-bottom: 3%;
+.daysLeft span {
+  color: brown;
+  font-size: 1.6em;
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styles from "./userComponent.module.css";
 import pfp from "../../../images/Unknown_person.jpg";
+import styles from "./userComponent.module.css";
 
 export function UserComponent() {
   const [profileImage, setProfileImage] = useState<string>(pfp);
@@ -30,8 +30,10 @@ export function UserComponent() {
     <div className={styles.profilePictureWrapper}>
       <div className={styles.profilePictureCont}>
         <label className={styles.label} htmlFor="file">
-          <span className="glyphicon glyphicon-camera"></span>
-          <span className={styles.changeImage}>Change Image</span>
+          <span
+            className={`${styles.glyphicon} ${styles.glyphiconCamera}`}
+          ></span>
+          <span>Change</span>
         </label>
         <input id="file" type="file" onChange={loadFile} />
         <img
@@ -41,9 +43,14 @@ export function UserComponent() {
           alt="Profile"
         />
       </div>
-      <h1 className={styles.userName}>Klaudia Gajewska</h1>
-      <h2 className={styles.userDepartment}>Customer Service</h2>
-      <h3 className={styles.userDays}>You've got ___ days left.</h3>
+      <div className={styles.userDetails}>
+        <span>Janusz Kukułka</span>
+        <span>janusz.kukulka@urlopos.com</span>
+        <span>Department</span>
+      </div>
+      <div className={styles.daysLeft}>
+        U have <span>XX</span> days left
+      </div>
     </div>
   );
 }
