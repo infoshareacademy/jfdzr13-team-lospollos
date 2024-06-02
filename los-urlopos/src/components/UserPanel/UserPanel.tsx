@@ -1,7 +1,7 @@
-import { CalendarComponent } from "./CalendarComponent/CalendarComponent";
-import ListComponent from "./ListComponent/ListComponent";
-import { UserComponent } from "./UserComponent/UserComponent";
+import React from "react";
 import styles from "./userPanel.module.css";
+import { UserComponent } from "./UserComponent/UserComponent";
+import ListComponent from "./ListComponent/ListComponent";
 
 export function UserPanel() {
   return (
@@ -15,10 +15,7 @@ export function UserPanel() {
         NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR
       </div>
       <div className={styles.userAndListContainer}>
-        <div className={styles.userAndCallendarContainer}>
-          <UserComponent />
-          <CalendarComponent />
-        </div>
+        <UserComponent />
         <ListComponent />
       </div>
     </div>

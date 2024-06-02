@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import pfp from "../../../images/Unknown_person.jpg";
 import styles from "./userComponent.module.css";
+import pfp from "../../../images/Unknown_person.jpg";
 
 export function UserComponent() {
   const [profileImage, setProfileImage] = useState<string>(pfp);
@@ -13,16 +13,12 @@ export function UserComponent() {
   }, []);
 
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const image = document.getElementById("output") as HTMLImageElement;
     if (event.target.files && event.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result) {
-          const imageUrl = reader.result.toString();
-          setProfileImage(imageUrl);
-          localStorage.setItem("profileImage", imageUrl);
-        }
-      };
-      reader.readAsDataURL(event.target.files[0]);
+      const imageUrl = URL.createObjectURL(event.target.files[0]);
+      image.src = imageUrl;
+      setProfileImage(imageUrl);
+      localStorage.setItem("profileImage", imageUrl);
     }
   };
 
@@ -40,6 +36,7 @@ export function UserComponent() {
           className={styles.profilePicture}
           src={profileImage}
           id="output"
+          width="200"
           alt="Profile"
         />
       </div>
