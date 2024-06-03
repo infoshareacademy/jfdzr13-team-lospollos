@@ -3,7 +3,11 @@ import styles from "./userComponent.module.css";
 import pfp from "../../../images/Unknown_person.jpg";
 import { useNavigate } from "react-router-dom";
 
-export function UserComponent() {
+interface UserComponentProps {
+  onAddButtonClick: () => void;
+}
+
+export function UserComponent({ onAddButtonClick }: UserComponentProps) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
 
   useEffect(() => {
@@ -21,12 +25,6 @@ export function UserComponent() {
       setProfileImage(imageUrl);
       localStorage.setItem("profileImage", imageUrl);
     }
-  };
-
-  const navigate = useNavigate();
-
-  const handleExploreClick = () => {
-    navigate("/addRequest");
   };
 
   return (
@@ -56,7 +54,7 @@ export function UserComponent() {
         U have <span>XX</span> days left
       </div>
       <div className={styles.addButtonContainer}>
-        <button className={styles.addButton} onClick={handleExploreClick}>
+        <button className={styles.addButton} onClick={onAddButtonClick}>
           ADD
         </button>
       </div>

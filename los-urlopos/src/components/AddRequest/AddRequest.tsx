@@ -1,6 +1,11 @@
+import React from "react";
 import styles from "./AddRequest.module.css";
 
-export function AddRequest() {
+interface AddRequestProps {
+  onClose: () => void;
+}
+
+export function AddRequest({ onClose }: AddRequestProps) {
   return (
     <div className={styles.requestWrapper}>
       <h1 className={styles.requestH1}>Leave request</h1>
@@ -78,7 +83,9 @@ export function AddRequest() {
         </div>
       </div>
       <div className={styles.requestButtons}>
-        <button className={styles.cancelButton}>CANCEL</button>
+        <button className={styles.cancelButton} onClick={onClose}>
+          CANCEL
+        </button>
         <button className={styles.saveButton}>SAVE</button>
       </div>
     </div>
