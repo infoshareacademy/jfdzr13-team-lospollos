@@ -13,12 +13,13 @@ const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [loggedUser, setLoggedUser] = useState(null);
 
-  const login = (email: string, password: string) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const login = (email: string, password: string) => signInWithEmailAndPassword(auth, email, password);
+    
 
   const logout = () => signOut(auth);
 
-  useEffect(() => onAuthStateChanged(auth, (user) => setLoggedUser(user)), []);
+  useEffect(() => onAuthStateChanged(auth, (user) =>
+    setLoggedUser(user)), []);
 
   const authHandler = {
     loggedUser,
