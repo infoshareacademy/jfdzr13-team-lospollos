@@ -2,7 +2,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 40%;
   height: 90%;
   border: 1px solid black;
   background-color: white;
@@ -12,32 +12,36 @@
   transform: translate(-50%, -50%);
   border-radius: 5px;
   justify-content: center;
+  box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
 }
 .requestH1 {
-  border: 1px solid black;
   height: 10%;
-  align-content: center;
-  width: 30%;
-  align-self: center;
+  width: 100%;
   position: absolute;
+  display: flex;
   top: 0;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid;
+  border-radius: 100px;
+  padding: 0;
 }
+
 .requestContentCont {
   display: flex;
   flex-direction: column;
   position: absolute;
-  width: 90%;
-  height: 80%;
-  border: 1px solid green;
+  width: 100%;
+  height: 75%;
   align-self: center;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin-top: 5%;
 }
 
 .requestInformationCont {
   position: relative;
   width: 90%;
   height: 20%;
-  border: 1px solid red;
   align-self: center;
 }
 
@@ -55,23 +59,25 @@
   flex-direction: column;
   width: 90%;
   height: 90%;
-  border: 1px solid blue;
   margin-top: 2%;
   justify-content: center;
   align-self: center;
+  padding: 0;
+  margin: 0;
+  justify-content: space-evenly;
 }
 
 .requestEntryContent {
-  border: 1px solid violet;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   width: 100%;
-  height: 100%;
+  height: 90%;
+  align-self: flex-start;
+  padding: 0;
 }
 
 .requestEntryLabel {
-  border: 1px solid orange;
   display: flex;
   height: 7%;
   width: 70%;
@@ -83,7 +89,6 @@
   width: 40%;
   align-self: center;
   font-size: 1vw;
-  border: 1px solid pink;
 }
 
 .inputField {
@@ -92,25 +97,110 @@
   align-self: center;
 }
 
+.ifDemandLeave {
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.onDemandBtn {
+  width: 30%;
+  height: 100%;
+  background-color: rgba(84, 169, 84, 0.884);
+  border-radius: 5px;
+  color: white;
+  border: none;
+  align-self: center;
+}
+
+.onDemandBtn:hover {
+  cursor: pointer;
+  background-color: rgba(84, 169, 84, 0.671);
+  transition: 0.2s;
+}
+
+.onDemandBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgba(84, 169, 84, 0.884);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.notOnDemandBtn {
+  width: 30%;
+  height: 100%;
+  background-color: rgba(213, 69, 69, 0.73);
+  border-radius: 5px;
+  color: white;
+  border: none;
+  align-self: center;
+}
+
+.notOnDemandBtn:hover {
+  cursor: pointer;
+  background-color: rgba(213, 69, 69, 0.549);
+  transition: 0.2s;
+}
+
+.notOnDemandBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgba(213, 69, 69, 0.73);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
 .requestButtons {
   display: flex;
   position: absolute;
-  border: 1px solid green;
   height: 10%;
-  width: 30%;
+  width: 100%;
   align-self: center;
-  justify-content: space-around;
+  justify-content: center;
   bottom: 0;
+  border-top: 1px solid;
+  border-radius: 100px;
 }
 
 .saveButton {
-  width: 35%;
+  width: 15%;
   height: 40%;
+  background-color: rgba(84, 169, 84, 0.884);
+  border-radius: 5px;
+  color: white;
+  border: none;
   align-self: center;
+  margin-left: 5%;
+}
+
+.saveButton:hover {
+  cursor: pointer;
+  background-color: rgba(84, 169, 84, 0.671);
+  transition: 0.2s;
+}
+
+.saveButton:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgba(84, 169, 84, 0.884);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 
 .cancelButton {
-  width: 35%;
+  width: 15%;
   height: 40%;
+  background-color: rgba(213, 69, 69, 0.73);
+  border-radius: 5px;
+  color: white;
+  border: none;
   align-self: center;
+  margin-right: 5%;
+}
+
+.cancelButton:hover {
+  cursor: pointer;
+  background-color: rgba(213, 69, 69, 0.549);
+  transition: 0.2s;
+}
+
+.cancelButton:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgba(213, 69, 69, 0.73);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }

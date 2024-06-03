@@ -96,6 +96,7 @@
   color: white;
   border-radius: 5px;
   transition: 0.2s;
+  border: none;
 }
 
 .addButton:hover {

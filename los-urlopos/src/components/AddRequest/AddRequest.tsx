@@ -57,7 +57,7 @@ export function AddRequest() {
 
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}>
-                Number of working days of leave
+                Number of business days of leave
               </span>
               <input type="text" className={styles.inputField} />
             </div>
@@ -65,8 +65,8 @@ export function AddRequest() {
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Leave on demand </span>
               <div className={styles.ifDemandLeave}>
-                <button className={styles.onDemand}>YES</button>
-                <button className={styles.notOnDemand}>NO</button>
+                <button className={styles.onDemandBtn}>YES</button>
+                <button className={styles.notOnDemandBtn}>NO</button>
               </div>
             </div>
 
@@ -78,8 +78,8 @@ export function AddRequest() {
         </div>
       </div>
       <div className={styles.requestButtons}>
-        <button className={styles.saveButton}>SAVE</button>
         <button className={styles.cancelButton}>CANCEL</button>
+        <button className={styles.saveButton}>SAVE</button>
       </div>
     </div>
   );
