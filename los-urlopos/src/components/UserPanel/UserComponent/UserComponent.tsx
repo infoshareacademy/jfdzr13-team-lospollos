@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./userComponent.module.css";
 import pfp from "../../../images/Unknown_person.jpg";
+import { useNavigate } from "react-router-dom";
 
 export function UserComponent() {
   const [profileImage, setProfileImage] = useState<string>(pfp);
@@ -20,6 +21,12 @@ export function UserComponent() {
       setProfileImage(imageUrl);
       localStorage.setItem("profileImage", imageUrl);
     }
+  };
+
+  const navigate = useNavigate();
+
+  const handleExploreClick = () => {
+    navigate("/addRequest");
   };
 
   return (
@@ -47,6 +54,11 @@ export function UserComponent() {
       </div>
       <div className={styles.daysLeft}>
         U have <span>XX</span> days left
+      </div>
+      <div className={styles.addButtonContainer}>
+        <button className={styles.addButton} onClick={handleExploreClick}>
+          ADD
+        </button>
       </div>
     </div>
   );

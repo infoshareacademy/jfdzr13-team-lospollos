@@ -4,27 +4,30 @@
   box-sizing: border-box;
 }
 .mainContainer {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgb(212, 212, 212);
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-self: center;
 }
 
 .devNavbar {
   height: 7%;
   font-size: 1vw;
-  width: 100;
+  width: 100%;
+  border: 1px solid green;
 }
 
 .userAndListContainer {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  width: 99.9%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  justify-content: center;
 }
