@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./AddRequest.module.css";
 
 interface AddRequestProps {
@@ -70,8 +69,21 @@ export function AddRequest({ onClose }: AddRequestProps) {
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Leave on demand </span>
               <div className={styles.ifDemandLeave}>
-                <button className={styles.onDemandBtn}>YES</button>
-                <button className={styles.notOnDemandBtn}>NO</button>
+                <input
+                  type="radio"
+                  id="yes"
+                  name="demand"
+                  className={styles.ifOnDemandCheckbox}
+                />
+                <label htmlFor="yes">YES</label>
+
+                <input
+                  type="radio"
+                  id="no"
+                  name="demand"
+                  className={styles.ifNotOnDemandCheckbox}
+                />
+                <label htmlFor="no">NO</label>
               </div>
             </div>
 
