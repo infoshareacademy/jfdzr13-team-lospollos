@@ -4,6 +4,7 @@ interface Request {
   dateTo: string;
   createdAt: string;
   status: string;
+  department: string;
 }
 
 export const data: Request[] = [
@@ -13,6 +14,7 @@ export const data: Request[] = [
     dateTo: "09-05-2024",
     createdAt: "29-04-2024",
     status: "Pending",
+    department: "Department 2",
   },
   {
     name: "Magdalena Ogórek",
@@ -20,6 +22,7 @@ export const data: Request[] = [
     dateTo: "15-04-2024",
     createdAt: "01-04-2024",
     status: "Rejected",
+    department: "Department 3",
   },
   {
     name: "Adam Mickiewicz",
@@ -27,6 +30,7 @@ export const data: Request[] = [
     dateTo: "04-02-2024",
     createdAt: "11-01-2024",
     status: "Accepted",
+    department: "Department 1",
   },
   {
     name: "Danuta Gubała",
@@ -34,6 +38,7 @@ export const data: Request[] = [
     dateTo: "25-04-2024",
     createdAt: "12-03-2024",
     status: "Pending",
+    department: "Department 1",
   },
   {
     name: "Henryk Sienkiewicz",
@@ -41,6 +46,7 @@ export const data: Request[] = [
     dateTo: "22-03-2024",
     createdAt: "27-02-2024",
     status: "Rejected",
+    department: "Department 1",
   },
   {
     name: "Piotr Orzechowski",
@@ -48,6 +54,7 @@ export const data: Request[] = [
     dateTo: "03-05-2024",
     createdAt: "19-03-2024",
     status: "Pending",
+    department: "Department 3",
   },
   {
     name: "Katarzyna Kowalska",
@@ -55,6 +62,7 @@ export const data: Request[] = [
     dateTo: "12-02-2024",
     createdAt: "15-01-2024",
     status: "Accepted",
+    department: "Department 4",
   },
   {
     name: "Albert Jakubowski",
@@ -62,6 +70,7 @@ export const data: Request[] = [
     dateTo: "25-07-2023",
     createdAt: "29-05-2023",
     status: "Accepted",
+    department: "Department 1",
   },
   {
     name: "Eryk Nawrocki",
@@ -69,6 +78,7 @@ export const data: Request[] = [
     dateTo: "09-10-2024",
     createdAt: "29-05-2024",
     status: "Pending",
+    department: "Department 1",
   },
   {
     name: "Marta Tedowska",
@@ -76,6 +86,7 @@ export const data: Request[] = [
     dateTo: "12-06-2024",
     createdAt: "12-04-2024",
     status: "Pending",
+    department: "Department 1",
   },
   {
     name: "Katarzyna Kotowska",
@@ -83,6 +94,7 @@ export const data: Request[] = [
     dateTo: "15-06-2024",
     createdAt: "12-04-2024",
     status: "Pending",
+    department: "Department 1",
   },
   {
     name: "Izabela Sabat",
@@ -90,6 +102,7 @@ export const data: Request[] = [
     dateTo: "28-02-2024",
     createdAt: "11-01-2024",
     status: "Accepted",
+    department: "Department 4",
   },
   {
     name: "Jakub Morzyński",
@@ -97,6 +110,7 @@ export const data: Request[] = [
     dateTo: "29-11-2024",
     createdAt: "06-06-2024",
     status: "Pending",
+    department: "Department 1",
   },
   {
     name: "Paulina Chmiel",
@@ -104,6 +118,7 @@ export const data: Request[] = [
     dateTo: "21-09-2024",
     createdAt: "29-06-2024",
     status: "Pending",
+    department: "Department 1",
   },
   {
     name: "Kamil Rybczewski",
@@ -111,6 +126,7 @@ export const data: Request[] = [
     dateTo: "26-05-2024",
     createdAt: "20-04-2024",
     status: "Rejected",
+    department: "Department 1",
   },
   {
     name: "Katarzyna Kowalska",
@@ -118,6 +134,7 @@ export const data: Request[] = [
     dateTo: "15-01-2025",
     createdAt: "29-04-2024",
     status: "Accepted",
+    department: "Department 4",
   },
   {
     name: "Janusz Kukułka",
@@ -125,6 +142,7 @@ export const data: Request[] = [
     dateTo: "30-07-2024",
     createdAt: "14-05-2024",
     status: "Pending",
+    department: "Department 2",
   },
   {
     name: "Katarzyna Kowalska",
@@ -132,6 +150,7 @@ export const data: Request[] = [
     dateTo: "23-05-2024",
     createdAt: "02-04-2024",
     status: "Rejected",
+    department: "Department 4",
   },
   {
     name: "Kamil Rybczewski",
@@ -139,6 +158,7 @@ export const data: Request[] = [
     dateTo: "09-02-2024",
     createdAt: "20-12-2023",
     status: "Accepted",
+    department: "Department 1",
   },
   {
     name: "Eryk Nawrocki",
@@ -146,6 +166,7 @@ export const data: Request[] = [
     dateTo: "13-02-2025",
     createdAt: "20-05-2024",
     status: "Pending",
+    department: "Department 1",
   },
   {
     name: "Marta Tedowska",
@@ -153,6 +174,7 @@ export const data: Request[] = [
     dateTo: "12-05-2024",
     createdAt: "16-03-2024",
     status: "Rejected",
+    department: "Department 1",
   },
   {
     name: "Danuta Gubała",
@@ -160,5 +182,6 @@ export const data: Request[] = [
     dateTo: "25-07-2024",
     createdAt: "12-05-2024",
     status: "Pending",
+    department: "Department 2",
   },
 ];

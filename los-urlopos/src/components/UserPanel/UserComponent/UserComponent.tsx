@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import styles from "./userComponent.module.css";
 import pfp from "../../../images/Unknown_person.jpg";
-import { useNavigate } from "react-router-dom";
+import styles from "./userComponent.module.css";
 
 interface UserComponentProps {
   onAddButtonClick: () => void;
