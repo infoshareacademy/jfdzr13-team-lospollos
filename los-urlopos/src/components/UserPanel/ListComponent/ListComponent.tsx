@@ -6,7 +6,7 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import { data as initialData } from "./mokDB";
+import { data as initialData } from "./tempDB";
 import { Select, MenuItem } from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
 
