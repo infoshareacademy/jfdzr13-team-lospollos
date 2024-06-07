@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./listComponent.module.css";
 import Button from "@mui/material/Button";
 import {
@@ -8,16 +8,7 @@ import {
 } from "material-react-table";
 import { data as initialData } from "./mokDB";
 import { Select, MenuItem } from "@mui/material";
-import types from "../../../types-obj/types-obj";
-
-interface Request {
-  name: string;
-  dateFrom: string;
-  dateTo: string;
-  status: string;
-  createdAt: string;
-  department: string;
-}
+import { Request } from "../../../types-obj/types-obj";
 
 export default function ListComponent() {
   const [data, setData] = useState(initialData);
@@ -26,7 +17,7 @@ export default function ListComponent() {
 
   const handleButtonClick = (row: Request, action: string) => {
     const updatedData = data.map((item) => {
-      if (item.name === row.name) {
+      if (item.user === row.user) {
         return {
           ...item,
           status:
@@ -42,6 +33,17 @@ export default function ListComponent() {
     setData(updatedData);
   };
 
+  useEffect(() => {
+    if (selectedDepartment) {
+      const filteredData = initialData.filter(
+        (item) => item.dept === selectedDepartment
+      );
+      setData(filteredData);
+    } else {
+      setData(initialData);
+    }
+  }, [selectedDepartment]);
+
   const columns = useMemo<MRT_ColumnDef<Request>[]>(
     () => [
       {
@@ -49,8 +51,8 @@ export default function ListComponent() {
         header: "Request List",
         columns: [
           {
-            accessorKey: "name",
-            header: "Name",
+            accessorKey: "user",
+            header: "Employee's name",
             enableHiding: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
@@ -59,14 +61,14 @@ export default function ListComponent() {
             },
           },
           {
-            accessorKey: "dateFrom",
+            accessorKey: "dayFrom",
             header: "From",
             enableSorting: false,
             muiTableHeadCellProps: { align: "right" },
             muiTableBodyCellProps: { align: "right" },
           },
           {
-            accessorKey: "dateTo",
+            accessorKey: "dayTo",
             header: "To",
             enableSorting: false,
             muiTableHeadCellProps: { align: "left" },
@@ -93,6 +95,10 @@ export default function ListComponent() {
           {
             accessorKey: "createdAt",
             header: "Created At",
+            Cell: ({ cell }) => {
+              const date = new Date(cell.getValue<number>());
+              return date.toLocaleDateString();
+            },
           },
           {
             accessorKey: "actions",
@@ -265,27 +271,27 @@ export default function ListComponent() {
         <strong>Details:</strong>
         <p>
           Name:
-          <br /> {row.original.name}
+          <br /> {row.original.user}
         </p>
         <p>
           From:
-          <br /> {row.original.dateFrom}
+          <br /> {row.original.dayFrom}
         </p>
         <p>
           To:
-          <br /> {row.original.dateTo}
+          <br /> {row.original.dayTo}
         </p>
         <p>
           Request Type:
-          <br /> XXXXXXXXXXXXXXXX
+          <br /> {row.original.requestType}
         </p>
         <p>
           Days Request:
-          <br /> XX
+          <br /> {row.original.daysReq}
         </p>
         <p>
           Supervisor:
-          <br /> XXXXXXXXXXXXXXXXXX
+          <br /> {row.original.supervisor}
         </p>
         <p>
           Status:
@@ -293,12 +299,12 @@ export default function ListComponent() {
         </p>
         <p>
           Created At:
-          <br /> {row.original.createdAt}
+          <br /> {new Date(row.original.createdAt).toLocaleDateString()}
         </p>
         <p>
           Comment:
           <br />
-          XXXXX XXXXX XXXXX XXXXX XXXXX
+          {row.original.comment}
         </p>
       </div>
     ),
