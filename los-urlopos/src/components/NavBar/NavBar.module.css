@@ -1,0 +1,23 @@
+.navbar {
+  height: 100%;
+  background-color: aliceblue;
+}
+
+.navbar ul {
+  padding: 10px;
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: gray;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.navbar a:hover {
+  background-color: aquamarine;
+}
