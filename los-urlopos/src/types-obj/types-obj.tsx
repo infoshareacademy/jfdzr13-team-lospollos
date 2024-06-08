@@ -1,6 +1,6 @@
-export let daysOff: { day: string };
-export let departments: { dept: string; head: string };
-export let request: {
+export type Holidays = { day: string };
+export type Departments = { dept: string; head: string };
+export type Request = {
   dayFrom: string;
   dayTo: string;
   daysReq: number;
@@ -13,8 +13,8 @@ export let request: {
   comment: string;
   createdAt: number;
 };
-export let types: { typ: string };
-export let user: {
+export type Type = { type: string };
+export type User = {
   createdAt: number;
   createdBy: string;
   currentDays: number;
