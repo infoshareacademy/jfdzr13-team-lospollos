@@ -1,8 +1,10 @@
-import "./App.css";
+import styles from "./App.module.css";
 import Routing from "./contexts/Routing";
 
 function App() {
-  return <Routing />;
+  return (
+<Routing/>
+  );
 }
 
 export default App;

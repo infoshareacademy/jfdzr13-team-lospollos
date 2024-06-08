@@ -1,20 +1,20 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import MockLogin from "../components/MockComponents/MockLogin";
 import Layout from "../components/Layout/Layout";
 import MockUser from "../components/MockComponents/MockUser";
-import MockUserPanel from "../components/MockComponents/MockUserPanel";
 import PrivateRoute from "./PrivateRoute";
+import { UserPanel } from "../components/UserPanel/UserPanel";
+import Login from "../components/Login/Login";
 
 const Routing = () => {
   return (
     <Routes>
       {/* public */}
-      <Route path="login" element={<MockLogin />} />
+      <Route path="login" element={<Login />} />
       {/* private */}
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Layout />}>
-          <Route path="/userPanel" element={<MockUserPanel />}></Route>
+          <Route path="/userPanel" element={<UserPanel />}></Route>
           <Route path="/user">
             <Route index element={<MockUser />} />
           </Route>
