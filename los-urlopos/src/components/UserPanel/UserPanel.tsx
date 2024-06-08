@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import styles from "./userPanel.module.css";
-import { UserComponent } from "./UserComponent/UserComponent";
-import ListComponent from "./ListComponent/ListComponent";
+import { useState } from "react";
 import { AddRequest } from "../AddRequest/AddRequest";
+import ListComponent from "./ListComponent/ListComponent";
+import { UserComponent } from "./UserComponent/UserComponent";
+import styles from "./userPanel.module.css";
 
 export function UserPanel() {
   const [showAddRequest, setShowAddRequest] = useState(false);
@@ -17,14 +17,6 @@ export function UserPanel() {
 
   return (
     <div className={styles.mainContainer}>
-      <div className={styles.devNavbar}>
-        NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR
-        NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR
-        NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR
-        NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR
-        NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR
-        NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR NAVBAR
-      </div>
       <div
         className={`${styles.userAndListContainer} ${
           showAddRequest ? styles.dimmed : ""

@@ -1,28 +1,60 @@
-import { createContext, useContext, useState, useEffect } from "react";
 import {
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
-  onAuthStateChanged,
 } from "firebase/auth";
-import { auth } from "../../firebase.js";
+import { doc, getDoc } from "firebase/firestore";
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth, db } from "../../firebase.js";
+import { User } from "../types-obj/types-obj.js";
 
+type TODO = any;
 const AuthContext = createContext({});
 
 const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [loggedUser, setLoggedUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState<TODO>(null);
 
-  const login = (email: string, password: string) => signInWithEmailAndPassword(auth, email, password);
-    
+  const [userData, setUserData] = useState<User | null>(null);
+
+  const login = (email: string, password: string) => {
+    return signInWithEmailAndPassword(auth, email, password);
+  };
 
   const logout = () => signOut(auth);
 
-  useEffect(() => onAuthStateChanged(auth, (user) =>
-    setLoggedUser(user)), []);
+  const getUserById = async (id: string) => {
+    const docRef = doc(db, "Users", id);
+    let user = null;
+    try {
+      const fetchUserData = await getDoc(docRef);
+      user = fetchUserData.data() as User;
+      console.log(user);
+      setUserData(user);
+    } catch (error) {
+      console.error(error);
+      setUserData(null);
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      console.log("user after loging", authUser);
+      setCurrentUser(authUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (currentUser != null) {
+      getUserById(currentUser);
+    }
+  }, [currentUser]);
 
   const authHandler = {
-    loggedUser,
+    currentUser,
+    userData,
     login,
     logout,
   };

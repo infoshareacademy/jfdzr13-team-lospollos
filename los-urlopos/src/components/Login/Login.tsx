@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../contexts/AuthContext";
 
 const Login = () => {
-  const { login, loggedUser } = useAuth();
+  const { login, currentUser } = useAuth();
   const [unsuccessLogin, setUnsuccessLogin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loggedUser) {
+    if (currentUser) {
       navigate("/");
     }
-  }, [loggedUser, navigate]);
+  }, [currentUser, navigate]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -21,13 +21,14 @@ const Login = () => {
     const password = formData.get("password");
 
     try {
+      console.log("try to login");
       await login(email, password);
+      console.log("called login method");
       setUnsuccessLogin(false);
     } catch (error) {
       setUnsuccessLogin(true);
+      event.currentTarget.reset();
     }
-    
-    event.currentTarget.reset();
   };
 
   return (
