@@ -1,4 +1,4 @@
-export type DaysOff = { day: string };
+export type Holidays = { day: string };
 export type Departments = { dept: string; head: string };
 export type Request = {
   dayFrom: string;
@@ -13,7 +13,7 @@ export type Request = {
   comment: string;
   createdAt: number;
 };
-export type Types = { typ: string };
+export type Type = { type: string };
 export type User = {
   createdAt: number;
   createdBy: string;
