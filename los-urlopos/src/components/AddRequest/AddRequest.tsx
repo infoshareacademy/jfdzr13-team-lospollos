@@ -7,7 +7,7 @@ interface AddRequestProps {
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
-  const { userData, reloadUser } = useUserData();
+  const { userData, getUserData } = useUserData();
 
   const handleRequest = async (event) => {
     event.preventDefault();
@@ -35,7 +35,9 @@ export function AddRequest({ onClose }: AddRequestProps) {
     console.log(userData);
     console.log(request);
 
-    reloadUser();
+    getUserData();
+
+    console.log(request);
   };
 
   return (

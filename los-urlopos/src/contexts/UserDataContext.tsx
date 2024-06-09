@@ -4,29 +4,28 @@ import useAuth from "./AuthContext";
 
 const UserDataContext = createContext({});
 const useUserData = () => useContext(UserDataContext);
-const { authUserId } = useAuth();
 
 export const UserDataProvider = ({ children }) => {
-  const entryUser = getUserById(authUserId);
-  const [userData, setUserData] = useState(entryUser);
-  const [userModified, setUserModified] = useState(false);
+  const { authUserId } = useAuth();
 
-  const reloadUser = () => {
-    setUserModified(true);
+  const [userData, setUserData] = useState(null);
+
+  const getUserData = async () => {
+    try {
+      const user = await getUserById(authUserId);
+      setUserData(user);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    {
-      getUserById(authUserId).then((user) => {
-        setUserData(user);
-      });
-      setUserModified(false);
-    }
-  }, [userModified]);
+    getUserData();
+  }, []);
 
   const userDataHandler = {
     userData,
-    reloadUser,
+    getUserData,
   };
 
   return (

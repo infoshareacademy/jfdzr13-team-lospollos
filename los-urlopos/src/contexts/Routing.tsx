@@ -13,14 +13,12 @@ const Routing = () => {
       <Route path="login" element={<Login />} />
       {/* private */}
       <Route element={<PrivateRoute />}>
-        <UserDataProvider>
           <Route path="/" element={<Layout />}>
             <Route path="/userPanel" element={<UserPanel />}></Route>
             <Route path="/user">
               <Route index element={<MockUser />} />
             </Route>
           </Route>
-        </UserDataProvider>
       </Route>
     </Routes>
   );
