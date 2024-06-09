@@ -35,7 +35,6 @@ export type User = {
 
 export type AuthContext = {
   authUserId: string | null;
-  userData: User | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
 };

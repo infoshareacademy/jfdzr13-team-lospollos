@@ -1,13 +1,13 @@
-import { Request, User } from "../../types-obj/types-obj";
-import styles from "./AddRequest.module.css";
+import useUserData from "../../contexts/UserDataContext";
 import { daysCounter } from "../../services/BankHolidayService";
-import useAuth from "../../contexts/AuthContext";
+import { Request } from "../../types-obj/types-obj";
+import styles from "./AddRequest.module.css";
 interface AddRequestProps {
   onClose: () => void;
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
-  const { userData } = useAuth();
+  const { userData, reloadUser } = useUserData();
 
   const handleRequest = async (event) => {
     event.preventDefault();
@@ -34,6 +34,8 @@ export function AddRequest({ onClose }: AddRequestProps) {
     };
     console.log(userData);
     console.log(request);
+
+    reloadUser();
   };
 
   return (

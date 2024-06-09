@@ -1,9 +1,10 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
-import MockUser from "../components/MockComponents/MockUser";
-import PrivateRoute from "./PrivateRoute";
-import { UserPanel } from "../components/UserPanel/UserPanel";
 import Login from "../components/Login/Login";
+import MockUser from "../components/MockComponents/MockUser";
+import { UserPanel } from "../components/UserPanel/UserPanel";
+import PrivateRoute from "./PrivateRoute";
+import { UserDataProvider } from "./UserDataContext";
 
 const Routing = () => {
   return (
@@ -12,12 +13,14 @@ const Routing = () => {
       <Route path="login" element={<Login />} />
       {/* private */}
       <Route element={<PrivateRoute />}>
-        <Route path="/" element={<Layout />}>
-          <Route path="/userPanel" element={<UserPanel />}></Route>
-          <Route path="/user">
-            <Route index element={<MockUser />} />
+        <UserDataProvider>
+          <Route path="/" element={<Layout />}>
+            <Route path="/userPanel" element={<UserPanel />}></Route>
+            <Route path="/user">
+              <Route index element={<MockUser />} />
+            </Route>
           </Route>
-        </Route>
+        </UserDataProvider>
       </Route>
     </Routes>
   );
