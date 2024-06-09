@@ -3,27 +3,25 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../contexts/AuthContext";
 
 const Login = () => {
-  const { login, currentUser } = useAuth();
+  const { login, authUserId } = useAuth();
   const [unsuccessLogin, setUnsuccessLogin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser) {
+    if (authUserId) {
       navigate("/");
     }
-  }, [currentUser, navigate]);
+  }, [authUserId, navigate]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
-      console.log("try to login");
       await login(email, password);
-      console.log("called login method");
       setUnsuccessLogin(false);
     } catch (error) {
       setUnsuccessLogin(true);

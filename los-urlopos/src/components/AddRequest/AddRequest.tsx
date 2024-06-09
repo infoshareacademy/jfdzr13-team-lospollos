@@ -6,8 +6,7 @@ interface AddRequestProps {
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
-  const { loggedUser } = useAuth;
-  const user = getUserById(loggedUser.id);
+  const { userData } = useAuth();
 
   const handleRequest = async (event) => {
     event.preventDefault();
@@ -20,15 +19,15 @@ export function AddRequest({ onClose }: AddRequestProps) {
     );
 
     const request: Request = {
-      dayFrom: formData.get("dayFrom"),
+      dayFrom: formData.get("dayFrom") as string,
       dayTo: formData.get("dayTo"),
       daysReq: daysRequested,
-      daysLeft: user.currentDays - daysRequested,
-      dept: user.dept,
+      daysLeft: userData.currentDays - daysRequested,
+      dept: userData.dept,
       requestType: formData.get(""),
       status: formData.get(""),
-      supervisor: formData.get(""),
-      user: formData.get(""),
+      supervisor: userData.super,
+      user: userData.userId,
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };

@@ -1,59 +1,50 @@
+import { onAuthStateChanged } from "firebase/auth";
 import {
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
-import { createContext, useContext, useEffect, useState } from "react";
-import { auth, db } from "../../firebase.js";
-import { User } from "../types-obj/types-obj.js";
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { auth } from "../../firebase";
+import { login, logout } from "../services/AuthService";
+import { getUserById } from "../services/UserService";
+import { AuthContext as ContextType, User } from "../types-obj/types-obj";
 
-type TODO = any;
-const AuthContext = createContext({});
+const defaultState: ContextType = {
+  authUserId: null,
+  userData: null,
+  login: (email, password) => new Promise((resolve) => resolve),
+  logout: () => new Promise((resolve) => resolve),
+};
 
-const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext(defaultState);
+const useAuth = (): ContextType => useContext(AuthContext);
 
-export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<TODO>(null);
-
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
 
-  const login = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
-  };
-
-  const logout = () => signOut(auth);
-
-  const getUserById = async (id: string) => {
-    const docRef = doc(db, "Users", id);
-    let user = null;
-    try {
-      const fetchUserData = await getDoc(docRef);
-      user = fetchUserData.data() as User;
-      console.log(user);
-      setUserData(user);
-    } catch (error) {
-      console.error(error);
-      setUserData(null);
-    }
-  };
-
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      console.log("user after loging", authUser);
-      setCurrentUser(authUser);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user != null) {
+        setAuthUserId(user.uid);
+      }
     });
+
     return () => unsubscribe();
   }, []);
 
   useEffect(() => {
-    if (currentUser != null) {
-      getUserById(currentUser);
+    if (authUserId != null) {
+      getUserById(authUserId).then((user) => {
+        setUserData(user);
+      });
     }
-  }, [currentUser]);
+  }, [authUserId]);
 
-  const authHandler = {
-    currentUser,
+  const authHandler: ContextType = {
+    authUserId,
     userData,
     login,
     logout,
