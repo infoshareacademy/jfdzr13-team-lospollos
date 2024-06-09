@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserById } from "../services/UserService";
+import { getBankHolidays } from "../services/BankHolidaysService";
+
 import useAuth from "./AuthContext";
 
 const UserDataContext = createContext({});
@@ -9,6 +11,7 @@ export const UserDataProvider = ({ children }) => {
   const { authUserId } = useAuth();
 
   const [userData, setUserData] = useState(null);
+  const [bankHolidaysData, setBankHolidaysData] = useState(null);
 
   const getUserData = async () => {
     try {
@@ -19,13 +22,28 @@ export const UserDataProvider = ({ children }) => {
     }
   };
 
+  const getBankHoliydaysData = async () => {
+    try {
+      const holidays = await getBankHolidays();
+      setBankHolidaysData(holidays);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getUserData();
+  }, []);
+
+  useEffect(() => {
+    getBankHoliydaysData();
   }, []);
 
   const userDataHandler = {
     userData,
     getUserData,
+    bankHolidaysData,
+    getBankHoliydaysData,
   };
 
   return (
