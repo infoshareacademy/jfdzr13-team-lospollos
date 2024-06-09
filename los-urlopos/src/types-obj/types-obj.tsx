@@ -30,6 +30,7 @@ export type User = {
   roleUser: boolean;
   roleSupervisor: boolean;
   supervisor: string;
+  userId: string;
 };
 
 export type AuthContext = {

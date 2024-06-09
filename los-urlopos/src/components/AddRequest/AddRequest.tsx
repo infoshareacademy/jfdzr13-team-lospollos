@@ -1,5 +1,6 @@
 import { Request, User } from "../../types-obj/types-obj";
 import styles from "./AddRequest.module.css";
+import { daysCounter } from "../../services/BankHolidayService";
 import useAuth from "../../contexts/AuthContext";
 interface AddRequestProps {
   onClose: () => void;
@@ -13,7 +14,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
 
     const formData = new FormData(event.currentTarget);
 
-    const daysRequested = getEffectiveDaysCount(
+    const daysRequested = daysCounter(
       formData.get("dayFrom"),
       formData.get("dayTo")
     );
@@ -31,7 +32,10 @@ export function AddRequest({ onClose }: AddRequestProps) {
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };
+    console.log(userData);
+    console.log(request);
   };
+
   return (
     <div className={styles.requestWrapper}>
       <h1 className={styles.requestH1}>Leave request</h1>
