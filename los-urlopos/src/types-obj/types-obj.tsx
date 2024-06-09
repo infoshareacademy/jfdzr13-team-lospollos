@@ -30,11 +30,11 @@ export type User = {
   roleUser: boolean;
   roleSupervisor: boolean;
   supervisor: string;
+  userId: string;
 };
 
 export type AuthContext = {
   authUserId: string | null;
-  userData: User | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
 };
