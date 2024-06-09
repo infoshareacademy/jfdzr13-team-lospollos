@@ -1,3 +1,4 @@
+import { UserCredential } from "firebase/auth";
 
 export type Holidays = { day: string };
 export type Departments = { dept: string; head: string };
@@ -29,4 +30,11 @@ export type User = {
   roleUser: boolean;
   roleSupervisor: boolean;
   supervisor: string;
+};
+
+export type AuthContext = {
+  authUserId: string | null;
+  userData: User | null;
+  login: (email: string, password: string) => Promise<UserCredential>;
+  logout: () => Promise<void>;
 };

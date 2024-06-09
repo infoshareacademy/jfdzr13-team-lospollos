@@ -3,31 +3,30 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../contexts/AuthContext";
 
 const Login = () => {
-  const { login, loggedUser } = useAuth();
+  const { login, authUserId } = useAuth();
   const [unsuccessLogin, setUnsuccessLogin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loggedUser) {
+    if (authUserId) {
       navigate("/");
     }
-  }, [loggedUser, navigate]);
+  }, [authUserId, navigate]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
       await login(email, password);
       setUnsuccessLogin(false);
     } catch (error) {
       setUnsuccessLogin(true);
+      event.currentTarget.reset();
     }
-    
-    event.currentTarget.reset();
   };
 
   return (

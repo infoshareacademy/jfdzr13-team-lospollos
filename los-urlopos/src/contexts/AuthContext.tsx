@@ -1,28 +1,51 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import {
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { auth } from "../../firebase.js";
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { auth } from "../../firebase";
+import { login, logout } from "../services/AuthService";
+import { getUserById } from "../services/UserService";
+import { AuthContext as ContextType, User } from "../types-obj/types-obj";
 
-const AuthContext = createContext({});
+const defaultState: ContextType = {
+  authUserId: null,
+  userData: null,
+  login: (email, password) => new Promise((resolve) => resolve),
+  logout: () => new Promise((resolve) => resolve),
+};
 
-const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext(defaultState);
+const useAuth = (): ContextType => useContext(AuthContext);
 
-export const AuthProvider = ({ children }) => {
-  const [loggedUser, setLoggedUser] = useState(null);
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
-  const login = (email: string, password: string) => signInWithEmailAndPassword(auth, email, password);
-    
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user != null) {
+        setAuthUserId(user.uid);
+      }
+    });
 
-  const logout = () => signOut(auth);
+    return () => unsubscribe();
+  }, []);
 
-  useEffect(() => onAuthStateChanged(auth, (user) =>
-    setLoggedUser(user)), []);
+  useEffect(() => {
+    if (authUserId != null) {
+      getUserById(authUserId).then((user) => {
+        setUserData(user);
+      });
+    }
+  }, [authUserId]);
 
-  const authHandler = {
-    loggedUser,
+  const authHandler: ContextType = {
+    authUserId,
+    userData,
     login,
     logout,
   };

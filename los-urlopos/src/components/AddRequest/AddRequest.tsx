@@ -1,14 +1,41 @@
+import { Request, User } from "../../types-obj/types-obj";
 import styles from "./AddRequest.module.css";
-
+import useAuth from "../../contexts/AuthContext";
 interface AddRequestProps {
   onClose: () => void;
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
+  const { userData } = useAuth();
+
+  const handleRequest = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    const daysRequested = getEffectiveDaysCount(
+      formData.get("dayFrom"),
+      formData.get("dayTo")
+    );
+
+    const request: Request = {
+      dayFrom: formData.get("dayFrom") as string,
+      dayTo: formData.get("dayTo"),
+      daysReq: daysRequested,
+      daysLeft: userData.currentDays - daysRequested,
+      dept: userData.dept,
+      requestType: formData.get(""),
+      status: formData.get(""),
+      supervisor: userData.super,
+      user: userData.userId,
+      comment: formData.get("comment"),
+      createdAt: Date.now(),
+    };
+  };
   return (
     <div className={styles.requestWrapper}>
       <h1 className={styles.requestH1}>Leave request</h1>
-      <div className={styles.requestContentCont}>
+      <form onSubmit={handleRequest} className={styles.requestContentCont}>
         <div className={styles.requestInformationCont}>
           <div className={styles.requestInformation}>
             <p>
@@ -34,13 +61,8 @@ export function AddRequest({ onClose }: AddRequestProps) {
         <div className={styles.requestDataCont}>
           <div className={styles.requestEntryContent}>
             <div className={styles.requestEntryLabel}>
-              <span className={styles.fieldName}>Application date </span>
-              <input type="date" className={styles.inputField} />
-            </div>
-
-            <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Type of leave </span>
-              <select className={styles.inputField}>
+              <select className={styles.inputField} name="annualLeave">
                 <option value="annualLeave">Annual leave</option>
                 <option value="additionalLeave">Additional leave</option>
                 <option value="specialLeave">Special leave</option>
@@ -51,12 +73,12 @@ export function AddRequest({ onClose }: AddRequestProps) {
 
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Beginning date </span>
-              <input type="date" className={styles.inputField} />
+              <input type="date" className={styles.inputField} name="dayFrom" />
             </div>
 
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> End date </span>
-              <input type="date" className={styles.inputField} />
+              <input type="date" className={styles.inputField} name="dayTo" />
             </div>
 
             <div className={styles.requestEntryLabel}>
@@ -67,39 +89,20 @@ export function AddRequest({ onClose }: AddRequestProps) {
             </div>
 
             <div className={styles.requestEntryLabel}>
-              <span className={styles.fieldName}> Leave on demand </span>
-              <div className={styles.ifDemandLeave}>
-                <input
-                  type="radio"
-                  id="yes"
-                  name="demand"
-                  className={styles.ifOnDemandCheckbox}
-                />
-                <label htmlFor="yes">YES</label>
-
-                <input
-                  type="radio"
-                  id="no"
-                  name="demand"
-                  className={styles.ifNotOnDemandCheckbox}
-                />
-                <label htmlFor="no">NO</label>
-              </div>
-            </div>
-
-            <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Comments </span>
-              <input type="text" className={styles.inputField} />
+              <input type="text" className={styles.inputField} name="comment" />
             </div>
           </div>
         </div>
-      </div>
-      <div className={styles.requestButtons}>
-        <button className={styles.cancelButton} onClick={onClose}>
-          CANCEL
-        </button>
-        <button className={styles.saveButton}>SAVE</button>
-      </div>
+        <div className={styles.requestButtons}>
+          <button className={styles.cancelButton} onClick={onClose}>
+            CANCEL
+          </button>
+          <button className={styles.saveButton} type="submit">
+            SAVE
+          </button>
+        </div>
+      </form>
     </div>
   );
 }
