@@ -1,5 +1,5 @@
 import useUserData from "../../contexts/UserDataContext";
-import { daysCounter } from "../../services/BankHolidayService";
+import { daysCounter } from "../../utils/BankHolidaysFunction";
 import { Request } from "../../types-obj/types-obj";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
@@ -8,6 +8,7 @@ interface AddRequestProps {
 
 export function AddRequest({ onClose }: AddRequestProps) {
   const { userData, getUserData } = useUserData();
+  const { bankHolidaysData } = useUserData();
 
   const handleRequest = async (event) => {
     event.preventDefault();
@@ -16,7 +17,8 @@ export function AddRequest({ onClose }: AddRequestProps) {
 
     const daysRequested = daysCounter(
       formData.get("dayFrom"),
-      formData.get("dayTo")
+      formData.get("dayTo"),
+      bankHolidaysData
     );
 
     const request: Request = {

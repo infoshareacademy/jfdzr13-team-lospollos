@@ -1,8 +1,8 @@
-import { db } from "../../firebase";
-import { onSnapshot, collection, query } from "firebase/firestore";
-import { Holidays } from "../types-obj/types-obj";
-
-export function daysCounter(a: string, b: string): number {
+export function daysCounter(
+  a: string,
+  b: string,
+  bankHolidaysData: string[]
+): number {
   const dayInMilisec: number = 86400000;
 
   const dayFrom: number = new Date(a).getTime() - dayInMilisec;
@@ -11,10 +11,6 @@ export function daysCounter(a: string, b: string): number {
   const differenceMin: number = differenceSec / 60;
   const differenceHour: number = differenceMin / 60;
   const differenceDays: number = differenceHour / 24;
-
-  let daysOff: string[] = [];
-
-  daysOff = ["2024-06-11", "2024-12-24"];
 
   let i: number;
   let j: number;
@@ -30,12 +26,13 @@ export function daysCounter(a: string, b: string): number {
       counter++;
     }
 
-    for (j = 0; j < daysOff.length; j++) {
-      helpVarDayOff = new Date(daysOff[j]).getTime();
+    for (j = 0; j < bankHolidaysData.length; j++) {
+      helpVarDayOff = new Date(bankHolidaysData[j]).getTime();
       if (helpVar === helpVarDayOff) {
         counter--;
       }
     }
   }
+
   return counter;
 }
