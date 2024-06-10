@@ -1,6 +1,7 @@
 import useUserData from "../../contexts/UserDataContext";
 import { daysCounter } from "../../utils/BankHolidaysFunction";
 import { Request } from "../../types-obj/types-obj";
+import { deptFinder } from "../../utils/DepartmentFunction";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
   onClose: () => void;
@@ -9,6 +10,7 @@ interface AddRequestProps {
 export function AddRequest({ onClose }: AddRequestProps) {
   const { userData, getUserData } = useUserData();
   const { bankHolidaysData } = useUserData();
+  const { departmentsList } = useUserData();
 
   const handleRequest = async (event) => {
     event.preventDefault();
@@ -21,19 +23,22 @@ export function AddRequest({ onClose }: AddRequestProps) {
       bankHolidaysData
     );
 
+    const departments = deptFinder(departmentsList, userData.deptId);
+
     const request: Request = {
       dayFrom: formData.get("dayFrom") as string,
       dayTo: formData.get("dayTo"),
       daysReq: daysRequested,
       daysLeft: userData.currentDays - daysRequested,
-      dept: userData.dept,
+      dept: departments.dept,
       requestType: formData.get(""),
       status: formData.get(""),
-      supervisor: userData.super,
+      supervisor: departments.head,
       user: userData.userId,
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };
+
     console.log(userData);
     console.log(request);
 
