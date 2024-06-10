@@ -1,7 +1,7 @@
 import useUserData from "../../contexts/ViewDataContext";
-import { daysCounter } from "../../utils/BankHolidaysFunction";
+import { daysCounter } from "../../utils/DaysCalculation";
 import { Request } from "../../types-obj/types-obj";
-import { deptFinder } from "../../utils/DepartmentFunction";
+import { deptFinder } from "../../utils/DepartmentFinder";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
   onClose: () => void;
@@ -42,8 +42,6 @@ export function AddRequest({ onClose }: AddRequestProps) {
     console.log(request);
 
     getUserData();
-
-    console.log(request);
   };
 
   return (
