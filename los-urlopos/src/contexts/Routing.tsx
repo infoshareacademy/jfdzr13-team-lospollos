@@ -4,7 +4,7 @@ import Login from "../components/Login/Login";
 import MockUser from "../components/MockComponents/MockUser";
 import { UserPanel } from "../components/UserPanel/UserPanel";
 import PrivateRoute from "./PrivateRoute";
-import { UserDataProvider } from "./UserDataContext";
+import { UserDataProvider } from "./ViewDataContext";
 
 const Routing = () => {
   return (
@@ -13,12 +13,12 @@ const Routing = () => {
       <Route path="login" element={<Login />} />
       {/* private */}
       <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Layout />}>
-            <Route path="/userPanel" element={<UserPanel />}></Route>
-            <Route path="/user">
-              <Route index element={<MockUser />} />
-            </Route>
+        <Route path="/" element={<Layout />}>
+          <Route path="/userPanel" element={<UserPanel />}></Route>
+          <Route path="/user">
+            <Route index element={<MockUser />} />
           </Route>
+        </Route>
       </Route>
     </Routes>
   );

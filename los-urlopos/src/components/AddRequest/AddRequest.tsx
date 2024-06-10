@@ -1,4 +1,4 @@
-import useUserData from "../../contexts/UserDataContext";
+import useUserData from "../../contexts/ViewDataContext";
 import { daysCounter } from "../../utils/BankHolidaysFunction";
 import { Request } from "../../types-obj/types-obj";
 import { deptFinder } from "../../utils/DepartmentFunction";
@@ -8,9 +8,8 @@ interface AddRequestProps {
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
-  const { userData, getUserData } = useUserData();
-  const { bankHolidaysData } = useUserData();
-  const { departmentsList } = useUserData();
+  const { userData, getUserData, bankHolidaysData, departmentsList } =
+    useUserData();
 
   const handleRequest = async (event) => {
     event.preventDefault();
