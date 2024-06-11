@@ -95,7 +95,7 @@
 .addButtonContainer {
   position: absolute;
   display: flex;
-  height: 30%;
+  height: 35px;
   width: 5%;
   border-radius: 5px;
   right: 3%;
@@ -105,7 +105,7 @@
 .addButton {
   width: 100%;
   height: 100%;
-  background-color: #3457d5d9;
+  background-color: #4f79e2;
   color: white;
   border-radius: 5px;
   transition: 0.2s;
@@ -114,12 +114,12 @@
 
 .addButton:hover {
   cursor: pointer;
-  background-color: #3457d5a7;
+  background-color: #3457d5;
   transition: 0.2s;
 }
 
 .addButton:active {
   transform: scale(0.99);
-  background-color: #3457d5d9;
+  background-color: #3149c4;
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
