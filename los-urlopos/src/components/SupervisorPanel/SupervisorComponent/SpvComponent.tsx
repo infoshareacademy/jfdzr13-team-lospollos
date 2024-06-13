@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import pfp from "../../../images/Unknown_person.jpg";
-import styles from "./userComponent.module.css";
+import styles from "./spvComponent.module.css";
 
 interface UserComponentProps {
   onAddButtonClick: () => void;
 }
 
-export function UserComponent({ onAddButtonClick }: UserComponentProps) {
+export function SpvComponent({ onAddButtonClick }: UserComponentProps) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
 
   useEffect(() => {
