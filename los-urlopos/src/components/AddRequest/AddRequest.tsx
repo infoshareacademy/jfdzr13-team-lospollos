@@ -1,7 +1,6 @@
 import useUserData from "../../contexts/ViewDataContext";
 import { daysCounter } from "../../utils/DaysCalculation";
 import { Request } from "../../types-obj/types-obj";
-import { deptFinder } from "../../utils/DepartmentFinder";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
   onClose: () => void;
@@ -22,25 +21,26 @@ export function AddRequest({ onClose }: AddRequestProps) {
       bankHolidaysData
     );
 
-    const departments = deptFinder(departmentsList, userData.deptId);
+    const departmentId = departmentsList.filter(
+      (department) => department.deptId === userData.deptId
+    );
 
     const request: Request = {
       dayFrom: formData.get("dayFrom") as string,
-      dayTo: formData.get("dayTo"),
+      dayTo: formData.get("dayTo") as string,
       daysReq: daysRequested,
       daysLeft: userData.currentDays - daysRequested,
-      dept: departments.dept,
+      dept: departmentId[0].deptId,
       requestType: formData.get(""),
       status: formData.get(""),
-      supervisor: departments.head,
+      supervisor: departmentId[0].deptId,
       user: userData.userId,
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };
 
-    console.log(userData);
     console.log(request);
-
+    console.log(userData);
     getUserData();
   };
 
