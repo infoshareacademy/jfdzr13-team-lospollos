@@ -8,6 +8,7 @@ const NavBar: FC = () => {
     <nav className={navbar}>
       <ul>
         <NavLink to="/userPanel">Home</NavLink>
+        <NavLink to="/adminPanel">admin panel - visible only for admin</NavLink>
         <div>
           <NavLink to="/user">User</NavLink>
           <NavLink to="/logout">Logout</NavLink>
