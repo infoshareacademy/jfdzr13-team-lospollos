@@ -1,4 +1,5 @@
 import useUserData from "../../contexts/UserDataContext";
+import TypeOfLeave from "../TypeOfLeave/typeOfLeave";
 import { daysCounter } from "../../utils/BankHolidaysFunction";
 import { Request } from "../../types-obj/types-obj";
 import styles from "./AddRequest.module.css";
@@ -73,11 +74,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Type of leave </span>
               <select className={styles.inputField} name="annualLeave">
-                <option value="annualLeave">Annual leave</option>
-                <option value="additionalLeave">Additional leave</option>
-                <option value="specialLeave">Special leave</option>
-                <option value="childLeave">Child leave</option>
-                <option value="unpaidLeave">Unpaid leave</option>
+                <TypeOfLeave />
               </select>
             </div>
 
