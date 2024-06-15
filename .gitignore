@@ -1,2 +1,5 @@
 # .vscode folder can be added to .gitignore, but it is not required
 # .vscode
+.env
+.README.md
+.DS_Store
