@@ -13,9 +13,7 @@ export const getRequestAll = async () => {
 export const getRequestUserId = async (userId: String) => {
   const q = query(collection(db, "Requests"), where("userId", "==", userId));
   let requestListUser: any = [];
-
   const querySnapshot = await getDocs(q);
-
   querySnapshot.forEach((doc) =>
     requestListUser.push({ reqId: doc.id, ...doc.data() })
   );
@@ -25,9 +23,7 @@ export const getRequestUserId = async (userId: String) => {
 export const getRequestDeptId = async (deptId: String) => {
   const q = query(collection(db, "Requests"), where("deptId", "==", deptId));
   let requestListDept: any = [];
-
   const querySnapshot = await getDocs(q);
-
   querySnapshot.forEach((doc) =>
     requestListDept.push({ reqId: doc.id, ...doc.data() })
   );
