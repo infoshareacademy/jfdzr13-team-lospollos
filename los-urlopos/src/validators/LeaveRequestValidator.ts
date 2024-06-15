@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { typeOfLeave } from "../components/TypeOfLeave/typeOfLeave";
+import TYPE_OF_LEAVE from "../enums/typeOfLeave";
 import { User } from "../types-obj/types-obj";
 
 export function ValidateLeaveRequest(
@@ -8,7 +8,7 @@ export function ValidateLeaveRequest(
   leaveTypeForCheck: string
 ) {
   if (
-    leaveTypeForCheck === typeOfLeave.AnnualLeave &&
+    leaveTypeForCheck === TYPE_OF_LEAVE.AnnualLeave &&
     daysNumberForCheck > userForCheck.currentDays
   ) {
     toast.error("You don't have enough vacation days");
@@ -16,22 +16,22 @@ export function ValidateLeaveRequest(
   } else if (
     userForCheck.currentDays > userForCheck.onDemand &&
     daysNumberForCheck < userForCheck.currentDays &&
-    leaveTypeForCheck === typeOfLeave.OnDemandLeave &&
+    leaveTypeForCheck === TYPE_OF_LEAVE.OnDemandLeave &&
     daysNumberForCheck > userForCheck.onDemand
   ) {
     toast.error("You don't have enough On Demand days");
 
     return false;
   } else if (
-    leaveTypeForCheck === typeOfLeave.ChildLeave ||
-    leaveTypeForCheck === typeOfLeave.SpecialLeave ||
-    leaveTypeForCheck === typeOfLeave.AdditionalLeave ||
-    leaveTypeForCheck === typeOfLeave.UnpaidLeave
+    leaveTypeForCheck === TYPE_OF_LEAVE.ChildLeave ||
+    leaveTypeForCheck === TYPE_OF_LEAVE.SpecialLeave ||
+    leaveTypeForCheck === TYPE_OF_LEAVE.AdditionalLeave ||
+    leaveTypeForCheck === TYPE_OF_LEAVE.UnpaidLeave
   ) {
     toast.success("You request is waiting for approve");
 
     return true;
-  } else if (leaveTypeForCheck === typeOfLeave.AnnualLeave) {
+  } else if (leaveTypeForCheck === TYPE_OF_LEAVE.AnnualLeave) {
     toast.success("You request is waiting for approve");
 
     return true;

@@ -16,7 +16,7 @@ export const UserDataProvider = ({ children }) => {
   const [bankHolidaysData, setBankHolidaysData] = useState(null);
   const [departmentsList, setDepartmentsList] = useState<Departments[]>([]);
 
-  const getUserData = async () => {
+  const refreshUserViewData = async () => {
     try {
       const user = await getUserById(authUser!.id);
       setUserData(user);
@@ -44,7 +44,7 @@ export const UserDataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getUserData();
+    refreshUserViewData();
   }, []);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export const UserDataProvider = ({ children }) => {
 
   const userDataHandler = {
     userData,
-    getUserData,
+    refreshUserViewData,
     bankHolidaysData,
     getBankHoliydaysData,
     departmentsList,

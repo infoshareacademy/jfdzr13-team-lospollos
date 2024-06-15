@@ -1,37 +1,60 @@
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 import useUserData from "../../contexts/ViewDataContext";
 import REQUEST_STATUS from "../../enums/requestStatus";
-import TYPE_OF_LEAVE, { GetTypeOfLeaveOptions } from "../../enums/typeOfLeave";
+import { GetTypeOfLeaveOptions } from "../../enums/typeOfLeave";
 import { addNewLeaveRequest } from "../../services/LeaveRequestService";
 import { Request } from "../../types-obj/types-obj";
-import { daysCounter } from "../../utils/DaysCalculation";
-import { requestValidation } from "../../utils/RequestValidation";
+import {
+  calculateBusinessDaysOff,
+  calculateDaysOffLeft,
+  calculateOnDemandLeft,
+} from "../../utils/DaysCalculation";
 import { updateUserDaysOffLeft } from "../../utils/UserModification";
-import { Toaster } from "react-hot-toast";
+import { ValidateLeaveRequest } from "../../validators/LeaveRequestValidator";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
   onClose: () => void;
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
-  const { userData, getUserData, bankHolidaysData, departmentsList } =
+  const { userData, refreshUserViewData, bankHolidaysData, departmentsList } =
     useUserData();
-  const [requestedDaysOffAmount, setRequestedDaysOffAmount] =
-    useState<number>(0);
+  const [requestedDaysOff, setRequestedDaysOff] = useState<number>(0);
+
+  const handlePastDates = () => {
+    const dayFromElement = document.getElementById("dayFrom");
+    const dayToElement = document.getElementById("dayTo");
+
+    const dayFrom = dayFromElement!.value as string;
+    const dayTo = dayToElement!.value as string;
+
+    const currentDay = new Date().toISOString().split("T")[0];
+
+    dayFromElement?.setAttribute("min", currentDay);
+    if (dayTo) {
+      dayFromElement?.setAttribute("max", dayTo);
+    }
+
+    if (dayFrom) {
+      dayToElement?.setAttribute("min", dayFrom);
+    }
+  };
 
   const handleDatesChange = () => {
     const dayFrom = document.getElementById("dayFrom")?.value as string | null;
     const dayTo = document.getElementById("dayTo")?.value as string | null;
 
     if (dayFrom == null || dayTo == null) {
-      setRequestedDaysOffAmount(0);
-
-      return;
+      setRequestedDaysOff(0);
+    } else {
+      setRequestedDaysOff(
+        calculateBusinessDaysOff(dayFrom, dayTo, bankHolidaysData)
+      );
     }
-    setRequestedDaysOffAmount(daysCounter(dayFrom, dayTo, bankHolidaysData));
   };
 
-  const handleRequest = async (event) => {
+  const handleRequestSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -44,17 +67,22 @@ export function AddRequest({ onClose }: AddRequestProps) {
       (department) => department.deptId === userData.deptId
     )[0].deptId;
 
-    const daysOffLeft = userData.currentDays - requestedDaysOffAmount;
-    const onDemandDaysOffLeft =
-      requestType === TYPE_OF_LEAVE.OnDemandLeave
-        ? userData.onDemand - requestedDaysOffAmount
-        : userData.onDemand;
+    const daysOffLeft = calculateDaysOffLeft(
+      userData.currentDays,
+      requestedDaysOff,
+      requestType
+    );
+    const onDemandDaysOffLeft = calculateOnDemandLeft(
+      userData.onDemand,
+      requestedDaysOff,
+      requestType
+    );
 
     const request: Request = {
       dayFrom: dayFrom,
       dayTo: dayTo,
-      daysReq: requestedDaysOffAmount,
-      daysLeft: userData.currentDays - requestedDaysOffAmount,
+      daysReq: requestedDaysOff,
+      daysLeft: daysOffLeft,
       deptId: departmentId,
       requestType: requestType,
       status: REQUEST_STATUS.Pending,
@@ -63,66 +91,52 @@ export function AddRequest({ onClose }: AddRequestProps) {
       createdAt: Date.now(),
     };
 
-    const requestValid = requestValidation(
+    const isRequestValid = ValidateLeaveRequest(
       userData,
-      daysRequested,
-      formData.get("typeLeave")
+      requestedDaysOff,
+      requestType
     );
 
-    await addNewLeaveRequest(request);
-    await updateUserDaysOffLeft(
-      userData.userId,
-      daysOffLeft,
-      onDemandDaysOffLeft
-    );
+    if (isRequestValid) {
+      await addNewLeaveRequest(request);
+      await updateUserDaysOffLeft(
+        userData.userId,
+        daysOffLeft,
+        onDemandDaysOffLeft
+      );
 
-    getUserData();
+      await refreshUserViewData();
+      onClose();
+    }
   };
 
   return (
     <div className={styles.requestWrapper}>
       <Toaster position="top-center" reverseOrder={false} />
       <h1 className={styles.requestH1}>Leave request</h1>
-      <form onSubmit={handleRequest} className={styles.requestContentCont}>
-        <div className={styles.requestInformationCont}>
-          <div className={styles.requestInformation}>
-            <p>
-              Select the type of leave and then fill in the details for the
-              application in accordance with the company rules for that type of
-              leave.
-            </p>
-            <p>
-              If the leave occurs at the turn of the year, divide it into two
-              parts.
-            </p>
-            <p>
-              Leave on demand can last for one day. For any additional day, a
-              separate request must be made.
-            </p>
-            <p>
-              Remember to enter the number of days and hours of leave taking
-              into account your working hours and public holidays.
-            </p>
-          </div>
-        </div>
-
+      <form
+        onSubmit={handleRequestSubmit}
+        className={styles.requestContentCont}
+      >
         <div className={styles.requestDataCont}>
           <div className={styles.requestEntryContent}>
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Type of leave </span>
-              <select className={styles.inputField} name="typeOfLeave">
+              <select className={styles.inputField} name="typeOfLeave" required>
                 <GetTypeOfLeaveOptions />
               </select>
             </div>
 
             <div className={styles.requestEntryLabel}>
-              <span className={styles.fieldName}> Beginning date </span>
+              <span className={styles.fieldName}> Start date </span>
               <input
                 type="date"
                 className={styles.inputField}
                 name="dayFrom"
                 id="dayFrom"
                 onChange={handleDatesChange}
+                onFocus={handlePastDates}
+                required
               />
             </div>
 
@@ -134,14 +148,14 @@ export function AddRequest({ onClose }: AddRequestProps) {
                 name="dayTo"
                 id="dayTo"
                 onChange={handleDatesChange}
+                onFocus={handlePastDates}
+                required
               />
             </div>
 
             <div className={styles.requestEntryLabel}>
-              <span className={styles.fieldName}>
-                Number of business days of leave
-              </span>
-              <p>{requestedDaysOffAmount}</p>
+              <span className={styles.fieldName}>Business days off</span>
+              <p>{requestedDaysOff}</p>
             </div>
 
             <div className={styles.requestEntryLabel}>
@@ -150,6 +164,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
             </div>
           </div>
         </div>
+
         <div className={styles.requestButtons}>
           <button className={styles.cancelButton} onClick={onClose}>
             CANCEL
