@@ -9,7 +9,7 @@ const UserDataContext = createContext({});
 const useUserData = () => useContext(UserDataContext);
 
 export const UserDataProvider = ({ children }) => {
-  const { authUserId } = useAuth();
+  const { authUser } = useAuth();
 
   const [userData, setUserData] = useState(null);
   const [bankHolidaysData, setBankHolidaysData] = useState(null);
@@ -17,7 +17,7 @@ export const UserDataProvider = ({ children }) => {
 
   const getUserData = async () => {
     try {
-      const user = await getUserById(authUserId);
+      const user = await getUserById(authUser!.id);
       setUserData(user);
     } catch (error) {
       console.error(error);

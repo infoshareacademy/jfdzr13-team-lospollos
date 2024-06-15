@@ -17,13 +17,18 @@ export type Request = {
 
 export type Type = { type: string };
 export type User = {
+  id?: string;
   createdAt: number;
   createdBy: string;
   currentDays: number;
   days: number;
   deptId: string;
   email: string;
+<<<<<<< HEAD
   firstName: string;
+=======
+  name: string;
+>>>>>>> origin
   surname: string;
   onDemand: number;
   roleAdmin: boolean;
@@ -33,7 +38,14 @@ export type User = {
 };
 
 export type AuthContext = {
-  authUserId: string | null;
+  authUser: AuthUser | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+  changePassword: (newPassword: string) => void;
+};
+
+export type AuthUser = {
+  id: string;
+  email: string;
+  name: string;
 };

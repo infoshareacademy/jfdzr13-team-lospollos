@@ -22,8 +22,8 @@ const NavBar: FC = () => {
         {userData.roleAdmin && <NavLink to="/adminPanel">Admin Panel</NavLink>}
       </div>
       <div>
-        <NavLink to="/user">User</NavLink>
-        <NavLink to="/login">Logout</NavLink>
+        <NavLink to="settings">Settings</NavLink>
+        <NavLink to="logout">Logout</NavLink>
       </div>
     </nav>
   );
