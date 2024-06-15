@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getUserById } from "../services/UserService";
 import { getBankHolidays } from "../services/BankHolidaysService";
+import { getDepartment } from "../services/DepartmentService";
 
 import useAuth from "./AuthContext";
 
@@ -12,6 +13,7 @@ export const UserDataProvider = ({ children }) => {
 
   const [userData, setUserData] = useState(null);
   const [bankHolidaysData, setBankHolidaysData] = useState(null);
+  const [departmentsList, setDepartmentsList] = useState(null);
 
   const getUserData = async () => {
     try {
@@ -31,6 +33,15 @@ export const UserDataProvider = ({ children }) => {
     }
   };
 
+  const getDepartmentList = async () => {
+    try {
+      const departments = await getDepartment();
+      setDepartmentsList(departments);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getUserData();
   }, []);
@@ -39,11 +50,17 @@ export const UserDataProvider = ({ children }) => {
     getBankHoliydaysData();
   }, []);
 
+  useEffect(() => {
+    getDepartmentList();
+  }, []);
+
   const userDataHandler = {
     userData,
     getUserData,
     bankHolidaysData,
     getBankHoliydaysData,
+    departmentsList,
+    getDepartmentList,
   };
 
   return (

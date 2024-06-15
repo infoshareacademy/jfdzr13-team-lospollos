@@ -8,8 +8,8 @@ interface AddRequestProps {
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
-  const { userData, getUserData } = useUserData();
-  const { bankHolidaysData } = useUserData();
+  const { userData, getUserData, bankHolidaysData, departmentsList } =
+    useUserData();
 
   const handleRequest = async (event) => {
     event.preventDefault();
@@ -22,25 +22,27 @@ export function AddRequest({ onClose }: AddRequestProps) {
       bankHolidaysData
     );
 
+    const departmentId = departmentsList.filter(
+      (department) => department.deptId === userData.deptId
+    );
+
     const request: Request = {
       dayFrom: formData.get("dayFrom") as string,
-      dayTo: formData.get("dayTo"),
+      dayTo: formData.get("dayTo") as string,
       daysReq: daysRequested,
       daysLeft: userData.currentDays - daysRequested,
-      dept: userData.dept,
+      dept: departmentId[0].deptId,
       requestType: formData.get(""),
       status: formData.get(""),
-      supervisor: userData.super,
+      supervisor: departmentId[0].deptId,
       user: userData.userId,
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };
+
+    console.log(request);
     console.log(userData);
-    console.log(request);
-
     getUserData();
-
-    console.log(request);
   };
 
   return (

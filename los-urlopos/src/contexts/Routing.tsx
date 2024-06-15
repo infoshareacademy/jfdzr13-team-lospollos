@@ -4,7 +4,9 @@ import Login from "../components/Login/Login";
 import MockUser from "../components/MockComponents/MockUser";
 import { UserPanel } from "../components/UserPanel/UserPanel";
 import PrivateRoute from "./PrivateRoute";
+import { UserDataProvider } from "./ViewDataContext";
 import Logout from "../components/Logout/Logout";
+
 
 const Routing = () => {
   return (
