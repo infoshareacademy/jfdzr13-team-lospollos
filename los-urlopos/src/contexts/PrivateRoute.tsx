@@ -7,11 +7,8 @@ const PrivateRoute = () => {
   const location = useLocation();
   const { authUser } = useAuth();
 
-console.log("protrected", authUser);
-
   return (
     <>
-    {console.log("protrected in", authUser)}
       {authUser != null ? (
         <UserDataProvider>
           <Outlet />
