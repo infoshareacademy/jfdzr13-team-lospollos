@@ -5,16 +5,19 @@ import { UserDataProvider } from "./UserDataContext";
 
 const PrivateRoute = () => {
   const location = useLocation();
-  const { authUserId } = useAuth();
+  const { authUser } = useAuth();
+
+console.log("protrected", authUser);
 
   return (
     <>
-      {authUserId != null ? (
+    {console.log("protrected in", authUser)}
+      {authUser != null ? (
         <UserDataProvider>
           <Outlet />
         </UserDataProvider>
       ) : (
-        <Navigate to="/login" state={{ from: location }} replace />
+        <Navigate to="login" state={{ from: location }} replace />
       )}
     </>
   );

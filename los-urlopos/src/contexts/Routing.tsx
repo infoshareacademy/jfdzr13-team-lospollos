@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "../components/Layout/Layout";
 import Login from "../components/Login/Login";
-import MockUser from "../components/MockComponents/MockUser";
+import Settings from "../components/Settings/Settings"
 import { UserPanel } from "../components/UserPanel/UserPanel";
 import PrivateRoute from "./PrivateRoute";
 import Logout from "../components/Logout/Logout";
@@ -14,10 +14,8 @@ const Routing = () => {
       {/* private */}
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Layout />}>
-          <Route path="/userPanel" element={<UserPanel />} />
-          <Route path="/user">
-            <Route index element={<MockUser />} />
-          </Route>
+          <Route path="userPanel" element={<UserPanel />} />
+          <Route path="settings" element={<Settings />} />
           <Route path="logout" element={<Logout />} />
         </Route>
       </Route>

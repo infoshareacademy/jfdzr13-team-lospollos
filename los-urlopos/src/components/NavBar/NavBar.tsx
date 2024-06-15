@@ -7,10 +7,10 @@ const NavBar: FC = () => {
   return (
     <nav className={navbar}>
       <ul>
-        <NavLink to="/userPanel">Home</NavLink>
+        <NavLink to="userPanel">Home</NavLink>
         <div>
-          <NavLink to="/user">User</NavLink>
-          <NavLink to="/logout">Logout</NavLink>
+          <NavLink to="settings">Settings</NavLink>
+          <NavLink to="logout">Logout</NavLink>
         </div>
       </ul>
     </nav>
