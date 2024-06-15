@@ -1,6 +1,6 @@
-import useUserData from "../../contexts/UserDataContext";
+import useUserData from "../../contexts/ViewDataContext";
 import TypeOfLeave from "../TypeOfLeave/typeOfLeave";
-import { daysCounter } from "../../utils/BankHolidaysFunction";
+import { daysCounter } from "../../utils/DaysCalculation";
 import { Request } from "../../types-obj/types-obj";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
