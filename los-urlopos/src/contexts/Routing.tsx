@@ -24,6 +24,8 @@ const Routing = () => {
           <Route path="settings" element={<Settings />} />
           <Route path="logout" element={<Logout />} />
         </Route>
+        {/* safe route to always redirect to home when logged*/}
+        <Route path="*" element={<Layout />} /> {/*zamienic na 404*/}
       </Route>
     </Routes>
   );

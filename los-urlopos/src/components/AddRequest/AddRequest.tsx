@@ -5,7 +5,9 @@ import TYPE_OF_LEAVE, { GetTypeOfLeaveOptions } from "../../enums/typeOfLeave";
 import { addNewLeaveRequest } from "../../services/LeaveRequestService";
 import { Request } from "../../types-obj/types-obj";
 import { daysCounter } from "../../utils/DaysCalculation";
+import { requestValidation } from "../../utils/RequestValidation";
 import { updateUserDaysOffLeft } from "../../utils/UserModification";
+import { Toaster } from "react-hot-toast";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
   onClose: () => void;
@@ -61,6 +63,12 @@ export function AddRequest({ onClose }: AddRequestProps) {
       createdAt: Date.now(),
     };
 
+    const requestValid = requestValidation(
+      userData,
+      daysRequested,
+      formData.get("typeLeave")
+    );
+
     await addNewLeaveRequest(request);
     await updateUserDaysOffLeft(
       userData.userId,
@@ -73,6 +81,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
 
   return (
     <div className={styles.requestWrapper}>
+      <Toaster position="top-center" reverseOrder={false} />
       <h1 className={styles.requestH1}>Leave request</h1>
       <form onSubmit={handleRequest} className={styles.requestContentCont}>
         <div className={styles.requestInformationCont}>
