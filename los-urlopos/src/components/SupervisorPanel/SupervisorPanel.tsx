@@ -3,9 +3,7 @@ import ListComponent from "../UserPanel/ListComponent/ListComponent";
 import { getDepartment } from "../../services/DepartmentService";
 
 const SupervisorPanel = () => {
-  getDepartment().then((deptList) => {
-    console.log(deptList);
-  });
+  getDepartment().then((deptList) => {});
 
   return (
     <div>

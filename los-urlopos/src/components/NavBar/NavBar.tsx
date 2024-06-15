@@ -5,7 +5,6 @@ import useUserData from "../../contexts/ViewDataContext";
 
 const NavBar: FC = () => {
   const { userData } = useUserData();
-  console.log(userData);
 
   if (!userData) {
     return <div>Loading...</div>;

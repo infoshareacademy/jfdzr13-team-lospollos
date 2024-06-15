@@ -7,11 +7,10 @@ export type Request = {
   dayTo: string;
   daysReq: number;
   daysLeft: number;
-  dept: string;
   requestType: string;
   status: string;
-  supervisor: string;
-  user: string;
+  userId: string;
+  deptId: string;
   comment: string;
   createdAt: number;
 };

@@ -1,4 +1,6 @@
-export function daysCounter(
+import TYPE_OF_LEAVE from "../enums/typeOfLeave";
+
+export function calculateBusinessDaysOff(
   a: string,
   b: string,
   bankHolidaysData: string[]
@@ -36,3 +38,30 @@ export function daysCounter(
 
   return counter;
 }
+
+export const calculateDaysOffLeft = (
+  currentDaysOff: number,
+  requestedDaysOff: number,
+  leaveType: string
+) => {
+  if (
+    leaveType === TYPE_OF_LEAVE.AnnualLeave ||
+    leaveType === TYPE_OF_LEAVE.OnDemandLeave
+  ) {
+    return currentDaysOff - requestedDaysOff;
+  } else {
+    return currentDaysOff;
+  }
+};
+
+export const calculateOnDemandLeft = (
+  currentOnDemand: number,
+  requestedDaysOff: number,
+  leaveType: string
+) => {
+  if (leaveType === TYPE_OF_LEAVE.OnDemandLeave) {
+    return currentOnDemand - requestedDaysOff;
+  } else {
+    return currentOnDemand;
+  }
+};
