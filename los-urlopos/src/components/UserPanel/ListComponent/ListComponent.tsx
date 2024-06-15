@@ -9,11 +9,24 @@ import {
 import { data as initialData } from "./tempDB";
 import { Select, MenuItem } from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
+import { useLocation } from "react-router-dom";
+import useUserData from "../../../contexts/ViewDataContext";
 
 export default function ListComponent() {
   const [data, setData] = useState(initialData);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
-  const [userStatus, setUserStatus] = useState<string>("roleSupervisor");
+  const [userStatus, setUserStatus] = useState<string>("");
+  const { userData } = useUserData();
+  const location = useLocation();
+  const [columnVisibility, setColumnVisibility] = useState({
+    userNameColumn: true,
+    requestTypeColumn: true,
+    dayFromColumn: true,
+    dayToColumn: true,
+    statusColumn: true,
+    createdAtColumn: true,
+    actionsColumn: true,
+  });
 
   const handleButtonClick = (row: Request, action: string) => {
     const updatedData = data.map((item) => {
@@ -34,6 +47,40 @@ export default function ListComponent() {
   };
 
   useEffect(() => {
+    if (userData.roleSupervisor && location.pathname === "/supervisorPanel") {
+      setUserStatus("roleSupervisor");
+    } else {
+      setUserStatus("roleUser");
+    }
+  }, [userData, location.pathname]);
+
+  useEffect(() => {
+    if (userData.roleSupervisor && location.pathname === "/supervisorPanel") {
+      setUserStatus("roleSupervisor");
+      setColumnVisibility({
+        userNameColumn: true,
+        requestTypeColumn: false,
+        dayFromColumn: true,
+        dayToColumn: true,
+        statusColumn: true,
+        createdAtColumn: true,
+        actionsColumn: true,
+      });
+    } else {
+      setUserStatus("roleUser");
+      setColumnVisibility({
+        userNameColumn: false,
+        requestTypeColumn: true,
+        dayFromColumn: true,
+        dayToColumn: true,
+        statusColumn: true,
+        createdAtColumn: true,
+        actionsColumn: true,
+      });
+    }
+  }, [userData, location.pathname]);
+
+  useEffect(() => {
     if (selectedDepartment) {
       const filteredData = initialData.filter(
         (item) => item.dept === selectedDepartment
@@ -51,7 +98,8 @@ export default function ListComponent() {
         header: "Request List",
         columns: [
           {
-            accessorKey: "user",
+            id: "userNameColumn",
+            accessorFn: (row) => `${row.firstName} ${row.surname}`,
             header: "Employee's name",
             enableHiding: false,
             muiTableHeadCellProps: { align: "center" },
@@ -61,6 +109,18 @@ export default function ListComponent() {
             },
           },
           {
+            id: "requestTypeColumn",
+            accessorKey: "requestType",
+            header: "Request type",
+            enableSorting: false,
+            muiTableHeadCellProps: { align: "center" },
+            muiTableBodyCellProps: {
+              align: "center",
+              sx: { fontWeight: "bold" },
+            },
+          },
+          {
+            id: "dayFromColumn",
             accessorKey: "dayFrom",
             header: "From",
             enableSorting: false,
@@ -68,6 +128,7 @@ export default function ListComponent() {
             muiTableBodyCellProps: { align: "right" },
           },
           {
+            id: "dayToColumn",
             accessorKey: "dayTo",
             header: "To",
             enableSorting: false,
@@ -75,6 +136,7 @@ export default function ListComponent() {
             muiTableBodyCellProps: { align: "left" },
           },
           {
+            id: "statusColumn",
             accessorKey: "status",
             header: "Status",
             muiTableBodyCellProps: (props) => {
@@ -93,6 +155,7 @@ export default function ListComponent() {
             },
           },
           {
+            id: "createdAtColumn",
             accessorKey: "createdAt",
             header: "Created At",
             Cell: ({ cell }) => {
@@ -101,6 +164,7 @@ export default function ListComponent() {
             },
           },
           {
+            id: "actionsColumn",
             accessorKey: "actions",
             header: "Actions",
             enableSorting: false,
@@ -254,6 +318,9 @@ export default function ListComponent() {
   const table = useMaterialReactTable({
     columns,
     data,
+    state: {
+      columnVisibility,
+    },
     enableHiding: false,
     enableColumnActions: false,
     enableExpanding: true,

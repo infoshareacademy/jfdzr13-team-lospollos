@@ -2,7 +2,8 @@ import { Request } from "../../../types-obj/types-obj";
 
 export const data = [
   {
-    user: "Janusz Kukułka",
+    firstName: "Janusz",
+    surname: "Kukułka",
     dayFrom: "05-05-2024",
     dayTo: "09-05-2024",
     createdAt: 1712750353000,
