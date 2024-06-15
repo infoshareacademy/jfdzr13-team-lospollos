@@ -36,3 +36,8 @@ export function daysCounter(
 
   return counter;
 }
+
+export const calculateBusinessDaysCount = (
+  dayFrom: string,
+  dayTo: string
+) => {};

@@ -7,11 +7,10 @@ export type Request = {
   dayTo: string;
   daysReq: number;
   daysLeft: number;
-  dept: string;
   requestType: string;
   status: string;
-  supervisor: string;
-  user: string;
+  userId: string;
+  deptId: string;
   comment: string;
   createdAt: number;
 };
@@ -37,11 +36,11 @@ export type AuthContext = {
   authUser: AuthUser | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
-  changePassword: (newPassword : string) => void;
+  changePassword: (newPassword: string) => void;
 };
 
 export type AuthUser = {
-  id: string,
-  email: string,
-  name: string
-}
+  id: string;
+  email: string;
+  name: string;
+};

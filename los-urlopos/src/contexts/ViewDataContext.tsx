@@ -4,6 +4,7 @@ import { getBankHolidays } from "../services/BankHolidaysService";
 import { getDepartment } from "../services/DepartmentService";
 
 import useAuth from "./AuthContext";
+import { Departments } from "../types-obj/types-obj";
 
 const UserDataContext = createContext({});
 const useUserData = () => useContext(UserDataContext);
@@ -13,7 +14,7 @@ export const UserDataProvider = ({ children }) => {
 
   const [userData, setUserData] = useState(null);
   const [bankHolidaysData, setBankHolidaysData] = useState(null);
-  const [departmentsList, setDepartmentsList] = useState(null);
+  const [departmentsList, setDepartmentsList] = useState<Departments[]>([]);
 
   const getUserData = async () => {
     try {
