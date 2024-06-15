@@ -1,5 +1,6 @@
-import useUserData from "../../contexts/UserDataContext";
-import { daysCounter } from "../../utils/BankHolidaysFunction";
+import useUserData from "../../contexts/ViewDataContext";
+import TypeOfLeave from "../TypeOfLeave/typeOfLeave";
+import { daysCounter } from "../../utils/DaysCalculation";
 import { Request } from "../../types-obj/types-obj";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
@@ -7,8 +8,8 @@ interface AddRequestProps {
 }
 
 export function AddRequest({ onClose }: AddRequestProps) {
-  const { userData, getUserData } = useUserData();
-  const { bankHolidaysData } = useUserData();
+  const { userData, getUserData, bankHolidaysData, departmentsList } =
+    useUserData();
 
   const handleRequest = async (event) => {
     event.preventDefault();
@@ -21,20 +22,23 @@ export function AddRequest({ onClose }: AddRequestProps) {
       bankHolidaysData
     );
 
+    const departmentId = departmentsList.filter(
+      (department) => department.deptId === userData.deptId
+    );
+
     const request: Request = {
       dayFrom: formData.get("dayFrom") as string,
-      dayTo: formData.get("dayTo"),
+      dayTo: formData.get("dayTo") as string,
       daysReq: daysRequested,
       daysLeft: userData.currentDays - daysRequested,
-      dept: userData.dept,
+      dept: departmentId[0].deptId,
       requestType: formData.get(""),
       status: formData.get(""),
-      supervisor: userData.super,
+      supervisor: departmentId[0].deptId,
       user: userData.userId,
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };
-
     getUserData();
   };
 
@@ -69,11 +73,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Type of leave </span>
               <select className={styles.inputField} name="annualLeave">
-                <option value="annualLeave">Annual leave</option>
-                <option value="additionalLeave">Additional leave</option>
-                <option value="specialLeave">Special leave</option>
-                <option value="childLeave">Child leave</option>
-                <option value="unpaidLeave">Unpaid leave</option>
+                <TypeOfLeave />
               </select>
             </div>
 
