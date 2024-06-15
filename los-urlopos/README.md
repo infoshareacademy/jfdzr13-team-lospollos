@@ -33,8 +33,24 @@ VITE_APP_ID = "XXXXX";
 // XXXXX - your firebase api data
 ```
 
-## For end users
+## Usage/Examples
 
 When app is running, you will see login panel as below
 
+PICTURE HERE
+
 You must have your account created by your company's admin, given the password and login you will be able to succesfully login. You may change your password after 1st login
+
+GIF HERE
+
+## Authors
+
+- [Michal Platonow](https://www.github.com/platek92)
+- [Pawel Jazdzyk](https://github.com/PawelJazdzyk)
+- [Andrzej Palica](https://github.com/andrzejpalica)
+- [Kamil Szubzda](https://github.com/kasz91)
+- [Klaudia Gajewska](https://github.com/gajewskaklaudia99)
+
+### Honorable mentions
+
+Technical overiew and support by: [Bartlomiej Galicki](https://github.com/bartgalicki)
