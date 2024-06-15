@@ -18,18 +18,19 @@ export type Request = {
 
 export type Type = { type: string };
 export type User = {
+  id?: string;
   createdAt: number;
   createdBy: string;
   currentDays: number;
   days: number;
-  dept: string;
+  deptId: string;
   email: string;
   name: string;
+  surname: string;
   onDemand: number;
   roleAdmin: boolean;
   roleUser: boolean;
   roleSupervisor: boolean;
-  supervisor: string;
   userId: string;
 };
 
@@ -37,11 +38,11 @@ export type AuthContext = {
   authUser: AuthUser | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
-  changePassword: (newPassword : string) => void;
+  changePassword: (newPassword: string) => void;
 };
 
 export type AuthUser = {
-  id: string,
-  email: string,
-  name: string
-}
+  id: string;
+  email: string;
+  name: string;
+};
