@@ -18,18 +18,19 @@ export type Request = {
 
 export type Type = { type: string };
 export type User = {
+  id?: string;
   createdAt: number;
   createdBy: string;
   currentDays: number;
   days: number;
-  dept: string;
+  deptId: string;
   email: string;
   name: string;
   onDemand: number;
   roleAdmin: boolean;
   roleUser: boolean;
   roleSupervisor: boolean;
-  supervisor: string;
+  supervisor: string; //to delete in further coding
   userId: string;
 };
 
