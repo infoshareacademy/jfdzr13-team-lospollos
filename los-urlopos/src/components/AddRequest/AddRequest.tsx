@@ -1,7 +1,9 @@
 import useUserData from "../../contexts/ViewDataContext";
 import TypeOfLeave from "../TypeOfLeave/typeOfLeave";
 import { daysCounter } from "../../utils/DaysCalculation";
+import { requestValidation } from "../../utils/RequestValidation";
 import { Request } from "../../types-obj/types-obj";
+import { Toaster } from "react-hot-toast";
 import styles from "./AddRequest.module.css";
 interface AddRequestProps {
   onClose: () => void;
@@ -22,6 +24,12 @@ export function AddRequest({ onClose }: AddRequestProps) {
       bankHolidaysData
     );
 
+    const requestValid = requestValidation(
+      userData,
+      daysRequested,
+      formData.get("typeLeave")
+    );
+
     const departmentId = departmentsList.filter(
       (department) => department.deptId === userData.deptId
     );
@@ -30,20 +38,27 @@ export function AddRequest({ onClose }: AddRequestProps) {
       dayFrom: formData.get("dayFrom") as string,
       dayTo: formData.get("dayTo") as string,
       daysReq: daysRequested,
-      daysLeft: userData.currentDays - daysRequested,
+      daysLeft: requestValid.substractingDays
+        ? userData.currentDays - daysRequested
+        : userData.currentDays,
+      onDemand: requestValid.substractingOnDemandDays
+        ? userData.onDemand - daysRequested
+        : userData.onDemand,
       dept: departmentId[0].deptId,
-      requestType: formData.get(""),
+      requestType: formData.get("typeLeave"),
       status: formData.get(""),
       supervisor: departmentId[0].deptId,
       user: userData.userId,
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };
+
     getUserData();
   };
 
   return (
     <div className={styles.requestWrapper}>
+      <Toaster position="top-center" reverseOrder={false} />
       <h1 className={styles.requestH1}>Leave request</h1>
       <form onSubmit={handleRequest} className={styles.requestContentCont}>
         <div className={styles.requestInformationCont}>
@@ -72,7 +87,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
           <div className={styles.requestEntryContent}>
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Type of leave </span>
-              <select className={styles.inputField} name="annualLeave">
+              <select className={styles.inputField} name="typeLeave">
                 <TypeOfLeave />
               </select>
             </div>
