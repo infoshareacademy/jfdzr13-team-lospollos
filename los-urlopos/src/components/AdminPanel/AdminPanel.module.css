@@ -1,0 +1,99 @@
+.adminPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+h1,
+h2 {
+  color: #333;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+  max-width: 600px;
+}
+
+li {
+  background-color: #f9f9f9;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.userHeader {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.userDetails {
+  margin-top: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: #4f79e2;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3457d5;
+  scale: 1.1;
+  transition: 0.3s;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 30%;
+  max-width: 600px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+button[type="submit"] {
+  padding: 8px;
+  margin: 5px 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+input[type="checkbox"] {
+  margin-right: 5px;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+button[type="submit"] {
+  background-color: #4caf50;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
