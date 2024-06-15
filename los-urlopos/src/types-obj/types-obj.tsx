@@ -35,7 +35,14 @@ export type User = {
 };
 
 export type AuthContext = {
-  authUserId: string | null;
+  authUser: AuthUser | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   logout: () => Promise<void>;
+  changePassword: (newPassword : string) => void;
 };
+
+export type AuthUser = {
+  id: string,
+  email: string,
+  name: string
+}
