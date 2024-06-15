@@ -3,15 +3,15 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../contexts/AuthContext";
 
 const Login = () => {
-  const { login, authUserId } = useAuth();
+  const { login, authUser } = useAuth();
   const [unsuccessLogin, setUnsuccessLogin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (authUserId) {
+    if (authUser) {
       navigate("/");
     }
-  }, [authUserId, navigate]);
+  }, [authUser, navigate]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -19,7 +19,6 @@ const Login = () => {
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-
     try {
       await login(email, password);
       setUnsuccessLogin(false);

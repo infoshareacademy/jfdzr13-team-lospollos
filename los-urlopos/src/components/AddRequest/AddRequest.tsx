@@ -39,9 +39,6 @@ export function AddRequest({ onClose }: AddRequestProps) {
       comment: formData.get("comment"),
       createdAt: Date.now(),
     };
-
-    console.log(request);
-    console.log(userData);
     getUserData();
   };
 

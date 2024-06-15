@@ -5,16 +5,16 @@ import { UserDataProvider } from "./ViewDataContext";
 
 const PrivateRoute = () => {
   const location = useLocation();
-  const { authUserId } = useAuth();
+  const { authUser } = useAuth();
 
   return (
     <>
-      {authUserId != null ? (
+      {authUser != null ? (
         <UserDataProvider>
           <Outlet />
         </UserDataProvider>
       ) : (
-        <Navigate to="/login" state={{ from: location }} replace />
+        <Navigate to="login" state={{ from: location }} replace />
       )}
     </>
   );
