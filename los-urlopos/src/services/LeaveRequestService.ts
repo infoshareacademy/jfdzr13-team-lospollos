@@ -1,5 +1,10 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
+import { Request } from "../types-obj/types-obj";
+
+export const addNewLeaveRequest = async (request: Request) => {
+  await addDoc(collection(db, "Requests"), request);
+};
 
 export const getRequestAll = async () => {
   const querySnapshot = await getDocs(collection(db, "Requests"));
