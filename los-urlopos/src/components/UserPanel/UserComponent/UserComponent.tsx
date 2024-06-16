@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import pfp from "../../../images/Unknown_person.jpg";
 import styles from "./userComponent.module.css";
+import useUserData from "../../../contexts/UserDataContext";
 
 interface UserComponentProps {
   onAddButtonClick: () => void;
@@ -8,6 +9,7 @@ interface UserComponentProps {
 
 export function UserComponent({ onAddButtonClick }: UserComponentProps) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
+  const { userData, departmentData } = useUserData();
 
   useEffect(() => {
     const savedImage = localStorage.getItem("profileImage");
@@ -25,6 +27,9 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
       localStorage.setItem("profileImage", imageUrl);
     }
   };
+
+  console.log("User data in component:", userData); // Debug log
+  console.log("Department data in component:", departmentData); // Debug log
 
   return (
     <div className={styles.profilePictureWrapper}>
@@ -45,12 +50,20 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
         />
       </div>
       <div className={styles.userDetails}>
-        <span>dsgfhds</span>
-        <span>janusz.kukulka@urlopos.com</span>
-        <span>Department</span>
+        {userData ? (
+          <>
+            <span>{userData.name}</span>
+            <span>{userData.email}</span>
+            <span>
+              {departmentData ? departmentData.dept : "Loading department..."}
+            </span>
+          </>
+        ) : (
+          <span>Loading user data...</span>
+        )}
       </div>
       <div className={styles.daysLeft}>
-        U have <span>XX</span> days left
+        You have <span>XX</span> days left
       </div>
       <div className={styles.addButtonContainer}>
         <button className={styles.addButton} onClick={onAddButtonClick}>
