@@ -14,11 +14,11 @@ const NavBar: FC = () => {
     <nav className={styles.navbar}>
       <div>
         <NavLink to="/home">Home</NavLink>
-        {userData.roleUser && <NavLink to="/userPanel">User Panel</NavLink>}
+        {userData.roleUser && <NavLink to="/user-panel">User Panel</NavLink>}
         {userData.roleSupervisor && (
-          <NavLink to="/supervisorPanel">Supervisor Panel</NavLink>
+          <NavLink to="/supervisor-panel">Supervisor Panel</NavLink>
         )}
-        {userData.roleAdmin && <NavLink to="/adminPanel">Admin Panel</NavLink>}
+        {userData.roleAdmin && <NavLink to="/admin-panel">Admin Panel</NavLink>}
       </div>
       <div>
         <NavLink to="settings">Settings</NavLink>
