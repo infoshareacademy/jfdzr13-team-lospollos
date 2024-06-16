@@ -70,7 +70,9 @@ export default function ListComponent() {
   };
 
   useEffect(() => {
-    if (userData.roleSupervisor && location.pathname === "/supervisorPanel") {
+    console.log(userData);
+    console.log(location.pathname);
+    if (userData.roleSupervisor && location.pathname === "/supervisor-panel") {
       setUserStatus("roleSupervisor");
       setColumnVisibility({
         userNameColumn: true,
@@ -81,7 +83,7 @@ export default function ListComponent() {
         createdAtColumn: true,
         actionsColumn: true,
       });
-    } else if (userData.roleUser && location.pathname === "/userPanel") {
+    } else if (userData.roleUser && location.pathname === "/user-panel") {
       setUserStatus("roleUser");
       setColumnVisibility({
         userNameColumn: false,

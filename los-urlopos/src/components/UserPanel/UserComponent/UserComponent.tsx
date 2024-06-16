@@ -52,7 +52,9 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
       <div className={styles.userDetails}>
         {userData ? (
           <>
-            <span>{userData.name}</span>
+            <span>
+              {userData.firstName} {userData.surname}
+            </span>
             <span>{userData.email}</span>
             <span>
               {departmentData ? departmentData.dept : "Loading department..."}
