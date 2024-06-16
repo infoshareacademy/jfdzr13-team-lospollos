@@ -1,10 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserById } from "../services/UserService";
 import { getBankHolidays } from "../services/BankHolidaysService";
 import { getDepartment } from "../services/DepartmentService";
+import { getUserById } from "../services/UserService";
 
-import useAuth from "./AuthContext";
 import { Departments } from "../types-obj/types-obj";
+import useAuth from "./AuthContext";
 
 const UserDataContext = createContext({});
 const useUserData = () => useContext(UserDataContext);

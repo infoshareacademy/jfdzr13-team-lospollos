@@ -1,0 +1,149 @@
+.loginError {
+  margin-top: 3%;
+  font-size: 2vmin;
+  align-self: center;
+  visibility: hidden;
+  min-height: 2em;
+}
+
+.loginErrorVisible {
+  visibility: visible;
+}
+
+.loginWrapper {
+  position: relative;
+  height: 55%;
+  width: 55%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border-radius: 20px;
+}
+
+.contentCont {
+  height: 100%;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.loginContent {
+  width: 80%;
+  height: 80%;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.loginH2 {
+  width: 80%;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-radius: 100px;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  font-size: 4vmin;
+}
+
+.loginForm {
+  height: 95%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.inputsCont {
+  height: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.emailLabel {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.labelInput {
+  margin-top: 2%;
+  height: 50%;
+}
+
+.labelInput:focus {
+  border: 3px solid rgba(69, 106, 254, 0.706);
+  color: none;
+}
+
+.passwordLabel {
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.passwordInput {
+  margin-top: 2%;
+  height: 50%;
+}
+
+.passwordInput:focus {
+  border: 3px solid rgba(69, 106, 254, 0.706);
+  color: none;
+}
+
+.btnCont {
+  height: 15%;
+  width: 50%;
+  align-self: center;
+  border-radius: 5px;
+  margin-top: 10%;
+}
+
+.loginBtn {
+  width: 100%;
+  height: 100%;
+  align-self: center;
+  background-color: rgba(69, 106, 254, 0.706);
+  color: white;
+  border-radius: 5px;
+  transition: 0.2s;
+  border: none;
+}
+
+.loginBtn:hover {
+  cursor: pointer;
+  background-color: rgb(69, 106, 254);
+  transition: 0.2s;
+}
+
+.loginBtn:active {
+  transform: scale(0.99);
+  background-color: rgba(69, 106, 254, 0.706);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.imageCont {
+  height: 100%;
+  width: 60%;
+  justify-content: center;
+  display: flex;
+  background-color: rgba(69, 106, 254, 0.706);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.loginImage {
+  display: flex;
+  align-self: center;
+  width: 100%;
+  height: 100%;
+}
