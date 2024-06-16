@@ -7,10 +7,13 @@ import {
   type MRT_ColumnDef,
 } from "material-react-table";
 import { data as initialData } from "./tempDB";
-import { Select, MenuItem } from "@mui/material";
+import { Select, MenuItem, CircularProgress } from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
 import { useLocation } from "react-router-dom";
 import useUserData from "../../../contexts/ViewDataContext";
+import { getRequestUserId } from "../../../services/LeaveRequestService";
+import { getRequestDeptId } from "../../../services/LeaveRequestService";
+import { getDepartment } from "../../../services/DepartmentService";
 
 export default function ListComponent() {
   const [data, setData] = useState(initialData);
@@ -18,6 +21,8 @@ export default function ListComponent() {
   const [userStatus, setUserStatus] = useState<string>("");
   const { userData } = useUserData();
   const location = useLocation();
+  const [departments, setDepartments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [columnVisibility, setColumnVisibility] = useState({
     userNameColumn: true,
     requestTypeColumn: true,
@@ -27,6 +32,24 @@ export default function ListComponent() {
     createdAtColumn: true,
     actionsColumn: true,
   });
+
+  // const userPanelData
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await getDepartment();
+        console.log(response, "response");
+        setDepartments(response);
+      } catch (error) {
+        console.error("Error", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
 
   const handleButtonClick = (row: Request, action: string) => {
     const updatedData = data.map((item) => {
@@ -49,14 +72,6 @@ export default function ListComponent() {
   useEffect(() => {
     if (userData.roleSupervisor && location.pathname === "/supervisorPanel") {
       setUserStatus("roleSupervisor");
-    } else {
-      setUserStatus("roleUser");
-    }
-  }, [userData, location.pathname]);
-
-  useEffect(() => {
-    if (userData.roleSupervisor && location.pathname === "/supervisorPanel") {
-      setUserStatus("roleSupervisor");
       setColumnVisibility({
         userNameColumn: true,
         requestTypeColumn: false,
@@ -66,7 +81,7 @@ export default function ListComponent() {
         createdAtColumn: true,
         actionsColumn: true,
       });
-    } else {
+    } else if (userData.roleUser && location.pathname === "/userPanel") {
       setUserStatus("roleUser");
       setColumnVisibility({
         userNameColumn: false,
@@ -77,17 +92,21 @@ export default function ListComponent() {
         createdAtColumn: true,
         actionsColumn: true,
       });
+      getRequestUserId(userData.userId).then((response) => {
+        console.log(response);
+        setData(response);
+        setIsLoading(false);
+      });
     }
   }, [userData, location.pathname]);
 
   useEffect(() => {
     if (selectedDepartment) {
-      const filteredData = initialData.filter(
-        (item) => item.dept === selectedDepartment
-      );
-      setData(filteredData);
-    } else {
-      setData(initialData);
+      getRequestDeptId(selectedDepartment).then((response) => {
+        console.log(response);
+        setData(response);
+        setIsLoading(false);
+      });
     }
   }, [selectedDepartment]);
 
@@ -287,7 +306,7 @@ export default function ListComponent() {
                 justifyContent: "flex-end",
               }}
             >
-              {userStatus === "roleSupervisor" && (
+              {userStatus === "roleSupervisor" && departments.length > 0 && (
                 <Select
                   value={selectedDepartment}
                   onChange={(e) => setSelectedDepartment(e.target.value)}
@@ -301,10 +320,11 @@ export default function ListComponent() {
                   <MenuItem value="" disabled>
                     Choose department
                   </MenuItem>
-                  <MenuItem value="Department 1">Department 1</MenuItem>
-                  <MenuItem value="Department 2">Department 2</MenuItem>
-                  <MenuItem value="Department 3">Department 3</MenuItem>
-                  <MenuItem value="Department 4">Department 4</MenuItem>
+                  {departments.map((department) => (
+                    <MenuItem value={department.deptId} key={department.deptId}>
+                      {department.dept}
+                    </MenuItem>
+                  ))}
                 </Select>
               )}
             </div>
@@ -312,7 +332,7 @@ export default function ListComponent() {
         ),
       },
     ],
-    [data, userStatus]
+    [data, userStatus, departments, selectedDepartment]
   );
 
   const table = useMaterialReactTable({
@@ -338,7 +358,7 @@ export default function ListComponent() {
         <strong>Details:</strong>
         <p>
           Name:
-          <br /> {row.original.user}
+          <br /> {row.original.firstName} {row.original.surname}
         </p>
         <p>
           From:
@@ -358,7 +378,7 @@ export default function ListComponent() {
         </p>
         <p>
           Supervisor:
-          <br /> {row.original.supervisor}
+          <br /> {row.original.deptId}
         </p>
         <p>
           Status:
@@ -376,6 +396,11 @@ export default function ListComponent() {
       </div>
     ),
   });
+
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
   return (
     <div className={styles.listWrapper}>
       <MaterialReactTable table={table} />

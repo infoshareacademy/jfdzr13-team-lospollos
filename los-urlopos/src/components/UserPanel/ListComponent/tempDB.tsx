@@ -16,7 +16,8 @@ export const data = [
     comment: "",
   },
   {
-    user: "Magdalena Ogórek",
+    firstName: "Magdalena",
+    surname: "Ogórek",
     dayFrom: "14-04-2024",
     dayTo: "15-04-2024",
     createdAt: 1711972753000,
