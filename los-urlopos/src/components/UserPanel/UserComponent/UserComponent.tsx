@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import useUserData from "../../../contexts/ViewDataContext";
 import pfp from "../../../images/Unknown_person.jpg";
 import styles from "./userComponent.module.css";
-import useUserData from "../../../contexts/UserDataContext";
 
 interface UserComponentProps {
   onAddButtonClick: () => void;
@@ -63,7 +63,7 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
         )}
       </div>
       <div className={styles.daysLeft}>
-        You have <span>XX</span> days left
+        U have <span>{userData.currentDays}</span> days left
       </div>
       <div className={styles.addButtonContainer}>
         <button className={styles.addButton} onClick={onAddButtonClick}>
