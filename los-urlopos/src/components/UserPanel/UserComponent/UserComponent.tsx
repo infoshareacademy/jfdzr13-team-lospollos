@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import pfp from "../../../images/Unknown_person.jpg";
 import styles from "./userComponent.module.css";
+import useUserData from "../../../contexts/ViewDataContext";
 
 interface UserComponentProps {
   onAddButtonClick: () => void;
@@ -8,6 +9,7 @@ interface UserComponentProps {
 
 export function UserComponent({ onAddButtonClick }: UserComponentProps) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
+  const { userData } = useUserData();
 
   useEffect(() => {
     const savedImage = localStorage.getItem("profileImage");
@@ -45,12 +47,14 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
         />
       </div>
       <div className={styles.userDetails}>
-        <span>Janusz Kukułka</span>
-        <span>janusz.kukulka@urlopos.com</span>
-        <span>Department</span>
+        <span>
+          {userData.firstName} {userData.surname}
+        </span>
+        <span>{userData.email}</span>
+        <span>{userData.deptId}</span>
       </div>
       <div className={styles.daysLeft}>
-        U have <span>XX</span> days left
+        U have <span>{userData.currentDays}</span> days left
       </div>
       <div className={styles.addButtonContainer}>
         <button className={styles.addButton} onClick={onAddButtonClick}>

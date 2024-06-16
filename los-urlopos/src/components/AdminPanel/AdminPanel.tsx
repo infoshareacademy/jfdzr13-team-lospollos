@@ -21,7 +21,7 @@ const AdminPanel: FC = () => {
     days: 0,
     deptId: "",
     email: "",
-    name: "",
+    firstName: "",
     surname: "",
     onDemand: 0,
     roleAdmin: false,
@@ -79,7 +79,7 @@ const AdminPanel: FC = () => {
         days: 0,
         deptId: "",
         email: "",
-        name: "",
+        firstName: "",
         surname: "",
         onDemand: 0,
         roleAdmin: false,
@@ -126,12 +126,12 @@ const AdminPanel: FC = () => {
       <h2>Add User</h2>
       <form onSubmit={addUser}>
         <label>
-          Name:
+          First Name:
           <input
             type="text"
-            name="name"
-            placeholder="Name"
-            value={newUser.name}
+            name="firstName"
+            placeholder="First Name"
+            value={newUser.firstName}
             onChange={handleInputChange}
           />
         </label>
@@ -251,7 +251,7 @@ const AdminPanel: FC = () => {
           <li key={user.id}>
             <div className={styles.userHeader}>
               <span>
-                <strong>Name:</strong> {user.name}
+                <strong>Name:</strong> {user.firstName} {user.surname}
               </span>
               <button onClick={() => toggleUserDetails(user.id!)}>
                 {expandedUserId === user.id ? "Hide details" : "Show details"}

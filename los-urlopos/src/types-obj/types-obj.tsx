@@ -7,10 +7,10 @@ export type Request = {
   dayTo: string;
   daysReq: number;
   daysLeft: number;
+  deptId: string;
   requestType: string;
   status: string;
   userId: string;
-  deptId: string;
   comment: string;
   createdAt: number;
 };
@@ -24,7 +24,7 @@ export type User = {
   days: number;
   deptId: string;
   email: string;
-  name: string;
+  firstName: string;
   surname: string;
   onDemand: number;
   roleAdmin: boolean;
