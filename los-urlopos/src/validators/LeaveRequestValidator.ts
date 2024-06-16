@@ -7,37 +7,28 @@ export function ValidateLeaveRequest(
   daysNumberForCheck: number,
   leaveTypeForCheck: string
 ) {
+  console.log(daysNumberForCheck);
+  console.log(userForCheck.currentDays);
+
   if (
-    leaveTypeForCheck === TYPE_OF_LEAVE.AnnualLeave &&
+    (leaveTypeForCheck === TYPE_OF_LEAVE.AnnualLeave ||
+      leaveTypeForCheck === TYPE_OF_LEAVE.OnDemandLeave) &&
     daysNumberForCheck > userForCheck.currentDays
   ) {
     toast.error("You don't have enough vacation days");
+
     return false;
-  } else if (
-    userForCheck.currentDays > userForCheck.onDemand &&
-    daysNumberForCheck < userForCheck.currentDays &&
+  }
+
+  if (
     leaveTypeForCheck === TYPE_OF_LEAVE.OnDemandLeave &&
     daysNumberForCheck > userForCheck.onDemand
   ) {
     toast.error("You don't have enough On Demand days");
 
     return false;
-  } else if (
-    leaveTypeForCheck === TYPE_OF_LEAVE.ChildLeave ||
-    leaveTypeForCheck === TYPE_OF_LEAVE.SpecialLeave ||
-    leaveTypeForCheck === TYPE_OF_LEAVE.AdditionalLeave ||
-    leaveTypeForCheck === TYPE_OF_LEAVE.UnpaidLeave
-  ) {
-    toast.success("You request is waiting for approve");
-
-    return true;
-  } else if (leaveTypeForCheck === TYPE_OF_LEAVE.AnnualLeave) {
-    toast.success("You request is waiting for approve");
-
-    return true;
-  } else {
-    toast.success("You request is waiting for approve");
-
-    return true;
   }
+
+  toast.success("You request is waiting for approve");
+  return true;
 }
