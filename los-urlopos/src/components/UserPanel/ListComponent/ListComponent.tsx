@@ -11,8 +11,10 @@ import { Select, MenuItem, CircularProgress } from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
 import { useLocation } from "react-router-dom";
 import useUserData from "../../../contexts/ViewDataContext";
-import { getRequestUserId } from "../../../services/LeaveRequestService";
-import { getRequestDeptId } from "../../../services/LeaveRequestService";
+import {
+  getRequestUserId,
+  getRequestDeptId,
+} from "../../../services/LeaveRequestService";
 import { getDepartment } from "../../../services/DepartmentService";
 
 export default function ListComponent() {
@@ -37,8 +39,10 @@ export default function ListComponent() {
     const fetchDepartments = async () => {
       try {
         const response = await getDepartment();
-        console.log(response, "response");
-        setDepartments(response);
+        const userDepartments = response.filter(
+          (department) => department.head === userData.userId
+        );
+        setDepartments(userDepartments);
       } catch (error) {
         console.error("Error", error);
       } finally {
@@ -47,7 +51,7 @@ export default function ListComponent() {
     };
 
     fetchDepartments();
-  }, []);
+  }, [userData.userId]);
 
   const handleButtonClick = (row: Request, action: string) => {
     const updatedData = data.map((item) => {
