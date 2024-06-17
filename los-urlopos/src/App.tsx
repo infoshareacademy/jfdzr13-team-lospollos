@@ -1,4 +1,3 @@
-import styles from "./App.module.css";
 import { Route, Routes } from "react-router-dom";
 import Login from "./components/Login/Login";
 import PrivateRoute from "./contexts/PrivateRoute";

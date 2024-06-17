@@ -3,10 +3,17 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 .mainContainer {
   width: 100vw;
   height: 100vh;
-  background-color: rgb(212, 212, 212);
+  background: rgb(255, 235, 154);
+  background: linear-gradient(
+    138deg,
+    rgba(255, 235, 154, 1) 0%,
+    rgba(255, 197, 143, 1) 50%,
+    rgba(255, 119, 119, 1) 100%
+  );
   margin: 0;
   padding: 0;
   display: flex;

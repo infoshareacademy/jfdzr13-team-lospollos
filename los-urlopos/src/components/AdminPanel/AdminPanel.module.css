@@ -6,19 +6,19 @@
   font-family: Arial, sans-serif;
 }
 
-h1,
+.adminPanel h1,
 h2 {
   color: #333;
 }
 
-ul {
+.adminPanel ul {
   list-style-type: none;
   padding: 0;
   width: 100%;
   max-width: 600px;
 }
 
-li {
+.adminPanel li {
   background-color: #f9f9f9;
   margin: 10px 0;
   padding: 10px;
@@ -39,7 +39,7 @@ li {
   margin-top: 10px;
 }
 
-button {
+.adminPanel button {
   padding: 5px 10px;
   background-color: #4f79e2;
   color: white;
@@ -48,13 +48,13 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.adminPanel button:hover {
   background-color: #3457d5;
   scale: 1.1;
   transition: 0.3s;
 }
 
-form {
+.adminPanel form {
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -62,7 +62,7 @@ form {
   max-width: 600px;
 }
 
-input[type="text"],
+.adminPanel input[type="text"],
 input[type="email"],
 input[type="number"],
 button[type="submit"] {
@@ -74,11 +74,11 @@ button[type="submit"] {
   border-radius: 3px;
 }
 
-input[type="checkbox"] {
+.adminPanel input[type="checkbox"] {
   margin-right: 5px;
 }
 
-label {
+.adminPanel label {
   display: flex;
   align-items: center;
   width: 100%;
@@ -90,10 +90,10 @@ label {
   margin-top: 10px;
 }
 
-button[type="submit"] {
+.adminPanel button[type="submit"] {
   background-color: #4caf50;
 }
 
-button[type="submit"]:hover {
+.adminPanel button[type="submit"]:hover {
   background-color: #45a049;
 }
