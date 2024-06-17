@@ -1,5 +1,6 @@
 // AdminPanel.tsx
 import styles from "./AdminPanel.module.css";
+import { Toaster } from "react-hot-toast";
 import React, { FC, useEffect, useState, FormEvent, ChangeEvent } from "react";
 import { User } from "../../types-obj/types-obj";
 import { db } from "../../../firebase";
@@ -28,6 +29,7 @@ const AdminPanel: FC = () => {
     roleUser: true,
     roleSupervisor: false,
     userId: "",
+    isActive: true,
   });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,6 +88,7 @@ const AdminPanel: FC = () => {
         roleUser: true,
         roleSupervisor: false,
         userId: "",
+        isActive: true,
       });
       setError(null);
     } catch (error) {
@@ -123,6 +126,7 @@ const AdminPanel: FC = () => {
 
   return (
     <div className={styles.adminPanel}>
+      <Toaster />
       <h2>Add User</h2>
       <form onSubmit={addUser}>
         <label>
