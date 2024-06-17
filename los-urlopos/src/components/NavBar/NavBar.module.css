@@ -1,6 +1,6 @@
 .navbar {
   height: 100%;
-  background-color: white;
+  background-color: rgb(255, 210, 97);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,17 +22,21 @@
   color: white;
   border-radius: 5px;
   padding: 6px 16px;
-  background-color: #4f79e2;
 }
 
 .navbar a:hover {
-  background-color: #3457d5;
+  background-color: #ffffff23;
   scale: 1.1;
   transition: 0.3s;
 }
 
 .navbar a:active {
-  background-color: #3149c4;
+  background-color: rgb(255, 200, 62);
   scale: 0.95;
   transition: 0.3s;
+}
+
+.menuSpan {
+  font-size: 3vmin;
+  color: white;
 }

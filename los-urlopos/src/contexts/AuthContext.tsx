@@ -14,7 +14,7 @@ const defaultState: ContextType = {
   authUser: null,
   login: (email, password) => new Promise((resolve) => resolve),
   logout: () => new Promise((resolve) => resolve),
-  changePassword: (newPassword) => {}
+  changePassword: (newPassword) => {},
 };
 
 const AuthContext = createContext(defaultState);
@@ -25,7 +25,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      user != null ? setAuthUser({id: user.uid, email: user?.email ?? "", name: user?.displayName ?? ""}) : setAuthUser(null);
+      user != null
+        ? setAuthUser({
+            id: user.uid,
+            email: user?.email ?? "",
+            name: user?.displayName ?? "",
+          })
+        : setAuthUser(null);
     });
 
     return () => unsubscribe();
@@ -35,7 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     authUser,
     login,
     logout,
-    changePassword
+    changePassword,
   };
 
   return (
