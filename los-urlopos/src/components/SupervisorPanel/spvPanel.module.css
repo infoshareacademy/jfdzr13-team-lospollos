@@ -6,7 +6,7 @@
 .mainContainer {
   width: 100%;
   height: 100%;
-  background-color: rgb(212, 212, 212);
+  background: url("../../images/bgred.jpg");
   margin: 0;
   padding: 0;
   display: flex;

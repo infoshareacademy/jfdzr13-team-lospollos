@@ -1,18 +1,18 @@
-.navbar {
+.navbarUser {
   height: 100%;
-  background-color: rgb(255, 210, 97);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: rgb(255, 200, 62);
 }
 
-.navbar div {
+.navbarUser div {
   display: flex;
   gap: 20px;
   padding: 25px;
 }
 
-.navbar a {
+.navbarUser a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,19 +24,109 @@
   padding: 6px 16px;
 }
 
-.navbar a:hover {
+.navbarUser a:hover {
   background-color: #ffffff23;
   scale: 1.1;
   transition: 0.3s;
 }
 
-.navbar a:active {
+.navbarUser a:active {
   background-color: rgb(255, 200, 62);
   scale: 0.95;
   transition: 0.3s;
 }
 
-.menuSpan {
+.navbarUser .menuSpan {
+  font-size: 3vmin;
+  color: white;
+}
+
+/* SUPERVISOR */
+
+.navbarSupervisor {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(255, 85, 85);
+}
+
+.navbarSupervisor div {
+  display: flex;
+  gap: 20px;
+  padding: 25px;
+}
+
+.navbarSupervisor a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 75px;
+  height: 35px;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+  padding: 6px 16px;
+}
+
+.navbarSupervisor a:hover {
+  background-color: #ffffff23;
+  scale: 1.1;
+  transition: 0.3s;
+}
+
+.navbarSupervisor a:active {
+  background-color: rgb(255, 200, 62);
+  scale: 0.95;
+  transition: 0.3s;
+}
+
+.navbarSupervisor .menuSpan {
+  font-size: 3vmin;
+  color: white;
+}
+
+/* ADMIN */
+
+.navbarAdmin {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(96, 96, 255);
+}
+
+.navbarAdmin div {
+  display: flex;
+  gap: 20px;
+  padding: 25px;
+}
+
+.navbarAdmin a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 75px;
+  height: 35px;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+  padding: 6px 16px;
+}
+
+.navbarAdmin a:hover {
+  background-color: #ffffff23;
+  scale: 1.1;
+  transition: 0.3s;
+}
+
+.navbarAdmin a:active {
+  background-color: rgb(255, 200, 62);
+  scale: 0.95;
+  transition: 0.3s;
+}
+
+.navbarAdmin .menuSpan {
   font-size: 3vmin;
   color: white;
 }
