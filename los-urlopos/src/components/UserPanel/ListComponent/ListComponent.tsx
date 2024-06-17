@@ -6,7 +6,7 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import { data as initialData } from "./tempDB";
+
 import { Select, MenuItem, CircularProgress } from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
 import { useLocation } from "react-router-dom";
@@ -16,7 +16,7 @@ import { getRequestDeptId } from "../../../services/LeaveRequestService";
 import { getDepartment } from "../../../services/DepartmentService";
 
 export default function ListComponent() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
   const [userStatus, setUserStatus] = useState<string>("");
   const { userData } = useUserData();
@@ -32,8 +32,6 @@ export default function ListComponent() {
     createdAtColumn: true,
     actionsColumn: true,
   });
-
-  // const userPanelData
 
   useEffect(() => {
     const fetchDepartments = async () => {
