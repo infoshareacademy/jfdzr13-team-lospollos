@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useAuth from "../../contexts/AuthContext";
+import useUserData from "../../contexts/ViewDataContext";
+import styles from "./Settings.module.css";
 
 const Settings = () => {
   const { changePassword, authUser, login } = useAuth();
+  const { userData } = useUserData();
   const [changePassResult, setChangePassResutl] = useState<string | null>(null);
+  const [panelClass, setPanelClass] = useState(styles.panelUser); // Default class
 
   const isCurrentPasswordValid = async (currentPassword: string) => {
     try {
       await login(authUser!.email, currentPassword);
-
       return true;
     } catch (err) {
       console.error(err);
@@ -29,7 +32,6 @@ const Settings = () => {
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
-
     const formData = new FormData(e.currentTarget);
     const currentPassword = formData.get("currentPassword") as string;
     const newPassword = formData.get("newPassword") as string;
@@ -41,7 +43,6 @@ const Settings = () => {
       if (!(await isCurrentPasswordValid(currentPassword))) {
         setChangePassResutl("❌ Current password is not valid!");
         resetForm("changePasswordForm");
-
         return;
       }
 
@@ -52,7 +53,6 @@ const Settings = () => {
           "❌ New password and Confirm new password must be the same!"
         );
         resetForm("changePasswordForm");
-
         return;
       }
 
@@ -60,7 +60,6 @@ const Settings = () => {
       setChangePassResutl("✅ Password has been changed successfully!");
     } catch (err) {
       setChangePassResutl("❌ Something went wrong!");
-
       resetForm("changePasswordForm");
     }
   };
@@ -69,10 +68,22 @@ const Settings = () => {
     document.getElementById("changePasswordForm")?.reset();
   };
 
+  useEffect(() => {
+    if (userData) {
+      if (userData.roleAdmin) {
+        setPanelClass(styles.panelAdmin);
+      } else if (userData.roleSupervisor) {
+        setPanelClass(styles.panelSupervisor);
+      } else if (userData.roleUser) {
+        setPanelClass(styles.panelUser);
+      }
+    }
+  }, [userData]);
+
   return (
-    <>
+    <div className={`${styles.mainContainer} ${panelClass}`}>
       <h1>Settings</h1>
-      <div>
+      <div className={styles.formContainer}>
         <h2>User</h2>
         <h3>Change password</h3>
         <form
@@ -107,7 +118,7 @@ const Settings = () => {
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

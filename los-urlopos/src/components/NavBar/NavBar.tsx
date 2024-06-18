@@ -11,10 +11,12 @@ const NavBar: FC = () => {
   useEffect(() => {
     if (userData) {
       // Sprawdzamy role użytkownika i ustawiamy odpowiednią klasę navbaru
-      if (userData.roleSupervisor) {
-        setNavbarClass(styles.navbarSupervisor);
+      if (userData.roleAdmin && userData.roleSupervisor && userData.roleUser) {
+        setNavbarClass(styles.navbarAllRoles);
       } else if (userData.roleAdmin) {
         setNavbarClass(styles.navbarAdmin);
+      } else if (userData.roleSupervisor) {
+        setNavbarClass(styles.navbarSupervisor);
       } else if (userData.roleUser) {
         setNavbarClass(styles.navbarUser);
       }
@@ -34,10 +36,12 @@ const NavBar: FC = () => {
         {userData.roleSupervisor || userData.roleAdmin ? (
           <span className={styles.menuSpan}> | </span>
         ) : null}
-
         {userData.roleSupervisor && (
           <NavLink to="/supervisor-panel">Supervisor Panel</NavLink>
         )}
+        {userData.roleUser && userData.roleSupervisor && userData.roleAdmin ? (
+          <span className={styles.menuSpan}> | </span>
+        ) : null}
         {userData.roleAdmin && <NavLink to="/admin-panel">Admin Panel</NavLink>}
       </div>
       <div>

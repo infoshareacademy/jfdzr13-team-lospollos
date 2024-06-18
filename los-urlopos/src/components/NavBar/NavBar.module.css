@@ -1,3 +1,5 @@
+/* NavBar.module.css */
+
 .navbarUser {
   height: 100%;
   display: flex;
@@ -121,12 +123,57 @@
 }
 
 .navbarAdmin a:active {
-  background-color: rgb(255, 200, 62);
+  background-color: rgb(96, 96, 255);
   scale: 0.95;
   transition: 0.3s;
 }
 
 .navbarAdmin .menuSpan {
+  font-size: 3vmin;
+  color: white;
+}
+
+/* ALL ROLES */
+
+.navbarAllRoles {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(96, 96, 255);
+}
+
+.navbarAllRoles div {
+  display: flex;
+  gap: 20px;
+  padding: 25px;
+}
+
+.navbarAllRoles a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 75px;
+  height: 35px;
+  text-decoration: none;
+  color: white;
+  border-radius: 5px;
+  padding: 6px 16px;
+}
+
+.navbarAllRoles a:hover {
+  background-color: #ffffff23;
+  scale: 1.1;
+  transition: 0.3s;
+}
+
+.navbarAllRoles a:active {
+  background-color: rgb(96, 96, 255);
+  scale: 0.95;
+  transition: 0.3s;
+}
+
+.navbarAllRoles .menuSpan {
   font-size: 3vmin;
   color: white;
 }
