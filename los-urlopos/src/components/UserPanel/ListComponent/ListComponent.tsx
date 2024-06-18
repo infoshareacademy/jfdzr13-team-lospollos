@@ -1,13 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./listComponent.module.css";
-import Button from "@mui/material/Button";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-
-import { Select, MenuItem, CircularProgress } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
 import { useLocation } from "react-router-dom";
 import useUserData from "../../../contexts/ViewDataContext";
@@ -26,9 +34,13 @@ export default function ListComponent() {
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
   const [userStatus, setUserStatus] = useState<string>("");
   const [spvDepartments, setSpvDepartments] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentAction, setCurrentAction] = useState("");
+
   const [columnVisibility, setColumnVisibility] = useState({
     userNameColumn: true,
     requestTypeColumn: true,
+    deptColumn: true,
     dayFromColumn: true,
     dayToColumn: true,
     statusColumn: true,
@@ -37,21 +49,19 @@ export default function ListComponent() {
   });
 
   const handleButtonClick = (row: Request, action: string) => {
-    const updatedData = data.map((item) => {
-      if (item.user === row.user) {
-        return {
-          ...item,
-          status:
-            action === "accept"
-              ? "Accepted"
-              : action === "reject"
-              ? "Rejected"
-              : "Cancelled",
-        };
-      }
-      return item;
-    });
-    setData(updatedData);
+    setCurrentAction(action);
+    setDialogOpen(true);
+  };
+
+  const handleActionConfirm = () => {
+    if (currentAction === "accept") {
+      console.log("accept");
+    } else if (currentAction === "reject") {
+      console.log("reject");
+    } else if (currentAction === "cancel") {
+      console.log("cancel");
+    }
+    setDialogOpen(false);
   };
 
   useEffect(() => {
@@ -107,6 +117,7 @@ export default function ListComponent() {
       setColumnVisibility({
         userNameColumn: true,
         requestTypeColumn: true,
+        deptColumn: true,
         dayFromColumn: true,
         dayToColumn: true,
         statusColumn: true,
@@ -118,6 +129,7 @@ export default function ListComponent() {
       setColumnVisibility({
         userNameColumn: false,
         requestTypeColumn: true,
+        deptColumn: true,
         dayFromColumn: true,
         dayToColumn: true,
         statusColumn: true,
@@ -385,7 +397,16 @@ export default function ListComponent() {
     enableColumnActions: false,
     enableExpanding: true,
     enableDensityToggle: false,
-    initialState: { density: "compact" },
+    muiPaginationProps: {
+      rowsPerPageOptions: [8, 16, 32, 48, 64, 128],
+    },
+    initialState: {
+      density: "compact",
+      pagination: {
+        pageSize: 8,
+        pageIndex: 0,
+      },
+    },
     renderDetailPanel: ({ row }) => {
       const dept = spvDepartments.find(
         (dept) => dept.deptId === row.original.deptId
@@ -449,6 +470,75 @@ export default function ListComponent() {
   return (
     <div className={styles.listWrapper}>
       <MaterialReactTable table={table} />
+      <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        sx={{
+          background: "rgba(128, 128, 128, 0.384)",
+        }}
+      >
+        <DialogTitle>
+          {`Are you sure you want to ${currentAction} this request?`}
+        </DialogTitle>
+        <DialogContent>
+          {currentAction === "reject" && (
+            <TextField
+              required
+              margin="dense"
+              id="rejectReason"
+              name="rejectReason"
+              label="Reject Reason"
+              type="text"
+              variant="standard"
+              fullWidth
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setDialogOpen(false)}
+            sx={{
+              marginRight: "10px",
+              backgroundColor: "rgba(213, 69, 69, 0.73)",
+              borderRadius: "5px",
+              color: "white",
+              border: "none",
+              ":hover": {
+                backgroundColor: "rgba(213, 69, 69, 0.549)",
+                transition: "0.2s",
+              },
+              ":active": {
+                backgroundColor: "rgba(213, 69, 69, 0.73)",
+                transform: "scale(0.98) translateY(0.7px)",
+                boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+              },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleActionConfirm}
+            sx={{
+              marginRight: "10px",
+              backgroundColor: "rgba(84, 169, 84, 0.884)",
+              borderRadius: "5px",
+              color: "white",
+              border: "none",
+              ":hover": {
+                backgroundColor: "rgba(84, 169, 84, 0.671)",
+                transition: "0.2s",
+              },
+              ":active": {
+                backgroundColor: "rgba(84, 169, 84, 0.884)",
+                transform: "scale(0.98) translateY(0.7px)",
+                boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+              },
+            }}
+          >
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
