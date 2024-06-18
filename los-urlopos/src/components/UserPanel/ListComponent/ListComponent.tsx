@@ -14,17 +14,18 @@ import useUserData from "../../../contexts/ViewDataContext";
 import {
   getRequestUserId,
   getRequestDeptId,
+  getRequestAll,
 } from "../../../services/LeaveRequestService";
 import { getDepartment } from "../../../services/DepartmentService";
 
 export default function ListComponent() {
+  const { userData } = useUserData();
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
   const [userStatus, setUserStatus] = useState<string>("");
-  const { userData } = useUserData();
-  const location = useLocation();
-  const [departments, setDepartments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [spvDepartments, setSpvDepartments] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({
     userNameColumn: true,
     requestTypeColumn: true,
@@ -34,24 +35,6 @@ export default function ListComponent() {
     createdAtColumn: true,
     actionsColumn: true,
   });
-
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const response = await getDepartment();
-        const userDepartments = response.filter(
-          (department) => department.head === userData.userId
-        );
-        setDepartments(userDepartments);
-      } catch (error) {
-        console.error("Error", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDepartments();
-  }, [userData.userId]);
 
   const handleButtonClick = (row: Request, action: string) => {
     const updatedData = data.map((item) => {
@@ -72,13 +55,58 @@ export default function ListComponent() {
   };
 
   useEffect(() => {
-    console.log(userData);
-    console.log(location.pathname);
+    if (selectedDepartment && selectedDepartment !== "allRequests") {
+      getRequestDeptId(selectedDepartment).then((response) => {
+        console.log(response);
+        setData(response);
+        setIsLoading(false);
+      });
+    } else if (selectedDepartment === "allRequests") {
+      getRequestAll().then((response) => {
+        console.log(response, "all");
+        const allRequests = response.filter((request) =>
+          spvDepartments.some(
+            (department) => department.deptId === request.deptId
+          )
+        );
+        setData(allRequests);
+        setIsLoading(false);
+      });
+    }
+  }, [selectedDepartment, spvDepartments]);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await getDepartment();
+        const userDepartments = response.filter(
+          (department) => department.head === userData.userId
+        );
+        setSpvDepartments(userDepartments);
+        if (userDepartments.length == 1) {
+          setSelectedDepartment(userDepartments[0].deptId);
+        } else if (
+          userDepartments.length > 1 &&
+          location.pathname === "/supervisor-panel"
+        ) {
+          setSelectedDepartment("allRequests");
+        }
+      } catch (error) {
+        console.error("Error", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDepartments();
+  }, [userData.userId, location.pathname]);
+
+  useEffect(() => {
     if (userData.roleSupervisor && location.pathname === "/supervisor-panel") {
       setUserStatus("roleSupervisor");
       setColumnVisibility({
         userNameColumn: true,
-        requestTypeColumn: false,
+        requestTypeColumn: true,
         dayFromColumn: true,
         dayToColumn: true,
         statusColumn: true,
@@ -97,22 +125,11 @@ export default function ListComponent() {
         actionsColumn: true,
       });
       getRequestUserId(userData.userId).then((response) => {
-        console.log(response);
         setData(response);
         setIsLoading(false);
       });
     }
   }, [userData, location.pathname]);
-
-  useEffect(() => {
-    if (selectedDepartment) {
-      getRequestDeptId(selectedDepartment).then((response) => {
-        console.log(response);
-        setData(response);
-        setIsLoading(false);
-      });
-    }
-  }, [selectedDepartment]);
 
   const columns = useMemo<MRT_ColumnDef<Request>[]>(
     () => [
@@ -135,12 +152,26 @@ export default function ListComponent() {
             id: "requestTypeColumn",
             accessorKey: "requestType",
             header: "Request type",
-            enableSorting: false,
+            enableSorting: true,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
               align: "center",
               sx: { fontWeight: "bold" },
             },
+          },
+          {
+            id: "deptColumn",
+            accessorFn: (row) => {
+              const dept = spvDepartments.find(
+                (dept) => dept.deptId === row.deptId
+              );
+              return dept ? dept.dept : "Not assigned";
+            },
+            header: "Department",
+            enableSorting: true,
+            muiTableHeadCellProps: { align: "center" },
+            muiTableBodyCellProps: { align: "center" },
+            size: 60,
           },
           {
             id: "dayFromColumn",
@@ -149,6 +180,7 @@ export default function ListComponent() {
             enableSorting: false,
             muiTableHeadCellProps: { align: "right" },
             muiTableBodyCellProps: { align: "right" },
+            size: 60,
           },
           {
             id: "dayToColumn",
@@ -157,11 +189,14 @@ export default function ListComponent() {
             enableSorting: false,
             muiTableHeadCellProps: { align: "left" },
             muiTableBodyCellProps: { align: "left" },
+            size: 60,
           },
           {
             id: "statusColumn",
             accessorKey: "status",
             header: "Status",
+            size: 60,
+            muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: (props) => {
               const status = props.cell.getValue();
               let color;
@@ -174,7 +209,7 @@ export default function ListComponent() {
               } else if (status === "Cancelled") {
                 color = "gray";
               }
-              return { style: { color } };
+              return { style: { color }, align: "center" };
             },
           },
           {
@@ -185,6 +220,9 @@ export default function ListComponent() {
               const date = new Date(cell.getValue<number>());
               return date.toLocaleDateString();
             },
+            muiTableHeadCellProps: { align: "center" },
+            muiTableBodyCellProps: { align: "center" },
+            size: 60,
           },
           {
             id: "actionsColumn",
@@ -310,21 +348,19 @@ export default function ListComponent() {
                 justifyContent: "flex-end",
               }}
             >
-              {userStatus === "roleSupervisor" && departments.length > 0 && (
+              {userStatus === "roleSupervisor" && spvDepartments.length > 1 && (
                 <Select
+                  defaultValue="allRequests"
                   value={selectedDepartment}
                   onChange={(e) => setSelectedDepartment(e.target.value)}
-                  displayEmpty
                   style={{
                     marginRight: "10px",
                     width: "220px",
                     height: "40px",
                   }}
                 >
-                  <MenuItem value="" disabled>
-                    Choose department
-                  </MenuItem>
-                  {departments.map((department) => (
+                  <MenuItem value="allRequests">All Requests</MenuItem>
+                  {spvDepartments.map((department) => (
                     <MenuItem value={department.deptId} key={department.deptId}>
                       {department.dept}
                     </MenuItem>
@@ -336,7 +372,7 @@ export default function ListComponent() {
         ),
       },
     ],
-    [data, userStatus, departments, selectedDepartment]
+    [data, userStatus, spvDepartments, selectedDepartment]
   );
 
   const table = useMaterialReactTable({
@@ -350,55 +386,60 @@ export default function ListComponent() {
     enableExpanding: true,
     enableDensityToggle: false,
     initialState: { density: "compact" },
-    renderDetailPanel: ({ row }) => (
-      <div
-        style={{
-          padding: "16px",
-          display: "flex",
-          gap: "36px",
-          alignContent: "center",
-        }}
-      >
-        <strong>Details:</strong>
-        <p>
-          Name:
-          <br /> {row.original.firstName} {row.original.surname}
-        </p>
-        <p>
-          From:
-          <br /> {row.original.dayFrom}
-        </p>
-        <p>
-          To:
-          <br /> {row.original.dayTo}
-        </p>
-        <p>
-          Request Type:
-          <br /> {row.original.requestType}
-        </p>
-        <p>
-          Days Request:
-          <br /> {row.original.daysReq}
-        </p>
-        <p>
-          Supervisor:
-          <br /> {row.original.deptId}
-        </p>
-        <p>
-          Status:
-          <br /> {row.original.status}
-        </p>
-        <p>
-          Created At:
-          <br /> {new Date(row.original.createdAt).toLocaleDateString()}
-        </p>
-        <p>
-          Comment:
-          <br />
-          {row.original.comment}
-        </p>
-      </div>
-    ),
+    renderDetailPanel: ({ row }) => {
+      const dept = spvDepartments.find(
+        (dept) => dept.deptId === row.original.deptId
+      );
+      return (
+        <div
+          style={{
+            padding: "16px",
+            display: "flex",
+            gap: "36px",
+            alignContent: "center",
+          }}
+        >
+          <strong>Details:</strong>
+          <p>
+            Name:
+            <br /> {row.original.firstName} {row.original.surname}
+          </p>
+          <p>
+            From:
+            <br /> {row.original.dayFrom}
+          </p>
+          <p>
+            To:
+            <br /> {row.original.dayTo}
+          </p>
+          <p>
+            Request Type:
+            <br /> {row.original.requestType}
+          </p>
+          <p>
+            Days Request:
+            <br /> {row.original.daysReq}
+          </p>
+          <p>
+            Supervisor:
+            <br /> {dept ? dept.head : "Unknown"}
+          </p>
+          <p>
+            Status:
+            <br /> {row.original.status}
+          </p>
+          <p>
+            Created At:
+            <br /> {new Date(row.original.createdAt).toLocaleDateString()}
+          </p>
+          <p>
+            Comment:
+            <br />
+            {row.original.comment}
+          </p>
+        </div>
+      );
+    },
   });
 
   if (isLoading) {
