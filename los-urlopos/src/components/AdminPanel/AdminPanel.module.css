@@ -4,6 +4,7 @@
   align-items: flex-start;
   padding: 20px;
   font-family: Arial, sans-serif;
+  background: url("../../images/bgblue.png");
 }
 
 .adminPanel h1,

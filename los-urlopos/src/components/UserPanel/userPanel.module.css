@@ -7,6 +7,10 @@
 .panelSupervisor {
   background: url("../../images/bgred.jpg");
 }
+
+.panelAdmin {
+  background: url("../../images/bgblue.png");
+}
 .panelUser {
   background: url("../../images/bg2.jpg");
 }
