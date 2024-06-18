@@ -31,6 +31,7 @@ export type User = {
   roleUser: boolean;
   roleSupervisor: boolean;
   userId: string;
+  isActive: boolean;
 };
 
 export type AuthContext = {

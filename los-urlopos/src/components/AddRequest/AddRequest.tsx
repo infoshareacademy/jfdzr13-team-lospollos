@@ -28,7 +28,6 @@ export function AddRequest({ onClose }: AddRequestProps) {
 
     const dayFrom = dayFromElement!.value as string;
     const dayTo = dayToElement!.value as string;
-
     const currentDay = new Date().toISOString().split("T")[0];
 
     dayFromElement?.setAttribute("min", currentDay);
