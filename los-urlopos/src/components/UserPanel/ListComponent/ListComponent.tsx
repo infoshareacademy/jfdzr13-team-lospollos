@@ -14,6 +14,7 @@ import useUserData from "../../../contexts/ViewDataContext";
 import { getRequestUserId } from "../../../services/LeaveRequestService";
 import { getRequestDeptId } from "../../../services/LeaveRequestService";
 import { getDepartment } from "../../../services/DepartmentService";
+import { cancelRequest } from "../../../utils/CancelRequest";
 
 export default function ListComponent() {
   const [data, setData] = useState(initialData);
@@ -52,6 +53,9 @@ export default function ListComponent() {
   }, []);
 
   const handleButtonClick = (row: Request, action: string) => {
+    if (action === "cancel") {
+      cancelRequest(row);
+    }
     const updatedData = data.map((item) => {
       if (item.user === row.user) {
         return {
@@ -64,6 +68,7 @@ export default function ListComponent() {
               : "Cancelled",
         };
       }
+
       return item;
     });
     setData(updatedData);

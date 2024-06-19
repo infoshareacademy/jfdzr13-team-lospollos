@@ -1,4 +1,12 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { Request } from "../types-obj/types-obj";
 
@@ -33,4 +41,13 @@ export const getRequestDeptId = async (deptId: String) => {
     requestListDept.push({ reqId: doc.id, ...doc.data() })
   );
   return requestListDept;
+};
+
+export const updateRequestAfterAction = async (
+  docId: string,
+  updatedValues: object
+) => {
+  await setDoc(doc(db, "Requests", docId), updatedValues, {
+    merge: true,
+  });
 };
