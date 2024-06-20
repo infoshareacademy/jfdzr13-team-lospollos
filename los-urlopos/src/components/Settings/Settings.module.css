@@ -5,25 +5,9 @@
   display: flex;
 }
 
-.settingsCont {
-  margin-top: 5%;
-  width: 70%;
-  height: 55%;
-  background-color: rgba(255, 255, 255, 0.738);
-  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  display: flex;
-  flex-direction: column;
-  align-self: flex-start;
-  justify-content: space-evenly;
-  border-radius: 50px;
-}
-
 .successMessage {
   color: green;
   font-weight: bold;
-  margin-top: 10px;
   font-weight: 500;
   font-size: 1.5vmin;
 }
@@ -31,7 +15,20 @@
 .errorMessage {
   color: red;
   font-weight: bold;
-  margin-top: 10px;
+  font-weight: 500;
+  font-size: 1.5vmin;
+  align-self: center;
+}
+
+.panelSupervisor .errorMessage {
+  color: red;
+  background-color: rgba(255, 255, 255, 0.881);
+  border-radius: 50px;
+  width: 50%;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
   font-weight: 500;
   font-size: 1.5vmin;
   align-self: center;
@@ -43,8 +40,25 @@
   background: url("../../images/bgblue.png");
 }
 
+.panelAdmin .settingsCont {
+  margin-top: 5%;
+  width: 70%;
+  height: 55%;
+  background-color: rgba(217, 223, 253, 0.946);
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  justify-content: space-evenly;
+  border-radius: 50px;
+}
+
 .panelAdmin .formContainer {
-  border: 1px solid;
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
   width: 90%;
   height: 70%;
   display: flex;
@@ -55,26 +69,25 @@
 }
 
 .panelAdmin h1 {
-  border: 1px solid blueviolet;
   display: flex;
   width: 50%;
   height: 15%;
   padding: 0;
-  margin: 0;
+  margin-top: 1%;
   justify-content: center;
   align-self: center;
   font-size: 4.5vmin;
 }
 
 .panelAdmin .userInfoCont {
-  border: 1px solid rgb(0, 255, 17);
-  height: 50%;
+  height: 70%;
   width: 50%;
   display: flex;
   align-self: center;
   justify-content: center;
   padding: 2%;
   gap: 5%;
+  border-right: 1px solid white;
 }
 
 .panelAdmin .userPfpCont {
@@ -97,6 +110,7 @@
   object-fit: cover;
   border-radius: 100px;
   box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+  border: 1px solid white;
 }
 
 .panelAdmin .label {
@@ -123,11 +137,10 @@
 }
 
 .panelAdmin .userNameCont {
-  border: 1px solid yellow;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   padding: 2%;
   gap: 2%;
 }
@@ -152,13 +165,11 @@
 .panelAdmin .changePswrdWrapper {
   width: 50%;
   height: 100%;
-  border: 1px solid red;
   display: flex;
   flex-direction: column;
 }
 
 .panelAdmin h3 {
-  border: 1px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -172,11 +183,9 @@
   width: 100%;
   height: 100%;
   display: flex;
-  border: 1px solid orange;
 }
 
 .panelAdmin .changePswrdCont {
-  border: 1px solid pink;
   height: 100%;
   width: 100%;
   align-self: flex-end;
@@ -188,7 +197,6 @@
 
 .panelAdmin label {
   color: white;
-  border: 1px solid yellow;
   width: 90%;
   display: flex;
   justify-content: space-between;
@@ -198,12 +206,10 @@
 .panelAdmin input {
   width: 50%;
   display: flex;
-  border: 1px solid red;
   align-self: flex-end;
 }
 
 .panelAdmin .buttonsCont {
-  border: 2px solid green;
   height: 20%;
   width: 100%;
   display: flex;
@@ -263,6 +269,682 @@
   background: url("../../images/bgred.jpg");
 }
 
+.panelSupervisor .settingsCont {
+  margin-top: 5%;
+  width: 70%;
+  height: 55%;
+  background-color: rgba(255, 172, 172, 0.761);
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  justify-content: space-evenly;
+  border-radius: 50px;
+}
+
+.panelSupervisor .formContainer {
+  width: 90%;
+  height: 70%;
+  display: flex;
+  background-color: rgba(211, 87, 87, 0.761);
+  align-self: center;
+  border-radius: 20px;
+  margin-bottom: 5%;
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+}
+
+.panelSupervisor h1 {
+  display: flex;
+  width: 50%;
+  height: 15%;
+  padding: 0;
+  margin-top: 1%;
+  justify-content: center;
+  align-self: center;
+  font-size: 4.5vmin;
+}
+
+.panelSupervisor .userInfoCont {
+  height: 70%;
+  width: 50%;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding: 2%;
+  gap: 5%;
+  border-right: 1px solid white;
+}
+
+.panelSupervisor .userPfpCont {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-self: center;
+  border-radius: 100px;
+  border: 1px solid white;
+}
+
+.panelSupervisor .userPfpCont input {
+  display: none;
+}
+
+.panelSupervisor .userPfp {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 100px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+  border: 1px solid white;
+}
+
+.panelSupervisor .label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 100px;
+  color: transparent;
+}
+
+.panelSupervisor .label:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.panelSupervisor .glyphiconCamera {
+  margin-right: 5px;
+}
+
+.panelSupervisor .userNameCont {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2%;
+  gap: 2%;
+}
+
+.panelSupervisor h2 {
+  color: white;
+  align-self: center;
+  font-size: 3vmin;
+}
+
+.panelSupervisor .userName {
+  color: white;
+  align-self: center;
+  font-size: 2.5vmin;
+}
+
+.panelSupervisor .userEmail {
+  color: white;
+  font-size: 2vmin;
+}
+
+.panelSupervisor .changePswrdWrapper {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelSupervisor h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+  font-size: 3vmin;
+  color: white;
+}
+
+.panelSupervisor .formCont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.panelSupervisor .changePswrdCont {
+  height: 100%;
+  width: 100%;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 2%;
+}
+
+.panelSupervisor label {
+  color: white;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.panelSupervisor input {
+  width: 50%;
+  display: flex;
+  align-self: flex-end;
+}
+
+.panelSupervisor .buttonsCont {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+}
+
+.panelSupervisor .saveBtn {
+  background-color: rgb(83, 177, 83);
+  color: white;
+  border-radius: 5px;
+  border: none;
+  width: 20%;
+  height: 70%;
+  align-self: center;
+  margin: 0;
+  padding: 0;
+}
+
+.panelSupervisor .saveBtn:hover {
+  cursor: pointer;
+  background-color: rgb(103, 196, 103);
+  transition: 0.2s;
+}
+
+.panelSupervisor .saveBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(81, 177, 81);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.panelSupervisor .cancelBtn {
+  width: 20%;
+  height: 70%;
+  align-self: center;
+  background-color: rgb(213, 69, 69);
+  border-radius: 5px;
+  color: white;
+  border: none;
+}
+
+.panelSupervisor .cancelBtn:hover {
+  cursor: pointer;
+  background-color: rgb(232, 76, 76);
+  transition: 0.2s;
+}
+
+.panelSupervisor .cancelBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(213, 69, 69);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+/* PANEL USER */
+
+.panelUser .settingsCont {
+  margin-top: 5%;
+  width: 70%;
+  height: 55%;
+  background-color: rgba(255, 232, 173, 0.658);
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  justify-content: space-evenly;
+  border-radius: 50px;
+}
+
 .panelUser {
   background: url("../../images/bg2.jpg");
+}
+
+.panelUser .formContainer {
+  width: 90%;
+  height: 70%;
+  display: flex;
+  background-color: rgba(255, 200, 62, 0.658);
+  align-self: center;
+  border-radius: 20px;
+  margin-bottom: 5%;
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+}
+
+.panelUser h1 {
+  display: flex;
+  width: 50%;
+  height: 15%;
+  padding: 0;
+  margin-top: 1%;
+  justify-content: center;
+  align-self: center;
+  font-size: 4.5vmin;
+}
+
+.panelUser .userInfoCont {
+  height: 70%;
+  width: 50%;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding: 2%;
+  gap: 5%;
+  border-right: 1px solid white;
+}
+
+.panelUser .userPfpCont {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-self: center;
+  border: 1px solid white;
+  border-radius: 100px;
+}
+
+.panelUser .userPfpCont input {
+  display: none;
+}
+
+.panelUser .userPfp {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 100px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+}
+
+.panelUser .label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 100px;
+  color: transparent;
+}
+
+.panelUser .label:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.panelUser.glyphiconCamera {
+  margin-right: 5px;
+}
+
+.panelUser .userNameCont {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2%;
+  gap: 2%;
+}
+
+.panelUser h2 {
+  color: white;
+  align-self: center;
+  font-size: 3vmin;
+}
+
+.panelUser .userName {
+  color: white;
+  align-self: center;
+  font-size: 2.5vmin;
+}
+
+.panelUser .userEmail {
+  color: white;
+  font-size: 2vmin;
+}
+
+.panelUser .changePswrdWrapper {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelUser h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+  font-size: 3vmin;
+  color: white;
+}
+
+.panelUser .formCont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.panelUser .changePswrdCont {
+  height: 100%;
+  width: 100%;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 2%;
+}
+
+.panelUser label {
+  color: white;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.panelUser input {
+  width: 50%;
+  display: flex;
+  align-self: flex-end;
+}
+
+.panelUser .buttonsCont {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+}
+
+.panelUser .saveBtn {
+  background-color: rgb(83, 177, 83);
+  color: white;
+  border-radius: 5px;
+  border: none;
+  width: 20%;
+  height: 70%;
+  align-self: center;
+  margin: 0;
+  padding: 0;
+}
+
+.panelUser .saveBtn:hover {
+  cursor: pointer;
+  background-color: rgb(103, 196, 103);
+  transition: 0.2s;
+}
+
+.panelUser .saveBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(81, 177, 81);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.panelUser .cancelBtn {
+  width: 20%;
+  height: 70%;
+  align-self: center;
+  background-color: rgb(213, 69, 69);
+  border-radius: 5px;
+  color: white;
+  border: none;
+}
+
+.panelUser .cancelBtn:hover {
+  cursor: pointer;
+  background-color: rgb(232, 76, 76);
+  transition: 0.2s;
+}
+
+.panelUser .cancelBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(213, 69, 69);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+/* PANEL MULTI */
+
+.panelMulti {
+  background: url("../../images/bgblue.png");
+}
+
+.panelMulti .settingsCont {
+  margin-top: 5%;
+  width: 70%;
+  height: 55%;
+  background-color: rgba(217, 223, 253, 0.946);
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  justify-content: space-evenly;
+  border-radius: 50px;
+}
+
+.panelMulti .formContainer {
+  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
+  width: 90%;
+  height: 70%;
+  display: flex;
+  background-color: rgba(14, 35, 116, 0.8);
+  align-self: center;
+  border-radius: 20px;
+  margin-bottom: 5%;
+}
+
+.panelMulti h1 {
+  display: flex;
+  width: 50%;
+  height: 15%;
+  padding: 0;
+  margin-top: 1%;
+  justify-content: center;
+  align-self: center;
+  font-size: 4.5vmin;
+}
+
+.panelMulti .userInfoCont {
+  height: 70%;
+  width: 50%;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding: 2%;
+  gap: 5%;
+  border-right: 1px solid white;
+}
+
+.panelMulti .userPfpCont {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  display: flex;
+  align-self: center;
+  border: 1px solid white;
+  border-radius: 100px;
+}
+
+.panelMulti .userPfpCont input {
+  display: none;
+}
+
+.panelMulti .userPfp {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 100px;
+  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+  border: 1px solid white;
+}
+
+.panelMulti .label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: background-color 0.2s ease-in-out;
+  border-radius: 100px;
+  color: transparent;
+}
+
+.panelMulti .label:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+}
+
+.panelMulti .glyphiconCamera {
+  margin-right: 5px;
+}
+
+.panelMulti .userNameCont {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2%;
+  gap: 2%;
+}
+
+.panelMulti h2 {
+  color: white;
+  align-self: center;
+  font-size: 3vmin;
+}
+
+.panelMulti .userName {
+  color: white;
+  align-self: center;
+  font-size: 2.5vmin;
+}
+
+.panelMulti .userEmail {
+  color: white;
+  font-size: 2vmin;
+}
+
+.panelMulti .changePswrdWrapper {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.panelMulti h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+  font-size: 3vmin;
+  color: white;
+}
+
+.panelMulti .formCont {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.panelMulti .changePswrdCont {
+  height: 100%;
+  width: 100%;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 2%;
+}
+
+.panelMulti label {
+  color: white;
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+}
+
+.panelMulti input {
+  width: 50%;
+  display: flex;
+  align-self: flex-end;
+}
+
+.panelMulti .buttonsCont {
+  height: 20%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+}
+
+.panelMulti .saveBtn {
+  background-color: rgb(83, 177, 83);
+  color: white;
+  border-radius: 5px;
+  border: none;
+  width: 20%;
+  height: 70%;
+  align-self: center;
+  margin: 0;
+  padding: 0;
+}
+
+.panelMulti .saveBtn:hover {
+  cursor: pointer;
+  background-color: rgb(103, 196, 103);
+  transition: 0.2s;
+}
+
+.panelMulti .saveBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(81, 177, 81);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.panelMulti .cancelBtn {
+  width: 20%;
+  height: 70%;
+  align-self: center;
+  background-color: rgb(213, 69, 69);
+  border-radius: 5px;
+  color: white;
+  border: none;
+}
+
+.panelMulti .cancelBtn:hover {
+  cursor: pointer;
+  background-color: rgb(232, 76, 76);
+  transition: 0.2s;
+}
+
+.panelMulti .cancelBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(213, 69, 69);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }

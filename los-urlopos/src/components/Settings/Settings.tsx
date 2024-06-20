@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import useAuth from "../../contexts/AuthContext";
 import useUserData from "../../contexts/ViewDataContext";
 import styles from "./Settings.module.css";
@@ -7,7 +7,7 @@ import pfp from "../../images/Unknown_person.jpg";
 const Settings = () => {
   const { changePassword, authUser, login } = useAuth();
   const { userData } = useUserData();
-  const [changePassResult, setChangePassResutl] = useState<string | null>(null);
+  const [changePassResult, setChangePassResult] = useState<string | null>(null);
   const [panelClass, setPanelClass] = useState(styles.panelUser); // Default class
 
   const [currentPassword, setCurrentPassword] = useState("");
@@ -40,7 +40,7 @@ const Settings = () => {
 
     try {
       if (!(await isCurrentPasswordValid(currentPassword))) {
-        setChangePassResutl("❌ Current password is not valid!");
+        setChangePassResult("❌ Current password is not valid!");
         resetForm("changePasswordForm");
         return;
       }
@@ -48,7 +48,7 @@ const Settings = () => {
       if (
         !isNewPasswordConfirmationValid(newPassword, newPasswordConfirmation)
       ) {
-        setChangePassResutl(
+        setChangePassResult(
           "❌ New password and Confirm new password must be the same!"
         );
         resetForm("changePasswordForm");
@@ -56,9 +56,9 @@ const Settings = () => {
       }
 
       changePassword(newPassword);
-      setChangePassResutl("✅ Password has been changed successfully!");
+      setChangePassResult("✅ Password has been changed successfully!");
     } catch (err) {
-      setChangePassResutl("❌ Something went wrong!");
+      setChangePassResult("❌ Something went wrong!");
       resetForm("changePasswordForm");
     }
   };
@@ -67,15 +67,14 @@ const Settings = () => {
     setCurrentPassword("");
     setNewPassword("");
     setNewPasswordConfirmation("");
-    setChangePassResutl(null);
+    setChangePassResult(null);
   };
 
   useEffect(() => {
     if (userData) {
       if (userData.roleAdmin && userData.roleSupervisor && userData.roleUser) {
-        setPanelClass(styles.panelAllRoles);
-      }
-      if (userData.roleAdmin) {
+        setPanelClass(styles.panelMulti);
+      } else if (userData.roleAdmin) {
         setPanelClass(styles.panelAdmin);
       } else if (userData.roleSupervisor) {
         setPanelClass(styles.panelSupervisor);
@@ -88,11 +87,17 @@ const Settings = () => {
   const [profileImage, setProfileImage] = useState<string>(pfp);
 
   useEffect(() => {
-    const savedImage = localStorage.getItem("profileImage");
-    if (savedImage) {
-      setProfileImage(savedImage);
+    if (authUser) {
+      const savedImage = localStorage.getItem(
+        `profileImage_${authUser.email}_${authUser.uid}`
+      );
+      if (savedImage) {
+        setProfileImage(savedImage);
+      } else {
+        setProfileImage(pfp); // Default image if no custom image is set
+      }
     }
-  }, []);
+  }, [authUser]);
 
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const image = document.getElementById("output") as HTMLImageElement;
@@ -100,7 +105,12 @@ const Settings = () => {
       const imageUrl = URL.createObjectURL(event.target.files[0]);
       image.src = imageUrl;
       setProfileImage(imageUrl);
-      localStorage.setItem("profileImage", imageUrl);
+      if (authUser) {
+        localStorage.setItem(
+          `profileImage_${authUser.email}_${authUser.uid}`,
+          imageUrl
+        );
+      }
     }
   };
 
