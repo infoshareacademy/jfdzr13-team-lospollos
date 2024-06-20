@@ -34,20 +34,7 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
   return (
     <div className={styles.profilePictureWrapper}>
       <div className={styles.profilePictureCont}>
-        <label className={styles.label} htmlFor="file">
-          <span
-            className={`${styles.glyphicon} ${styles.glyphiconCamera}`}
-          ></span>
-          <span>Change</span>
-        </label>
-        <input id="file" type="file" onChange={loadFile} />
-        <img
-          className={styles.profilePicture}
-          src={profileImage}
-          id="output"
-          width="200"
-          alt="Profile"
-        />
+        <img className={styles.profilePicture}></img>
       </div>
       <div className={styles.userDetails}>
         {userData ? (
