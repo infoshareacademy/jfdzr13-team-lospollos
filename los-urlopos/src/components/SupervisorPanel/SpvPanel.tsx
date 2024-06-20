@@ -1,11 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AddRequest } from "../AddRequest/AddRequest";
 import ListComponent from "../UserPanel/ListComponent/ListComponent";
 import { UserComponent } from "../UserPanel/UserComponent/UserComponent";
+import useUserData from "../../contexts/ViewDataContext";
 import styles from "./spvPanel.module.css";
 
 export function SpvPanel() {
   const [showAddRequest, setShowAddRequest] = useState(false);
+  const { userData } = useUserData();
+  const [bgClass, setBgClass] = useState(styles.bgUser); // Default class
+  const [navbarClass, setNavbarClass] = useState(styles.navbarUser); // Default class
+
+  useEffect(() => {
+    if (userData) {
+      if (userData.roleAdmin) {
+        setBgClass(styles.bgAdmin);
+        setNavbarClass(styles.navbarAdmin);
+      } else if (userData.roleSupervisor) {
+        setBgClass(styles.bgSupervisor);
+        setNavbarClass(styles.navbarSupervisor);
+      } else if (userData.roleUser) {
+        setBgClass(styles.bgUser);
+        setNavbarClass(styles.navbarUser);
+      }
+    }
+  }, [userData]);
 
   const handleAddButtonClick = () => {
     setShowAddRequest(true);
@@ -16,7 +35,7 @@ export function SpvPanel() {
   };
 
   return (
-    <div className={styles.mainContainer}>
+    <div className={`${styles.mainContainer} ${bgClass}`}>
       <div
         className={`${styles.userAndListContainer} ${
           showAddRequest ? styles.dimmed : ""

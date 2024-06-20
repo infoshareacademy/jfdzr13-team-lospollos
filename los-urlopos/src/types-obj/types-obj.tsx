@@ -45,4 +45,9 @@ export type AuthUser = {
   id: string;
   email: string;
   name: string;
+  roles: {
+    roleUser: boolean;
+    roleSupervisor: boolean;
+    roleAdmin: boolean;
+  };
 };
