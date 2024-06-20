@@ -25,6 +25,7 @@ import {
   getRequestAll,
 } from "../../../services/LeaveRequestService";
 import { getDepartment } from "../../../services/DepartmentService";
+import { cancelRequest } from "../../../utils/CancelRequest";
 
 export default function ListComponent() {
   const { userData } = useUserData();
@@ -109,7 +110,9 @@ export default function ListComponent() {
     };
 
     fetchDepartments();
+
   }, [userData.userId, location.pathname]);
+
 
   useEffect(() => {
     if (userData.roleSupervisor && location.pathname === "/supervisor-panel") {
