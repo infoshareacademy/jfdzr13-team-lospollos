@@ -65,8 +65,7 @@ h2 {
 
 .adminPanel input[type="text"],
 input[type="email"],
-input[type="number"],
-button[type="submit"] {
+input[type="number"] {
   padding: 8px;
   margin: 5px 0;
   width: 100%;
