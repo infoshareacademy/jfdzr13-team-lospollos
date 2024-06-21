@@ -13,6 +13,7 @@ export type Request = {
   userId: string;
   comment: string;
   createdAt: number;
+  rejectReason: string;
 };
 
 export type Type = { type: string };

@@ -25,7 +25,11 @@ import {
   getRequestAll,
 } from "../../../services/LeaveRequestService";
 import { getDepartment } from "../../../services/DepartmentService";
-import { cancelRequest } from "../../../utils/CancelRequest";
+import {
+  cancelRequest,
+  acceptRequest,
+  rejectRequest,
+} from "../../../utils/RequestActions";
 
 export default function ListComponent() {
   const { userData } = useUserData();
@@ -37,6 +41,7 @@ export default function ListComponent() {
   const [spvDepartments, setSpvDepartments] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
+  const [currentRequest, setCurrentRequest] = useState({});
 
   const [columnVisibility, setColumnVisibility] = useState({
     userNameColumn: true,
@@ -51,16 +56,20 @@ export default function ListComponent() {
 
   const handleButtonClick = (row: Request, action: string) => {
     setCurrentAction(action);
+    setCurrentRequest(row);
     setDialogOpen(true);
   };
 
   const handleActionConfirm = () => {
     if (currentAction === "accept") {
-      console.log("accept");
+      acceptRequest(currentRequest);
     } else if (currentAction === "reject") {
-      console.log("reject");
+      let rejectReasonValue: string = (
+        document.getElementById("rejectReason") as HTMLInputElement
+      ).value;
+      rejectRequest(currentRequest, rejectReasonValue);
     } else if (currentAction === "cancel") {
-      console.log("cancel");
+      cancelRequest(currentRequest);
     }
     setDialogOpen(false);
   };
@@ -110,9 +119,7 @@ export default function ListComponent() {
     };
 
     fetchDepartments();
-
   }, [userData.userId, location.pathname]);
-
 
   useEffect(() => {
     if (userData.roleSupervisor && location.pathname === "/supervisor-panel") {
