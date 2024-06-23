@@ -13,7 +13,6 @@ const NavBar: FC = () => {
   return (
     <nav className={styles.navbar}>
       <div>
-        <NavLink to="/home">Home</NavLink>
         {userData.roleUser && <NavLink to="/user-panel">User Panel</NavLink>}
         {userData.roleSupervisor && (
           <NavLink to="/supervisor-panel">Supervisor Panel</NavLink>
