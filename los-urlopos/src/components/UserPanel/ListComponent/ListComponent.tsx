@@ -30,6 +30,7 @@ import {
   acceptRequest,
   rejectRequest,
 } from "../../../utils/RequestActions";
+import { getReqStatisticForUser } from "../../../utils/StatisticActions";
 
 export default function ListComponent() {
   const { userData } = useUserData();
@@ -59,6 +60,9 @@ export default function ListComponent() {
     setCurrentRequest(row);
     setDialogOpen(true);
   };
+
+  //tu można wstawić funkcje gdzie w uieścimy dane statystyczne w userPanel, poniżej tylko wywołanie funkcji
+  getReqStatisticForUser(userData.userId);
 
   const handleActionConfirm = () => {
     if (currentAction === "accept") {
