@@ -18,8 +18,6 @@ export const changePassword = async (newPassword: string) => {
 };
 
 export const createUser = async (email: string, password: string) => {
-  const auth = getAuth();
-
   const userCredential = await createUserWithEmailAndPassword(
     auth,
     email,

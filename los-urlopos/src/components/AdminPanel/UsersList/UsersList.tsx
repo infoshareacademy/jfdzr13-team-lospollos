@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useState } from "react";
 import { User } from "../../../types-obj/types-obj";
-import { db } from "../../../../firebase";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 import styles from "./UsersList.module.css";
 import ConfirmAction from "../ConfirmAction";
+import { deleteUser, subscribeToUsers } from "../../../services/UserService";
 
 interface UsersListProps {
   openAddUserModal: () => void;
@@ -18,19 +17,13 @@ const UsersList: FC<UsersListProps> = ({ openAddUserModal }) => {
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
 
   useEffect(() => {
-    const usersCollection = collection(db, "Users");
-    const unsub = onSnapshot(
-      usersCollection,
-      (snapshot) => {
-        const usersData: User[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as User),
-        }));
+    const unsub = subscribeToUsers(
+      (usersData) => {
         setUsers(usersData);
         setLoading(false);
       },
-      (error) => {
-        setError(error.message);
+      (errorMessage) => {
+        setError(errorMessage);
         setLoading(false);
       }
     );
@@ -38,9 +31,9 @@ const UsersList: FC<UsersListProps> = ({ openAddUserModal }) => {
     return () => unsub();
   }, []);
 
-  const deleteUser = async (id: string) => {
+  const handleDeleteUser = async (id: string) => {
     try {
-      await deleteDoc(doc(db, "Users", id));
+      await deleteUser(id);
       setError(null);
     } catch (error) {
       console.error("Error deleting user: ", error);
@@ -55,7 +48,7 @@ const UsersList: FC<UsersListProps> = ({ openAddUserModal }) => {
 
   const handleConfirmDelete = () => {
     if (userIdToDelete) {
-      deleteUser(userIdToDelete);
+      handleDeleteUser(userIdToDelete);
     }
     setConfirmDialogOpen(false);
     setUserIdToDelete(null);

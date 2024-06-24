@@ -1,8 +1,7 @@
 import React, { FC, FormEvent, ChangeEvent, useState, useEffect } from "react";
 import { User } from "../../../types-obj/types-obj";
-import { db } from "../../../../firebase";
-import { setDoc, doc } from "firebase/firestore";
 import { createUser, getCurrentUser } from "../../../services/AuthService";
+import { addUser } from "../../../services/UserService";
 
 interface AddUserProps {
   onUserAdded: () => void;
@@ -57,11 +56,11 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
     }
   };
 
-  const addUser = async (event: FormEvent) => {
+  const handleAddUser = async (event: FormEvent) => {
     event.preventDefault();
     try {
       const user = await createUser(newUser.email, password);
-      await setDoc(doc(db, "Users", user.uid), {
+      await addUser(user.uid, {
         ...newUser,
         userId: user.uid,
       });
@@ -94,7 +93,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
   return (
     <div>
       <h2>Add User</h2>
-      <form onSubmit={addUser}>
+      <form onSubmit={handleAddUser}>
         <label>
           First Name:
           <input
