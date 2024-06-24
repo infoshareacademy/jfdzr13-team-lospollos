@@ -4,6 +4,7 @@
   align-items: flex-start;
   padding: 20px;
   font-family: Arial, sans-serif;
+  background: url("../../images/bgblue.png");
 }
 
 .Modal__Overlay {
@@ -28,19 +29,41 @@
   border-radius: 4px;
 }
 
-h1,
+.Modal__Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.Modal__Content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.adminPanel h1,
 h2 {
   color: #333;
 }
 
-ul {
+.adminPanel ul {
   list-style-type: none;
   padding: 0;
   width: 100%;
   max-width: 600px;
 }
 
-li {
+.adminPanel li {
   background-color: #f9f9f9;
   margin: 10px 0;
   padding: 10px;
@@ -61,7 +84,7 @@ li {
   margin-top: 10px;
 }
 
-button {
+.adminPanel button {
   padding: 5px 10px;
   background-color: #4f79e2;
   color: white;
@@ -70,23 +93,22 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.adminPanel button:hover {
   background-color: #3457d5;
   scale: 1.1;
   transition: 0.3s;
 }
 
-form {
+.adminPanel form {
   display: flex;
   flex-direction: column;
   align-items: start;
   max-width: 600px;
 }
 
-input[type="text"],
+.adminPanel input[type="text"],
 input[type="email"],
-input[type="number"],
-button[type="submit"] {
+input[type="number"] {
   padding: 8px;
   margin: 5px 0;
   width: 100%;
@@ -95,11 +117,11 @@ button[type="submit"] {
   border-radius: 3px;
 }
 
-input[type="checkbox"] {
+.adminPanel input[type="checkbox"] {
   margin-right: 5px;
 }
 
-label {
+.adminPanel label {
   display: flex;
   align-items: center;
   width: 100%;
@@ -111,10 +133,10 @@ label {
   margin-top: 10px;
 }
 
-button[type="submit"] {
+.adminPanel button[type="submit"] {
   background-color: #4caf50;
 }
 
-button[type="submit"]:hover {
+.adminPanel button[type="submit"]:hover {
   background-color: #45a049;
 }

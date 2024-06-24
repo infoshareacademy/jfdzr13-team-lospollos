@@ -13,6 +13,7 @@ export type Request = {
   userId: string;
   comment: string;
   createdAt: number;
+  rejectReason: string;
 };
 
 export type Type = { type: string };
@@ -31,6 +32,7 @@ export type User = {
   roleUser: boolean;
   roleSupervisor: boolean;
   userId: string;
+  isActive: boolean;
 };
 
 export type AuthContext = {
@@ -44,4 +46,9 @@ export type AuthUser = {
   id: string;
   email: string;
   name: string;
+  roles: {
+    roleUser: boolean;
+    roleSupervisor: boolean;
+    roleAdmin: boolean;
+  };
 };

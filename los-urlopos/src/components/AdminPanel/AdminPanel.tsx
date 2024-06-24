@@ -6,6 +6,18 @@ import RequestsList from "./RequestsList/RequestsList";
 import DepartmentsList from "./DepartmentsList/DepartmentsList";
 import Modal from "react-modal";
 import BankHolidaysForm from "./BankHolidaysForm/BankHolidaysForm";
+import { Toaster } from "react-hot-toast";
+import React, { FC, useEffect, useState, FormEvent, ChangeEvent } from "react";
+import { User } from "../../types-obj/types-obj";
+import { db } from "../../../firebase";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 
 const AdminPanel: FC = () => {
   const [selectedSection, setSelectedSection] = useState<string>("users");

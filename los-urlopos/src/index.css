@@ -1,6 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Phudu:wght@300..900&family=Preahvihear&display=swap");
+
 * {
   margin: 0;
   padding: 0;
+  font-family: "Phudu", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 #root {
   height: 100vh;
@@ -9,5 +15,18 @@
   padding: 0;
 }
 body {
-  background-color: rgb(212, 212, 212);
+  /* background: rgb(255, 96, 96);
+  background: linear-gradient(
+    312deg,
+    rgba(255, 96, 96, 1) 0%,
+    rgba(255, 128, 128, 1) 50%,
+    rgba(255, 170, 170, 1) 100%
+  ); */
+  background: rgb(255, 232, 128);
+  background: linear-gradient(
+    145deg,
+    rgba(255, 232, 128, 1) 0%,
+    rgba(255, 185, 120, 1) 50%,
+    rgba(255, 103, 103, 1) 100%
+  );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../contexts/AuthContext";
-import image from "../../images/workHome.png";
+import image from "../../images/lps2.png";
 import styles from "./Login.module.css";
 
 const Login = () => {
