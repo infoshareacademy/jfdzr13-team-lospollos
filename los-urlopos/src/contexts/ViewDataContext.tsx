@@ -12,9 +12,10 @@ const useUserData = () => useContext(UserDataContext);
 export const UserDataProvider = ({ children }) => {
   const { authUser } = useAuth();
 
-  const [userData, setUserData] = useState<User[]>([]);
+  const [userData, setUserData] = useState<User | null>(null);
   const [bankHolidaysData, setBankHolidaysData] = useState(null);
   const [departmentsList, setDepartmentsList] = useState<Departments[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const refreshUserViewData = async () => {
     try {
@@ -45,14 +46,10 @@ export const UserDataProvider = ({ children }) => {
 
   useEffect(() => {
     refreshUserViewData();
-  }, []);
-
-  useEffect(() => {
     getBankHoliydaysData();
-  }, []);
-
-  useEffect(() => {
     getDepartmentList();
+
+    setIsLoading(false);
   }, []);
 
   const userDataHandler = {
@@ -64,7 +61,9 @@ export const UserDataProvider = ({ children }) => {
     getDepartmentList,
   };
 
-  return (
+  return isLoading || !userData ? (
+    <span>Loading...</span>
+  ) : (
     <UserDataContext.Provider value={userDataHandler}>
       {children}
     </UserDataContext.Provider>

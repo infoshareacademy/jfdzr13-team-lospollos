@@ -5,9 +5,10 @@ import {
 import { getDepartmentByHeadId } from "../services/DepartmentService";
 import REQUEST_STATUS from "../enums/requestStatus";
 import TYPE_OF_LEAVE from "../enums/typeOfLeave";
+import { User } from "../types-obj/types-obj";
 
-export async function getReqStatisticForUser(userId: string) {
-  const requestList: any[] = await getRequestUserId(userId);
+export async function getReqStatisticForUser(user: User) {
+  const requestList: any[] = await getRequestUserId(user.userId);
 
   let allReqNumber: number = 0;
   let pendingReqNumber: number = 0;

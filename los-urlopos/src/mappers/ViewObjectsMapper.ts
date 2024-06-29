@@ -69,7 +69,7 @@ export const toLeaveRequestListView = async (
 
 export const toUserView = async (user: User, departments: Departments[]) =>
   ({
-    id: user.id!,
+    id: user.userId,
     firstName: user.firstName,
     lastName: user.surname,
     email: user.email,
