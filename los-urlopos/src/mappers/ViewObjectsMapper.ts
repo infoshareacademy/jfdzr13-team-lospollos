@@ -1,18 +1,18 @@
 import { getUserById } from "../services/UserService";
-import { Departments, Request, User } from "../types-obj/types-obj";
 import {
   DepartmentView,
   LeaveRequestView,
   RelationalUserView,
   UserView,
 } from "../types-obj/objectViewTypes";
+import { Departments, Request, User } from "../types-obj/types-obj";
 import { emptyDepartment } from "../utils/DefaultObjects";
 
 export const toRelationalUserView = async (userId: string) => {
   const user = await getUserById(userId);
 
   return {
-    id: user!.id,
+    id: user?.userId,
     name: `${user?.firstName ?? ""} ${user?.surname ?? ""}`,
   } as RelationalUserView;
 };
