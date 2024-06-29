@@ -6,10 +6,13 @@ import {
   query,
   collection,
   getDocs,
+  deleteDoc,
+  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { User } from "../types-obj/types-obj";
 
+const usersCollection = collection(db, "Users");
 export const getUserById = async (id: string) => {
   const docRef = doc(db, "Users", id);
   let user = null;
@@ -27,11 +30,39 @@ export const updateUser = async (userId: string, updatedValues: object) => {
 };
 
 export const getAllUsersForAddAnnualLeave = async () => {
-  const q = query(collection(db, "Users"), where("isActive", "==", true));
+  const q = query(usersCollection, where("isActive", "==", true));
   let usersForAddAnnualLeave: any = [];
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) =>
     usersForAddAnnualLeave.push({ ...doc.data() })
   );
   return usersForAddAnnualLeave;
+};
+
+export const deleteUser = async (id: string) => {
+  await deleteDoc(doc(db, "Users", id));
+};
+
+export const subscribeToUsers = (
+  onUpdate: (users: User[]) => void,
+  onError: (error: string) => void
+) => {
+  const unsub = onSnapshot(
+    usersCollection,
+    (snapshot) => {
+      const usersData: User[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as User),
+      }));
+      onUpdate(usersData);
+    },
+    (error) => {
+      onError(error.message);
+    }
+  );
+  return unsub;
+};
+
+export const addUser = async (uid: string, userData: any) => {
+  await setDoc(doc(db, "Users", uid), userData);
 };
