@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AddRequest } from "../AddRequest/AddRequest";
-import ListComponent from "./ListComponent/ListComponent";
+import ListComponent from "../TableComponent/TableComponent";
 import { UserComponent } from "./UserComponent/UserComponent";
 import styles from "./userPanel.module.css";
 import useUserData from "../../contexts/ViewDataContext";

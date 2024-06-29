@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AddRequest } from "../AddRequest/AddRequest";
-import ListComponent from "../UserPanel/ListComponent/ListComponent";
+import ListComponent from "../TableComponent/TableComponent";
 import { UserComponent } from "../UserPanel/UserComponent/UserComponent";
 import useUserData from "../../contexts/ViewDataContext";
 import styles from "./spvPanel.module.css";

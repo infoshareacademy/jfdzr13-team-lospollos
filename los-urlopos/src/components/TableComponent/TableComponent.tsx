@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import styles from "./listComponent.module.css";
+import styles from "./tableComponent.module.css";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -16,20 +16,20 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { Request } from "../../../types-obj/types-obj";
+import { Request } from "../../types-obj/types-obj";
 import { useLocation } from "react-router-dom";
-import useUserData from "../../../contexts/ViewDataContext";
+import useUserData from "../../contexts/ViewDataContext";
 import {
   getRequestUserId,
   getRequestDeptId,
   getRequestAll,
-} from "../../../services/LeaveRequestService";
-import { getDepartment } from "../../../services/DepartmentService";
+} from "../../services/LeaveRequestService";
+import { getDepartment } from "../../services/DepartmentService";
 import {
   cancelRequest,
   acceptRequest,
   rejectRequest,
-} from "../../../utils/RequestActions";
+} from "../../utils/RequestActions";
 
 export default function ListComponent() {
   const { userData } = useUserData();
@@ -72,6 +72,7 @@ export default function ListComponent() {
       cancelRequest(currentRequest);
     }
     setDialogOpen(false);
+    window.location.reload();
   };
 
   useEffect(() => {
