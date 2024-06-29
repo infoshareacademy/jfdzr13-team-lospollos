@@ -22,6 +22,7 @@ const useAuth = (): ContextType => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -32,6 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             name: user?.displayName ?? "",
           })
         : setAuthUser(null);
+      setIsLoading(false);
     });
 
     return () => unsubscribe();
@@ -44,7 +46,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     changePassword,
   };
 
-  return (
+  console.log("userState", authUser);
+
+  return isLoading ? (
+    <span>Loading...</span>
+  ) : (
     <AuthContext.Provider value={authHandler}>{children}</AuthContext.Provider>
   );
 };

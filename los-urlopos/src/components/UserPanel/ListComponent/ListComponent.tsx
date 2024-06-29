@@ -61,9 +61,6 @@ export default function ListComponent() {
     setDialogOpen(true);
   };
 
-  //tu można wstawić funkcje gdzie w uieścimy dane statystyczne w userPanel, poniżej tylko wywołanie funkcji
-  getReqStatisticForUser(userData.userId);
-
   const handleActionConfirm = () => {
     if (currentAction === "accept") {
       acceptRequest(currentRequest);
