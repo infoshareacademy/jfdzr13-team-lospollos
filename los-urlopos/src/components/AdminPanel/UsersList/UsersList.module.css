@@ -1,0 +1,9 @@
+.userHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userDetails {
+  margin-top: 10px;
+}

@@ -1,4 +1,11 @@
-import { doc, collection, getDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../firebase";
 import { Departments } from "../types-obj/types-obj";
 
@@ -13,6 +20,16 @@ export const getDepartment = async () => {
     })
   );
   return deptList;
+};
+
+export const getDepartmentByHeadId = async (headId: String) => {
+  const q = query(collection(db, "Departments"), where("head", "==", headId));
+  let headIdListDept: any = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) =>
+    headIdListDept.push({ deptId: doc.id, ...doc.data() })
+  );
+  return headIdListDept;
 };
 
 export const getDepartmentById = async (departmentId: string) => {
