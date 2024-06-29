@@ -1,8 +1,9 @@
 import { UserCredential } from "firebase/auth";
 
 export type Holidays = { day: string };
-export type Departments = { dept: string; head: string };
+export type Departments = {deptId: string, dept: string; head: string };
 export type Request = {
+  id: string
   dayFrom: string;
   dayTo: string;
   daysReq: number;

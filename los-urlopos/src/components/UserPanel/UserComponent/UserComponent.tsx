@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from "react";
 import useUserData from "../../../contexts/ViewDataContext";
-import useAuth from "../../../contexts/AuthContext";
 import pfp from "../../../images/Unknown_person.jpg";
+import {
+  toUserView,
+} from "../../../mappers/ViewObjectsMapper";
+import { UserView } from "../../../types-obj/objectViewTypes";
 import styles from "./userComponent.module.css";
+import { useState, useEffect } from "react";
+import { emptyUser } from "../../../utils/DefaultObjects";
+import { Departments, User } from "../../../types-obj/types-obj";
 
 interface UserComponentProps {
   onAddButtonClick: () => void;
@@ -10,22 +15,30 @@ interface UserComponentProps {
 
 export function UserComponent({ onAddButtonClick }: UserComponentProps) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
-  const { userData, departmentData } = useUserData();
-  const { authUser } = useAuth();
+  const [userView, setUserView] = useState<UserView>(emptyUser);
+  const { userData, departmentsList } = useUserData();
+
+ const toUserViewObject = (
+    userData: User,
+    departmentList: Departments[]
+  ) => {
+    toUserView(userData, departmentList).then((userView) =>
+      setUserView(userView)
+    );
+  
+    return userView;
+  };
 
   useEffect(() => {
-    if (authUser) {
-      const savedImage = localStorage.getItem(
-        `profileImage_${authUser.email}_${authUser.uid}`
-      );
-      if (savedImage) {
-        setProfileImage(savedImage);
-      }
-    }
-  }, [authUser]);
+    toUserViewObject(userData, departmentsList);
 
-  console.log("User data in component:", userData); // Debug log
-  console.log("Department data in component:", departmentData); // Debug log
+    const savedImage = localStorage.getItem(
+      `profileImage_${userView.email}_${userView.id}`
+    );
+    if (savedImage) {
+      setProfileImage(savedImage);
+    }
+  }, [userData]);
 
   return (
     <div className={styles.profilePictureWrapper}>
@@ -37,22 +50,15 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
         />
       </div>
       <div className={styles.userDetails}>
-        {userData ? (
-          <>
-            <span>
-              {userData.firstName} {userData.surname}
-            </span>
-            <span>{userData.email}</span>
-            <span>
-              {departmentData ? departmentData.dept : "Loading department..."}
-            </span>
-          </>
-        ) : (
-          <span>Loading user data...</span>
-        )}
+        <span>
+          {userView.firstName} {userView.lastName}
+        </span>
+        <span>{userView.email}</span>
+        <span>{userView.department.name}</span>
+        <span>{userView.department.leader.name}</span>
       </div>
       <div className={styles.daysLeft}>
-        You have <span>{userData.currentDays}</span> days left
+        You have <span>{userView.daysOffLeft}</span> days left
       </div>
       <div className={styles.addButtonContainer}>
         <button className={styles.addButton} onClick={onAddButtonClick}>
