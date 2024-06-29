@@ -1,37 +1,53 @@
-.profilePictureWrapper {
+.userBusinessCard {
   box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
-  display: flex;
-  padding: 0.6%;
-  width: 94.99%;
-  position: relative;
-  margin-top: 1%;
+
+  width: 95%;
+  height: 130px;
+
+  display: grid;
+  grid-template-columns: 1fr 3fr 3fr 3fr;
+  grid-template-rows: 90%;
+  grid-template-areas: "profilePicture userDetails userStatistics daysOff";
+
   border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.803);
-  margin-top: 1%;
-  border-radius: 5px;
+  box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
 }
-
-.profilePictureCont {
-  position: relative;
-  left: 2%;
-  width: 130px;
-  height: 130px;
+.userBusinessCard .profilePicture {
+  height: 95%;
+  width: 95%;
+  grid-area: profilePicture;
   display: flex;
-  align-self: center;
+  justify-content: center;
+  align-items: center;
 }
 
-.profilePicture {
-  width: 130px;
-  height: 130px;
-  object-fit: cover;
+.userBusinessCard .profilePictureImg {
+  height: 100%;
+  width: auto;
   border-radius: 100px;
-  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
 }
 
-.label {
+.userBusinessCard .userDetails {
+  grid-area: userDetails;
+  display: flex;
+  flex-direction: column;
+}
+
+.userBusinessCard .userStatistics {
+  grid-area: userStatistics;
+  display: flex;
+  flex-direction: column;
+}
+
+.userBusinessCard .daysOff {
+  grid-area: daysOff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* .userBusinessCard .label {
   position: absolute;
-  width: 130px;
-  height: 130px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,7 +58,7 @@
   color: transparent;
 }
 
-.label:hover {
+.userBusinessCard .label:hover {
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
 }
@@ -52,16 +68,10 @@
 }
 
 .userDetails {
+  width: 30%;
+  height: 90%;
   display: flex;
   flex-direction: column;
-  padding: 10px 0 0 30px;
-  gap: 5px;
-  width: 20%;
-  width: 20%;
-  height: 100%;
-  font-size: 1.2em;
-  margin-left: 3%;
-  margin-left: 3%;
 }
 
 .daysLeft {
@@ -110,4 +120,4 @@
   transform: scale(0.99);
   background-color: #3457d5d9;
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-}
+} */

@@ -38,4 +38,3 @@ const AdminPanel: FC = () => {
 };
 
 export default AdminPanel;
-d;

@@ -38,12 +38,12 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
   }, [userData]);
 
   return (
-    <div className={styles.profilePictureWrapper}>
-      <div className={styles.profilePictureCont}>
+    <div className={styles.userBusinessCard}>
+      <div className={styles.profilePicture}>
         <img
-          className={styles.profilePicture}
+          className={styles.profilePictureImg}
           src={profileImage}
-          alt="Profile Picture"
+          alt="User profile picture"
         />
       </div>
       <div className={styles.userDetails}>
@@ -54,14 +54,15 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
         <span>{userView.department.name}</span>
         <span>{userView.department.leader.name}</span>
       </div>
-      <div className={styles.daysLeft}>
+      <div className={styles.userStatistics}></div>
+      <div className={styles.daysOff}>
         You have <span>{userView.daysOffLeft}</span> days left
       </div>
-      <div className={styles.addButtonContainer}>
+      {/* <div className={styles.addButtonContainer}>
         <button className={styles.addButton} onClick={onAddButtonClick}>
           ADD
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
