@@ -1,12 +1,12 @@
+import { useEffect, useState } from "react";
 import useUserData from "../../../contexts/ViewDataContext";
 import pfp from "../../../images/Unknown_person.jpg";
 import { toUserView } from "../../../mappers/ViewObjectsMapper";
 import { UserView } from "../../../types-obj/objectViewTypes";
-import styles from "./userComponent.module.css";
-import { useState, useEffect } from "react";
-import { emptyUser } from "../../../utils/DefaultObjects";
 import { Departments, User } from "../../../types-obj/types-obj";
+import { emptyUser } from "../../../utils/DefaultObjects";
 import { getReqStatisticForUser } from "../../../utils/StatisticActions";
+import styles from "./userComponent.module.css";
 
 interface UserComponentProps {
   onAddButtonClick: () => void;
@@ -47,12 +47,16 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
         />
       </div>
       <div className={styles.userDetails}>
-        <span>
-          {userView.firstName} {userView.lastName}
-        </span>
-        <span>{userView.email}</span>
-        <span>{userView.department.name}</span>
-        <span>{userView.department.leader.name}</span>
+        <div>
+          <h2 className="userName">
+            {userView.firstName} {userView.lastName}
+          </h2>
+          <h4>{userView.email}</h4>
+        </div>
+        <div>
+          <h3>{userView.department.name}</h3>
+          <h5>{userView.department.leader.name}</h5>
+        </div>
       </div>
       <div className={styles.userStatistics}></div>
       <div className={styles.daysOff}>
