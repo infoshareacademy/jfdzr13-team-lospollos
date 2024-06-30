@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import styles from "./userRequestsTable.module.css";
+import styles from "./spvRequestsTable.module.css";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
 import {
+  Select,
+  MenuItem,
   CircularProgress,
   Dialog,
   DialogActions,
@@ -16,33 +18,76 @@ import {
 } from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
 import useUserData from "../../../contexts/ViewDataContext";
-import { getRequestUserId } from "../../../services/LeaveRequestService";
-import { getDepartmentById } from "../../../services/DepartmentService";
-import { cancelRequest } from "../../../utils/RequestActions";
-import { red } from "@mui/material/colors";
-export default function UserRequestsTable() {
+import { getDepartment } from "../../../services/DepartmentService";
+import { acceptRequest, rejectRequest } from "../../../utils/RequestActions";
+import {
+  getRequestDeptId,
+  getRequestAll,
+} from "../../../services/LeaveRequestService";
+
+export default function SpvRequestsTable() {
   const { userData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [department, setDepartment] = useState<string>("");
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("");
+  const [spvDepartments, setSpvDepartments] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
   const [currentRequest, setCurrentRequest] = useState({});
-
-  const fetchRequests = async () => {
-    setIsLoading(true);
-    const departmentData = await getDepartmentById(userData.deptId);
-    if (departmentData) {
-      setDepartment(departmentData);
-    }
-    const requestData = await getRequestUserId(userData.userId);
-    setData(requestData);
-    setIsLoading(false);
-  };
+  const [rejectReasonError, setRejectReasonError] = useState<string>("");
 
   useEffect(() => {
-    fetchRequests();
-  }, [userData]);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        if (selectedDepartment && selectedDepartment !== "allRequests") {
+          const response = await getRequestDeptId(selectedDepartment);
+          setData(response);
+        } else if (selectedDepartment === "allRequests") {
+          const response = await getRequestAll();
+          const allRequests = response.filter((request) =>
+            spvDepartments.some(
+              (department) => department.deptId === request.deptId
+            )
+          );
+          setData(allRequests);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedDepartment, spvDepartments]);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getDepartment();
+        const userDepartments = response.filter(
+          (department) => department.head === userData.userId
+        );
+        setSpvDepartments(userDepartments);
+        if (userDepartments.length === 1) {
+          setSelectedDepartment(userDepartments[0].deptId);
+        } else if (
+          userDepartments.length > 1 &&
+          location.pathname === "/supervisor-panel"
+        ) {
+          setSelectedDepartment("allRequests");
+        }
+      } catch (error) {
+        console.error("Error fetching departments:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDepartments();
+  }, [userData.userId]);
 
   const handleButtonClick = (row: Request, action: string) => {
     setCurrentAction(action);
@@ -51,11 +96,45 @@ export default function UserRequestsTable() {
   };
 
   const handleActionConfirm = async () => {
-    if (currentAction === "cancel") {
-      await cancelRequest(currentRequest);
+    if (currentAction === "accept") {
+      await acceptRequest(currentRequest);
+    } else if (currentAction === "reject") {
+      const rejectReasonValue: string = (
+        document.getElementById("rejectReason") as HTMLInputElement
+      ).value.trim();
+
+      if (rejectReasonValue === "") {
+        setRejectReasonError("Reject Reason is required!");
+        return;
+      } else {
+        setRejectReasonError("");
+        await rejectRequest(currentRequest, rejectReasonValue);
+      }
     }
     setDialogOpen(false);
-    fetchRequests();
+    fetchData();
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      if (selectedDepartment && selectedDepartment !== "allRequests") {
+        const response = await getRequestDeptId(selectedDepartment);
+        setData(response);
+      } else if (selectedDepartment === "allRequests") {
+        const response = await getRequestAll();
+        const allRequests = response.filter((request) =>
+          spvDepartments.some(
+            (department) => department.deptId === request.deptId
+          )
+        );
+        setData(allRequests);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const columns = useMemo<MRT_ColumnDef<Request>[]>(
@@ -65,11 +144,23 @@ export default function UserRequestsTable() {
         header: "Request List",
         columns: [
           {
+            id: "userNameColumn",
+            accessorFn: (row) => `${userData.firstName} ${userData.surname}`,
+            header: "Employee's name",
+            enableHiding: false,
+            size: 150,
+            muiTableHeadCellProps: { align: "center" },
+            muiTableBodyCellProps: {
+              align: "center",
+              sx: { fontWeight: "bold" },
+            },
+          },
+          {
             id: "requestTypeColumn",
             accessorKey: "requestType",
             header: "Request type",
-            size: 100,
             enableSorting: true,
+            size: 100,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
               align: "center",
@@ -79,10 +170,10 @@ export default function UserRequestsTable() {
           {
             id: "deptColumn",
             accessorFn: (row) => {
-              if (row.deptId === userData.deptId) {
-                return department.dept;
-              }
-              return "";
+              const dept = spvDepartments.find(
+                (dept) => dept.deptId === row.deptId
+              );
+              return dept ? dept.dept : "Not assigned";
             },
             header: "Department",
             enableSorting: true,
@@ -154,7 +245,7 @@ export default function UserRequestsTable() {
             header: "Created At",
             Cell: ({ cell }) => {
               const date = new Date(cell.getValue<number>());
-              return <span>{date.toLocaleDateString()}</span>;
+              return date.toLocaleDateString();
             },
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
@@ -171,28 +262,51 @@ export default function UserRequestsTable() {
             Cell: ({ row }) => (
               <div>
                 {row.original.status === "Pending" && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    sx={{
-                      backgroundColor: "rgba(255,165,0, 0.7)",
-                      borderRadius: "5px",
-                      color: "white",
-                      border: "none",
-                      ":hover": {
-                        backgroundColor: "rgba(255,165,0, 0.54)",
-                        transition: "0.2s",
-                      },
-                      ":active": {
-                        backgroundColor: "rgba(255,165,0, 0.74)",
-                        transform: "scale(0.98) translateY(0.7px)",
-                        boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
-                      },
-                    }}
-                    onClick={() => handleButtonClick(row.original, "cancel")}
-                  >
-                    Cancel Request
-                  </Button>
+                  <>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        marginRight: "10px",
+                        backgroundColor: "rgba(84, 169, 84, 0.884)",
+                        borderRadius: "5px",
+                        color: "white",
+                        border: "none",
+                        ":hover": {
+                          backgroundColor: "rgba(84, 169, 84, 0.671)",
+                          transition: "0.2s",
+                        },
+                        ":active": {
+                          backgroundColor: "rgba(84, 169, 84, 0.884)",
+                          transform: "scale(0.98) translateY(0.7px)",
+                          boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                        },
+                      }}
+                      onClick={() => handleButtonClick(row.original, "accept")}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "rgba(213, 69, 69, 0.73)",
+                        borderRadius: "5px",
+                        color: "white",
+                        border: "none",
+                        ":hover": {
+                          backgroundColor: "rgba(213, 69, 69, 0.549)",
+                          transition: "0.2s",
+                        },
+                        ":active": {
+                          backgroundColor: "rgba(213, 69, 69, 0.73)",
+                          transform: "scale(0.98) translateY(0.7px)",
+                          boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                        },
+                      }}
+                      onClick={() => handleButtonClick(row.original, "reject")}
+                    >
+                      Reject
+                    </Button>
+                  </>
                 )}
               </div>
             ),
@@ -221,7 +335,7 @@ export default function UserRequestsTable() {
                   marginRight: "20px",
                 }}
               >
-                Your Requests List
+                Request List
               </span>
             </div>
             <div
@@ -231,18 +345,40 @@ export default function UserRequestsTable() {
                 alignItems: "center",
                 justifyContent: "flex-end",
               }}
-            ></div>
+            >
+              {spvDepartments.length > 1 && (
+                <Select
+                  defaultValue="allRequests"
+                  value={selectedDepartment}
+                  onChange={(e) => setSelectedDepartment(e.target.value)}
+                  style={{
+                    marginRight: "10px",
+                    width: "220px",
+                    height: "40px",
+                  }}
+                >
+                  <MenuItem value="allRequests">All Requests</MenuItem>
+                  {spvDepartments.map((department) => (
+                    <MenuItem value={department.deptId} key={department.deptId}>
+                      {department.dept}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
+            </div>
           </div>
         ),
       },
     ],
-    [data]
+    [data, spvDepartments, selectedDepartment]
   );
+
   const table = useMaterialReactTable({
     columns,
     data,
     enableHiding: false,
     enableColumnActions: false,
+    enableExpanding: true,
     enableDensityToggle: false,
     muiPaginationProps: {
       rowsPerPageOptions: [8, 16, 32, 48, 64, 128],
@@ -313,16 +449,20 @@ export default function UserRequestsTable() {
         </DialogTitle>
         <DialogContent>
           {currentAction === "reject" && (
-            <TextField
-              required
-              margin="dense"
-              id="rejectReason"
-              name="rejectReason"
-              label="Reject Reason"
-              type="text"
-              variant="standard"
-              fullWidth
-            />
+            <>
+              <TextField
+                required
+                error={!!rejectReasonError}
+                helperText={rejectReasonError}
+                margin="dense"
+                id="rejectReason"
+                name="rejectReason"
+                label="Reject Reason"
+                type="text"
+                variant="standard"
+                fullWidth
+              />
+            </>
           )}
         </DialogContent>
         <DialogActions>
