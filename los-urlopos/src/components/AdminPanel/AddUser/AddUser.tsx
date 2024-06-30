@@ -2,6 +2,7 @@ import React, { FC, FormEvent, ChangeEvent, useState, useEffect } from "react";
 import { User } from "../../../types-obj/types-obj";
 import { createUser, getCurrentUser } from "../../../services/AuthService";
 import { addUser } from "../../../services/UserService";
+import styles from "./AddUser.module.css";
 
 interface AddUserProps {
   onUserAdded: () => void;
@@ -91,119 +92,153 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
   };
 
   return (
-    <div>
-      <h2>Add User</h2>
-      <form onSubmit={handleAddUser}>
-        <label>
-          First Name:
-          <input
-            type="text"
-            name="firstName"
-            placeholder="First Name"
-            value={newUser.firstName}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Surname:
-          <input
-            type="text"
-            name="surname"
-            placeholder="Surname"
-            value={newUser.surname}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={newUser.email}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Initial Password:
-          <input
-            type="text"
-            name="password"
-            placeholder="Password"
-            value={password}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Current Days:
-          <input
-            type="number"
-            name="currentDays"
-            placeholder="Current Days"
-            value={newUser.currentDays}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Days:
-          <input
-            type="number"
-            name="days"
-            placeholder="Days"
-            value={newUser.days}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          Department ID:
-          <input
-            type="text"
-            name="deptId"
-            placeholder="Department ID"
-            value={newUser.deptId}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          On Demand:
-          <input
-            type="number"
-            name="onDemand"
-            placeholder="On Demand"
-            value={newUser.onDemand}
-            onChange={handleInputChange}
-          />
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="roleAdmin"
-            checked={newUser.roleAdmin}
-            onChange={handleInputChange}
-          />
-          Admin
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="roleUser"
-            checked={newUser.roleUser}
-            onChange={handleInputChange}
-          />
-          User
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            name="roleSupervisor"
-            checked={newUser.roleSupervisor}
-            onChange={handleInputChange}
-          />
-          Supervisor
-        </label>
-        <button type="submit">Add User</button>
-      </form>
-      {error && <div style={{ color: "red" }}>{error}</div>}
+    <div className={styles.popupWrapper}>
+      <div className={styles.popupContent}>
+        <div className={styles.addUserContent}>
+          <h2 className={styles.addUserH2}>Add User</h2>
+          <form onSubmit={handleAddUser} className={styles.addUserForm}>
+            <label className={styles.addUserLabel}>
+              First Name:
+              <input
+                className={styles.addUserInput}
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                value={newUser.firstName}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              Surname:
+              <input
+                className={styles.addUserInput}
+                type="text"
+                name="surname"
+                placeholder="Surname"
+                value={newUser.surname}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              Email:
+              <input
+                className={styles.addUserInput}
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={newUser.email}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              Initial Password:
+              <input
+                className={styles.addUserInput}
+                type="text"
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              Current Days:
+              <input
+                className={styles.addUserInput}
+                type="number"
+                name="currentDays"
+                placeholder="Current Days"
+                value={newUser.currentDays}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              Days:
+              <input
+                className={styles.addUserInput}
+                type="number"
+                name="days"
+                placeholder="Days"
+                value={newUser.days}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              Department ID:
+              <input
+                className={styles.addUserInput}
+                type="text"
+                name="deptId"
+                placeholder="Department ID"
+                value={newUser.deptId}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              On Demand:
+              <input
+                className={styles.addUserInput}
+                type="number"
+                name="onDemand"
+                placeholder="On Demand"
+                value={newUser.onDemand}
+                onChange={handleInputChange}
+                required
+              />
+            </label>
+            <label className={styles.addUserLabel}>
+              <input
+                className={styles.addUserInput}
+                type="checkbox"
+                name="roleAdmin"
+                checked={newUser.roleAdmin}
+                onChange={handleInputChange}
+              />
+              Admin
+            </label>
+            <label className={styles.addUserLabel}>
+              <input
+                className={styles.addUserInput}
+                type="checkbox"
+                name="roleUser"
+                checked={newUser.roleUser}
+                onChange={handleInputChange}
+              />
+              User
+            </label>
+            <label className={styles.addUserLabel}>
+              <input
+                className={styles.addUserInput}
+                type="checkbox"
+                name="roleSupervisor"
+                checked={newUser.roleSupervisor}
+                onChange={handleInputChange}
+              />
+              Supervisor
+            </label>
+            <div className={styles.addUserBtns}>
+              <button className={styles.addUserBtn} type="submit">
+                Add User
+              </button>
+              <button
+                className={styles.addUserBtn}
+                type="button"
+                onClick={onClose}
+              >
+                Close
+              </button>
+            </div>
+          </form>
+          {error && <div style={{ color: "red" }}>{error}</div>}
+        </div>
+      </div>
     </div>
   );
 };

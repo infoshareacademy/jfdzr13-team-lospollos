@@ -3,18 +3,28 @@ import { User } from "../../../types-obj/types-obj";
 import styles from "./UsersList.module.css";
 import ConfirmAction from "../ConfirmAction";
 import { deleteUser, subscribeToUsers } from "../../../services/UserService";
+import AddUser from "../AddUser/AddUser";
 
 interface UsersListProps {
   openAddUserModal: () => void;
 }
 
-const UsersList: FC<UsersListProps> = ({ openAddUserModal }) => {
+const UsersList: FC<UsersListProps> = ({}) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedUserId, setExpandedUserId] = useState<string | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
 
   useEffect(() => {
     const unsub = subscribeToUsers(
@@ -50,8 +60,7 @@ const UsersList: FC<UsersListProps> = ({ openAddUserModal }) => {
     if (userIdToDelete) {
       handleDeleteUser(userIdToDelete);
     }
-    setConfirmDialogOpen(false);
-    setUserIdToDelete(null);
+    handleCancelDelete();
   };
 
   const handleCancelDelete = () => {
@@ -69,7 +78,11 @@ const UsersList: FC<UsersListProps> = ({ openAddUserModal }) => {
   return (
     <div>
       <h1>Users</h1>
-      <button onClick={openAddUserModal}>Add User</button>
+      <button onClick={handleOpenDialog}>Add User</button>
+      <dialog open={isDialogOpen} onClose={handleCloseDialog}>
+        <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
+      </dialog>
+      
       <ul>
         {users.map((user) => (
           <li key={user.id}>

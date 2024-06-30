@@ -1,0 +1,137 @@
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.popupWrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.popupContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.addUserH2 {
+  border: 1px solid violet;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  width: 100%;
+  height: 5%;
+  font-size: 3vmin;
+}
+
+.addUserContent {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.67);
+}
+
+.addUserForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+  width: 100%;
+  border: 1px solid green;
+  display: flex;
+}
+
+.addUserLabel {
+  width: 100%;
+  height: 5%;
+  border: 1px solid red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+}
+
+.addUserInput {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
+  justify-items: center;
+  height: 100%;
+  width: 50%;
+  box-sizing: border-box;
+  border: 1px solid green;
+  border-radius: 3px;
+}
+
+.addUserBtns {
+  display: flex;
+  width: 40%;
+  border: 1px solid blue;
+  height: 5%;
+  align-self: center;
+  justify-content: space-between;
+}
+
+.addUserBtn {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 100%;
+  background-color: rgb(84, 169, 84);
+  border-radius: 5px;
+  color: white;
+  border: none;
+  align-self: center;
+  margin-left: 5%;
+}
+.addUserBtn:hover {
+  cursor: pointer;
+  background-color: rgba(84, 169, 84, 0.853);
+  transition: 0.2s;
+}
+
+.addUserBtn:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(84, 169, 84);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.closePopup {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+  height: 100%;
+  background-color: rgb(213, 69, 69);
+  border-radius: 5px;
+  color: white;
+  border: none;
+  transition: 0.2s;
+}
+
+.closePopup:hover {
+  cursor: pointer;
+  background-color: rgba(213, 69, 69, 0.804);
+  transition: 0.2s;
+}
+
+.closePopup:active {
+  transform: scale(0.98) translateY(0.7px);
+  background-color: rgb(213, 69, 69);
+  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}

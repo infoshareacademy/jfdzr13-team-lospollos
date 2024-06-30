@@ -95,7 +95,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(96, 96, 255);
+  background-color: #0095ca;
 }
 
 .navbarAdmin div {
@@ -123,7 +123,7 @@
 }
 
 .navbarAdmin a:active {
-  background-color: rgb(96, 96, 255);
+  background-color: #0095ca;
   scale: 0.95;
   transition: 0.3s;
 }
@@ -140,7 +140,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(96, 96, 255);
+  background-color: #0095ca;
 }
 
 .navbarAllRoles div {
@@ -168,7 +168,7 @@
 }
 
 .navbarAllRoles a:active {
-  background-color: rgb(96, 96, 255);
+  background-color: #0095ca;
   scale: 0.95;
   transition: 0.3s;
 }
