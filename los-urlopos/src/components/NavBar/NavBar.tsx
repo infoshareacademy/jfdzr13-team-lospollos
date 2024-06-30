@@ -30,7 +30,6 @@ const NavBar: FC = () => {
   return (
     <nav className={navbarClass}>
       <div>
-        <NavLink to="/home">Home</NavLink>
         <span className={styles.menuSpan}> | </span>
         {userData.roleUser && <NavLink to="/user-panel">User Panel</NavLink>}
         {userData.roleSupervisor || userData.roleAdmin ? (
