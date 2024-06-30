@@ -24,7 +24,6 @@ const AdminPanel: FC = () => {
     <div className={styles.adminPanel}>
       <div className={styles.navbar}>
         <button onClick={() => setSelectedSection("users")}>Users</button>
-        <button onClick={() => setSelectedSection("requests")}>Requests</button>
         <button onClick={() => setSelectedSection("departments")}>
           Departments
         </button>
