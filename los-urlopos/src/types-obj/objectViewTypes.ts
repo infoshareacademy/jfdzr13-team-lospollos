@@ -29,18 +29,15 @@ export type LeaveRequestView = {
   rejectReason: string;
   createdBy: RelationalUserView;
   createdAt: number;
-}
+};
 
 export type DepartmentView = {
   id: string;
   name: string;
-  leader: RelationalUserView
+  leader: RelationalUserView;
 };
 
 export type RelationalUserView = {
   id: string;
   name: string;
-}
-
-
-
+};
