@@ -4,6 +4,8 @@ import ListComponent from "../TableComponent/TableComponent";
 import { UserComponent } from "./UserComponent/UserComponent";
 import styles from "./userPanel.module.css";
 import useUserData from "../../contexts/ViewDataContext";
+import TableComponent from "../TableComponent/TableComponent";
+import UserRequestsTable from "./UserRequestsTable/UserRequestsTable";
 
 export function UserPanel() {
   const [showAddRequest, setShowAddRequest] = useState(false);
@@ -38,7 +40,7 @@ export function UserPanel() {
         }`}
       >
         <UserComponent onAddButtonClick={handleAddButtonClick} />
-        <ListComponent />
+        <UserRequestsTable />
       </div>
       {showAddRequest && (
         <>

@@ -31,7 +31,7 @@ import {
   rejectRequest,
 } from "../../utils/RequestActions";
 
-export default function ListComponent() {
+export default function TableComponent() {
   const { userData } = useUserData();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -72,7 +72,6 @@ export default function ListComponent() {
       cancelRequest(currentRequest);
     }
     setDialogOpen(false);
-    window.location.reload();
   };
 
   useEffect(() => {
