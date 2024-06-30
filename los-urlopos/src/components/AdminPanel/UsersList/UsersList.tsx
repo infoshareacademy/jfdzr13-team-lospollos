@@ -78,23 +78,11 @@ const UsersList: FC<UsersListProps> = ({}) => {
   return (
     <div>
       <h1>Users</h1>
-<<<<<<< HEAD
-      <button onClick={openModal} className={styles.addNewUserBtn}>
-        Add User
-      </button>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Add User"
-      >
-        <AddUser onUserAdded={closeModal} />
-      </Modal>
-=======
       <button onClick={handleOpenDialog}>Add User</button>
       <dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
       </dialog>
->>>>>>> refs/remotes/origin/develop
+      
       <ul>
         {users.map((user) => (
           <li key={user.id}>
