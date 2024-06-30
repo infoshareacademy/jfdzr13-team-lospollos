@@ -227,6 +227,13 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
               <button className={styles.addUserBtn} type="submit">
                 Add User
               </button>
+              <button
+                className={styles.addUserBtn}
+                type="button"
+                onClick={onClose}
+              >
+                Close
+              </button>
             </div>
           </form>
           {error && <div style={{ color: "red" }}>{error}</div>}
