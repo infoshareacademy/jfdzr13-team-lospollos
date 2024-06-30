@@ -1,5 +1,3 @@
-
-
 export type UserView = {
   id: string;
   firstName: string;
