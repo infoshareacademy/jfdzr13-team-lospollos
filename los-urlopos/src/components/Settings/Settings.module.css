@@ -37,14 +37,14 @@
 /* PANEL ADMIN */
 
 .panelAdmin {
-  background: url("../../images/bgblue.png");
+  background: url("../../images/bgblue2.png");
 }
 
 .panelAdmin .settingsCont {
   margin-top: 5%;
   width: 70%;
   height: 55%;
-  background-color: rgba(217, 223, 253, 0.946);
+  background-color: #c2ebfcc8;
   -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
   -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
   box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
@@ -56,13 +56,10 @@
 }
 
 .panelAdmin .formContainer {
-  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
   width: 90%;
   height: 70%;
   display: flex;
-  background-color: rgba(14, 35, 116, 0.8);
+  background-color: #0094cac7;
   align-self: center;
   border-radius: 20px;
   margin-bottom: 5%;
@@ -77,6 +74,8 @@
   justify-content: center;
   align-self: center;
   font-size: 4.5vmin;
+  font-weight: 500;
+  color: white;
 }
 
 .panelAdmin .userInfoCont {
@@ -292,9 +291,6 @@
   align-self: center;
   border-radius: 20px;
   margin-bottom: 5%;
-  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
 }
 
 .panelSupervisor h1 {
@@ -306,6 +302,8 @@
   justify-content: center;
   align-self: center;
   font-size: 4.5vmin;
+  font-weight: 500;
+  color: white;
 }
 
 .panelSupervisor .userInfoCont {
@@ -521,9 +519,6 @@
   align-self: center;
   border-radius: 20px;
   margin-bottom: 5%;
-  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
 }
 
 .panelUser h1 {
@@ -535,6 +530,8 @@
   justify-content: center;
   align-self: center;
   font-size: 4.5vmin;
+  font-weight: 500;
+  color: white;
 }
 
 .panelUser .userInfoCont {
@@ -723,14 +720,14 @@
 /* PANEL MULTI */
 
 .panelMulti {
-  background: url("../../images/bgblue.png");
+  background: url("../../images/bgblue2.png");
 }
 
 .panelMulti .settingsCont {
   margin-top: 5%;
   width: 70%;
   height: 55%;
-  background-color: rgba(217, 223, 253, 0.946);
+  background-color: #c2ebfcc8;
   -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
   -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
   box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
@@ -742,13 +739,10 @@
 }
 
 .panelMulti .formContainer {
-  -webkit-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  -moz-box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
-  box-shadow: 2px 5px 29px 12px rgba(255, 255, 255, 0.3);
   width: 90%;
   height: 70%;
   display: flex;
-  background-color: rgba(14, 35, 116, 0.8);
+  background-color: #0094cac7;
   align-self: center;
   border-radius: 20px;
   margin-bottom: 5%;
@@ -763,6 +757,8 @@
   justify-content: center;
   align-self: center;
   font-size: 4.5vmin;
+  font-weight: 500;
+  color: white;
 }
 
 .panelMulti .userInfoCont {

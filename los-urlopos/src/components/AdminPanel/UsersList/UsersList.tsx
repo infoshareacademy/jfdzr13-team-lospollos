@@ -75,13 +75,14 @@ const UsersList: FC<UsersListProps> = ({}) => {
   return (
     <div>
       <h1>Users</h1>
-      <button onClick={openModal}>Add User</button>
+      <button onClick={openModal} className={styles.addNewUserBtn}>
+        Add User
+      </button>
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
         contentLabel="Add User"
       >
-        <button onClick={closeModal}>Close</button>
         <AddUser onUserAdded={closeModal} />
       </Modal>
       <ul>
