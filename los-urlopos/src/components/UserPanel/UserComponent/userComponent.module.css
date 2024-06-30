@@ -6,18 +6,17 @@
   margin: 2% 0 0 0;
 
   display: grid;
-  grid-template-columns: 1fr 3fr 3fr 3fr;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 3fr 3fr;
   grid-template-rows: 100%;
-  grid-template-areas: "profilePicture userDetails userStatistics daysOff";
-
+  grid-template-areas: "profilePicture userDetails daysOffInventory reqStatusStats reqTypeStats";
   border-radius: 5px;
-  background-color: rgba(255, 255, 255, 0.803);
+  background-color: rgba(255, 255, 255, 0.9);
   box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
 }
 .userBusinessCard .profilePicture {
   height: 100%;
   width: 100%;
-  margin: 5px;
+  padding: 10px;
   grid-area: profilePicture;
   display: flex;
   justify-content: center;
@@ -44,10 +43,48 @@
   flex-direction: column;
 }
 
+.userBusinessCard .daysOffInventory {
+  grid-area: daysOffInventory;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    "daysOffTitle daysOff"
+    "onDemandTitle onDemand";
+  justify-items: center;
+  align-items: center;
+}
+
+.userBusinessCard .daysOffTitle {
+  grid-area: daysOffTitle;
+}
+
+.userBusinessCard .onDemandTitle {
+  grid-area: onDemandTitle;
+}
+
 .userBusinessCard .daysOff {
   grid-area: daysOff;
-  display: flex;
-  flex-direction: column;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.userBusinessCard .onDemand {
+  grid-area: onDemand;
+  font-size: x-large;
+}
+
+.userBusinessCard .userDetails h2,
+h3 {
+  font-weight: bold;
+}
+
+.userBusinessCard .daysOffInventory .daysOff span {
+  font-size: x-large;
+}
+
+.userBusinessCard .daysOffInventory .onDemand span {
+  font-size: large;
 }
 
 /* .userBusinessCard .label {
