@@ -1,0 +1,21 @@
+export type UserStatistics = {
+  leaveRequestStat: UserLeaveRequestsStats;
+  daysOffsStat: UserDayOffStats;
+};
+
+export type UserLeaveRequestsStats = {
+  allReqNumber: number;
+  pendingReqNumber: number;
+  approvedReqNumber: number;
+  rejectedReqNumber: number;
+  cancelledReqNumber: number;
+};
+
+export type UserDayOffStats = {
+  annualLeaveNumber: number;
+  additionalLeaveNumber: number;
+  specialLeaveNumber: number;
+  childLeaveNumber: number;
+  unpaidLeaveNumber: number;
+  onDemandLeaveNumber: number;
+};
