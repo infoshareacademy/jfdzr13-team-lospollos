@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./listComponent.module.css";
+import REQUEST_STATUS from "../../../enums/requestStatus";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -16,7 +17,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { Request } from "../../../types-obj/types-obj";
+import { Request, DateToShowOptions } from "../../../types-obj/types-obj";
 import { useLocation } from "react-router-dom";
 import useUserData from "../../../contexts/ViewDataContext";
 import {
@@ -31,6 +32,12 @@ import {
   rejectRequest,
 } from "../../../utils/RequestActions";
 import { getReqStatisticForUser } from "../../../utils/StatisticActions";
+
+const dateOptions: DateToShowOptions = {
+  year: "numeric",
+  day: "2-digit",
+  month: "2-digit",
+};
 
 export default function ListComponent() {
   const { userData } = useUserData();
@@ -174,6 +181,7 @@ export default function ListComponent() {
           {
             id: "requestTypeColumn",
             accessorKey: "requestType",
+            enableColumnFilter: false,
             header: "Request type",
             enableSorting: true,
             muiTableHeadCellProps: { align: "center" },
@@ -192,6 +200,7 @@ export default function ListComponent() {
             },
             header: "Department",
             enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
             size: 60,
@@ -199,8 +208,16 @@ export default function ListComponent() {
           {
             id: "dayFromColumn",
             accessorKey: "dayFrom",
+            Cell: ({ cell }) => {
+              const date = new Date(cell.getValue<string>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
+            },
             header: "From",
-            enableSorting: false,
+            enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "right" },
             muiTableBodyCellProps: { align: "right" },
             size: 60,
@@ -208,8 +225,16 @@ export default function ListComponent() {
           {
             id: "dayToColumn",
             accessorKey: "dayTo",
+            Cell: ({ cell }) => {
+              const date = new Date(cell.getValue<string>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
+            },
             header: "To",
-            enableSorting: false,
+            enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "left" },
             muiTableBodyCellProps: { align: "left" },
             size: 60,
@@ -218,6 +243,14 @@ export default function ListComponent() {
             id: "statusColumn",
             accessorKey: "status",
             header: "Status",
+            enableColumnFilter: true,
+            filterVariant: "select",
+            filterSelectOptions: [
+              REQUEST_STATUS.Approved,
+              REQUEST_STATUS.Cancelled,
+              REQUEST_STATUS.Pending,
+              REQUEST_STATUS.Rejected,
+            ],
             size: 60,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: (props) => {
@@ -239,6 +272,7 @@ export default function ListComponent() {
             id: "createdAtColumn",
             accessorKey: "createdAt",
             header: "Created At",
+            enableColumnFilter: false,
             Cell: ({ cell }) => {
               const date = new Date(cell.getValue<number>());
               return date.toLocaleDateString();
@@ -252,6 +286,7 @@ export default function ListComponent() {
             accessorKey: "actions",
             header: "Actions",
             enableSorting: false,
+            enableColumnFilter: false,
             Cell: ({ row }) => (
               <div>
                 {row.original.status === "Pending" &&
@@ -406,6 +441,7 @@ export default function ListComponent() {
     },
     enableHiding: false,
     enableColumnActions: false,
+    columnFilterDisplayMode: "popover",
     enableExpanding: true,
     enableDensityToggle: false,
     muiPaginationProps: {
