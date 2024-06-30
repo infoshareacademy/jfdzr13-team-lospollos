@@ -82,6 +82,7 @@ const UsersList: FC<UsersListProps> = ({}) => {
       <dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
       </dialog>
+      
       <ul>
         {users.map((user) => (
           <li key={user.id}>
