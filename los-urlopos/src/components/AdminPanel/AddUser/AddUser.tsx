@@ -102,6 +102,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="First Name"
             value={newUser.firstName}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
@@ -112,6 +113,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="Surname"
             value={newUser.surname}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
@@ -122,6 +124,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="Email"
             value={newUser.email}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
@@ -132,6 +135,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="Password"
             value={password}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
@@ -142,6 +146,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="Current Days"
             value={newUser.currentDays}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
@@ -152,6 +157,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="Days"
             value={newUser.days}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
@@ -162,6 +168,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="Department ID"
             value={newUser.deptId}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
@@ -172,6 +179,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             placeholder="On Demand"
             value={newUser.onDemand}
             onChange={handleInputChange}
+            required
           />
         </label>
         <label>
