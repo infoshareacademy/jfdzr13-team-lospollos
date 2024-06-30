@@ -194,6 +194,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
               />
             </label>
             <label className={styles.addUserLabel}>
+              Admin
               <input
                 className={styles.addUserInput}
                 type="checkbox"
@@ -201,9 +202,9 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 checked={newUser.roleAdmin}
                 onChange={handleInputChange}
               />
-              Admin
             </label>
             <label className={styles.addUserLabel}>
+              User
               <input
                 className={styles.addUserInput}
                 type="checkbox"
@@ -211,9 +212,9 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 checked={newUser.roleUser}
                 onChange={handleInputChange}
               />
-              User
             </label>
             <label className={styles.addUserLabel}>
+              Supervisor
               <input
                 className={styles.addUserInput}
                 type="checkbox"
@@ -221,14 +222,13 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 checked={newUser.roleSupervisor}
                 onChange={handleInputChange}
               />
-              Supervisor
             </label>
             <div className={styles.addUserBtns}>
               <button className={styles.addUserBtn} type="submit">
                 Add User
               </button>
               <button
-                className={styles.addUserBtn}
+                className={styles.closePopup}
                 type="button"
                 onClick={onClose}
               >
