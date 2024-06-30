@@ -25,7 +25,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="logout" element={<Logout />} />
         </Route>
-        {/* safe route to always redirect to home when logged*/}
+        {/* safe route to always redirect to / when logged*/}
         <Route path="*" element={<Layout />} /> {/* Handle unknown routes */}
       </Route>
     </Routes>

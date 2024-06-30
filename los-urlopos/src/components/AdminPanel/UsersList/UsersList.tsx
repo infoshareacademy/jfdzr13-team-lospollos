@@ -4,7 +4,6 @@ import styles from "./UsersList.module.css";
 import ConfirmAction from "../ConfirmAction";
 import { deleteUser, subscribeToUsers } from "../../../services/UserService";
 import AddUser from "../AddUser/AddUser";
-import Modal from "react-modal";
 
 interface UsersListProps {
   openAddUserModal: () => void;
@@ -17,10 +16,15 @@ const UsersList: FC<UsersListProps> = ({}) => {
   const [expandedUserId, setExpandedUserId] = useState<string | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
 
   useEffect(() => {
     const unsub = subscribeToUsers(
@@ -56,8 +60,7 @@ const UsersList: FC<UsersListProps> = ({}) => {
     if (userIdToDelete) {
       handleDeleteUser(userIdToDelete);
     }
-    setConfirmDialogOpen(false);
-    setUserIdToDelete(null);
+    handleCancelDelete();
   };
 
   const handleCancelDelete = () => {
@@ -75,15 +78,10 @@ const UsersList: FC<UsersListProps> = ({}) => {
   return (
     <div>
       <h1>Users</h1>
-      <button onClick={openModal}>Add User</button>
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Add User"
-      >
-        <button onClick={closeModal}>Close</button>
-        <AddUser onUserAdded={closeModal} />
-      </Modal>
+      <button onClick={handleOpenDialog}>Add User</button>
+      <dialog open={isDialogOpen} onClose={handleCloseDialog}>
+        <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
+      </dialog>
       <ul>
         {users.map((user) => (
           <li key={user.id}>

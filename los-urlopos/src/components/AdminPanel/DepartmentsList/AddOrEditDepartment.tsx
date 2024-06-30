@@ -16,14 +16,14 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
   onClose,
   departmentToEdit = null,
 }) => {
-  const [department, setDepartment] = useState<string>("");
-  const [head, setHead] = useState<string>("");
+  const [departmentName, setDepartmentName] = useState<string>("");
+  const [departmentHead, setDepartmentHead] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (departmentToEdit) {
-      setDepartment(departmentToEdit.dept);
-      setHead(departmentToEdit.head);
+      setDepartmentName(departmentToEdit.dept);
+      setDepartmentHead(departmentToEdit.head);
     }
   }, [departmentToEdit]);
 
@@ -31,12 +31,12 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
     e.preventDefault();
     try {
       if (departmentToEdit) {
-        await updateDepartment(departmentToEdit.deptId, {
-          dept: department,
-          head,
+        await updateDepartment(departmentToEdit.deptId!, {
+          dept: departmentName,
+          head: departmentHead,
         });
       } else {
-        await createDepartment({ dept: department, head });
+        await createDepartment({ dept: departmentName, head: departmentHead });
       }
       onDepartmentAddedOrEdited();
       onClose();
@@ -55,8 +55,8 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
           Department Name:
           <input
             type="text"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
+            value={departmentName}
+            onChange={(e) => setDepartmentName(e.target.value)}
             required
           />
         </label>
@@ -64,13 +64,16 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
           Department Head:
           <input
             type="text"
-            value={head}
-            onChange={(e) => setHead(e.target.value)}
+            value={departmentHead}
+            onChange={(e) => setDepartmentHead(e.target.value)}
             required
           />
         </label>
         <button type="submit">
           {departmentToEdit ? "Save Changes" : "Create"}
+        </button>
+        <button type="button" onClick={onClose}>
+          Cancel
         </button>
       </form>
     </>
