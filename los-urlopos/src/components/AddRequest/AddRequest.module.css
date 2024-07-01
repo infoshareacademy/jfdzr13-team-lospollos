@@ -90,15 +90,57 @@
 }
 
 .fieldName {
-  width: 40%;
+  width: 60%;
   align-self: center;
   font-size: 1vw;
+}
+
+.textName {
+  width: 60%;
+  height: 50px;
+  align-self: center;
+  font-size: 0.7em;
+  resize: none;
+  outline: none;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: rgb(182, 182, 182);
+  --sb-track-color: #ffffff;
+  --sb-thumb-color: #e6e6e6;
+  --sb-size: 10px;
+}
+
+.textName::placeholder {
+  color: #c4c4c4;
+  font-size: 0.9em;
+  font-weight: 200;
+  letter-spacing: 0.5px;
+  padding-left: 5px;
+}
+
+.textName::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.textName::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 10px;
+}
+
+.textName::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 10px;
 }
 
 .inputField {
   width: 60%;
   height: 80%;
   align-self: center;
+  border-radius: 5px;
+  border-style: solid;
+  border-color: rgb(182, 182, 182);
+  border-width: 1px;
+  padding-left: 3px;
 }
 
 .ifDemandLeave {
