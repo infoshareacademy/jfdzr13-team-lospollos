@@ -4,6 +4,7 @@ import styles from "./UsersList.module.css";
 import ConfirmAction from "../ConfirmAction";
 import { deleteUser, subscribeToUsers } from "../../../services/UserService";
 import AddUser from "../AddUser/AddUser";
+import AdminUsersTable from "../AdminUsersTable/AdminUsersTable";
 
 interface UsersListProps {
   openAddUserModal: () => void;
@@ -78,12 +79,14 @@ const UsersList: FC<UsersListProps> = ({}) => {
   return (
     <div>
       <h1>Users</h1>
-      <button onClick={handleOpenDialog}>Add User</button>
+      <button className={styles.addUserBtn} onClick={handleOpenDialog}>
+        Add User
+      </button>
       <dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
       </dialog>
-      
-      <ul>
+
+      {/* <ul>
         {users.map((user) => (
           <li key={user.id}>
             <div className={styles.userHeader}>
@@ -139,7 +142,11 @@ const UsersList: FC<UsersListProps> = ({}) => {
             )}
           </li>
         ))}
-      </ul>
+      </ul> */}
+
+      <div className={styles.tableWrapper}>
+        <AdminUsersTable />
+      </div>
       {error && <div className={styles.error}>{error}</div>}
       <ConfirmAction
         open={confirmDialogOpen}
