@@ -5,6 +5,7 @@
   width: 40vw;
   height: 80vh;
   background: url("../../images/lps7.png");
+  background-repeat: no-repeat;
   z-index: 10000;
   background-position: center;
   top: 50%;

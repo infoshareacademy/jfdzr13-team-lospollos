@@ -1,28 +1,102 @@
-import React, { FC, FormEvent, ChangeEvent } from "react";
+import React, { FC, FormEvent, ChangeEvent, useState, useEffect } from "react";
 import { User } from "../../../types-obj/types-obj";
+import { createUser, getCurrentUser } from "../../../services/AuthService";
+import { addUser } from "../../../services/UserService";
 import styles from "./AddUser.module.css";
 
 interface AddUserProps {
-  newUser: User;
-  handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  addUser: (event: FormEvent) => void;
-  error: string | null;
-  closeAddUser: () => void;
+  onUserAdded: () => void;
+  onClose: () => void;
 }
 
-export const AddUser: FC<AddUserProps> = ({
-  newUser,
-  handleInputChange,
-  addUser,
-  error,
-  closeAddUser,
-}) => {
+const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
+  const [newUser, setNewUser] = useState<User>({
+    createdAt: Date.now(),
+    createdBy: "",
+    currentDays: 0,
+    days: 0,
+    deptId: "",
+    email: "",
+    firstName: "",
+    surname: "",
+    onDemand: 0,
+    roleAdmin: false,
+    roleUser: false,
+    roleSupervisor: false,
+    userId: "",
+  });
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        setNewUser((prevUser) => ({
+          ...prevUser,
+          createdBy: currentUser ? currentUser.uid : "",
+        }));
+      } catch (error) {
+        console.error("Error fetching current user: ", error);
+        setError("Error fetching current user.");
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    if (name === "password") {
+      setPassword(value);
+    } else {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        [name]: type === "checkbox" ? checked : value,
+      }));
+    }
+  };
+
+  const handleAddUser = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      const user = await createUser(newUser.email, password);
+      await addUser(user.uid, {
+        ...newUser,
+        userId: user.uid,
+      });
+
+      setNewUser({
+        createdAt: Date.now(),
+        createdBy: "",
+        currentDays: 0,
+        days: 0,
+        deptId: "",
+        email: "",
+        firstName: "",
+        surname: "",
+        onDemand: 0,
+        roleAdmin: false,
+        roleUser: true,
+        roleSupervisor: false,
+        userId: "",
+      });
+      setPassword("");
+      setError(null);
+      onUserAdded();
+      onClose();
+    } catch (error) {
+      console.error("Error adding user: ", error);
+      setError("Error adding user.");
+    }
+  };
+
   return (
     <div className={styles.popupWrapper}>
       <div className={styles.popupContent}>
         <div className={styles.addUserContent}>
           <h2 className={styles.addUserH2}>Add User</h2>
-          <form onSubmit={addUser} className={styles.addUserForm}>
+          <form onSubmit={handleAddUser} className={styles.addUserForm}>
             <label className={styles.addUserLabel}>
               First Name:
               <input
@@ -32,6 +106,7 @@ export const AddUser: FC<AddUserProps> = ({
                 placeholder="First Name"
                 value={newUser.firstName}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
@@ -43,6 +118,7 @@ export const AddUser: FC<AddUserProps> = ({
                 placeholder="Surname"
                 value={newUser.surname}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
@@ -54,17 +130,19 @@ export const AddUser: FC<AddUserProps> = ({
                 placeholder="Email"
                 value={newUser.email}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
-              Created By:
+              Initial Password:
               <input
                 className={styles.addUserInput}
                 type="text"
-                name="createdBy"
-                placeholder="Created By"
-                value={newUser.createdBy}
+                name="password"
+                placeholder="Password"
+                value={password}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
@@ -76,6 +154,7 @@ export const AddUser: FC<AddUserProps> = ({
                 placeholder="Current Days"
                 value={newUser.currentDays}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
@@ -87,6 +166,7 @@ export const AddUser: FC<AddUserProps> = ({
                 placeholder="Days"
                 value={newUser.days}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
@@ -98,6 +178,7 @@ export const AddUser: FC<AddUserProps> = ({
                 placeholder="Department ID"
                 value={newUser.deptId}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
@@ -109,10 +190,10 @@ export const AddUser: FC<AddUserProps> = ({
                 placeholder="On Demand"
                 value={newUser.onDemand}
                 onChange={handleInputChange}
+                required
               />
             </label>
             <label className={styles.addUserLabel}>
-              Admin
               <input
                 className={styles.addUserInput}
                 type="checkbox"
@@ -120,9 +201,9 @@ export const AddUser: FC<AddUserProps> = ({
                 checked={newUser.roleAdmin}
                 onChange={handleInputChange}
               />
+              Admin
             </label>
             <label className={styles.addUserLabel}>
-              User
               <input
                 className={styles.addUserInput}
                 type="checkbox"
@@ -130,9 +211,9 @@ export const AddUser: FC<AddUserProps> = ({
                 checked={newUser.roleUser}
                 onChange={handleInputChange}
               />
+              User
             </label>
             <label className={styles.addUserLabel}>
-              Supervisor
               <input
                 className={styles.addUserInput}
                 type="checkbox"
@@ -140,32 +221,22 @@ export const AddUser: FC<AddUserProps> = ({
                 checked={newUser.roleSupervisor}
                 onChange={handleInputChange}
               />
-            </label>
-            <label className={styles.addUserLabel}>
-              User ID:
-              <input
-                className={styles.addUserInput}
-                type="text"
-                name="userId"
-                placeholder="User ID"
-                value={newUser.userId}
-                onChange={handleInputChange}
-              />
+              Supervisor
             </label>
             <div className={styles.addUserBtns}>
               <button className={styles.addUserBtn} type="submit">
                 Add User
               </button>
               <button
+                className={styles.addUserBtn}
                 type="button"
-                onClick={closeAddUser}
-                className={styles.closePopup}
+                onClick={onClose}
               >
                 Close
               </button>
             </div>
           </form>
-          {error && <div className={styles.error}>{error}</div>}
+          {error && <div style={{ color: "red" }}>{error}</div>}
         </div>
       </div>
     </div>
