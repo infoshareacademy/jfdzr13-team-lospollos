@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import useUserData from "../../contexts/ViewDataContext";
 import REQUEST_STATUS from "../../enums/requestStatus";
 import { GetTypeOfLeaveOptions } from "../../enums/typeOfLeave";
@@ -56,56 +56,66 @@ export function AddRequest({ onClose }: AddRequestProps) {
   const handleRequestSubmit = async (event) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const dayFrom = formData.get("dayFrom") as string;
-    const dayTo = formData.get("dayTo") as string;
-    const requestType = formData.get("typeOfLeave") as string;
-    const comment = formData.get("comment") as string;
+    const lengthValidation: number = 100;
+    let textFieldValue: string = (
+      document.getElementById("commentText") as HTMLInputElement
+    ).value;
+    if (textFieldValue.length > lengthValidation) {
+      toast.error(
+        `Comment length is ${textFieldValue.length}. Max is ${lengthValidation}`
+      );
+    } else {
+      const formData = new FormData(event.currentTarget);
+      const dayFrom = formData.get("dayFrom") as string;
+      const dayTo = formData.get("dayTo") as string;
+      const requestType = formData.get("typeOfLeave") as string;
+      const comment = formData.get("comment") as string;
 
-    const departmentId: string = departmentsList.filter(
-      (department) => department.deptId === userData.deptId
-    )[0].deptId;
+      const departmentId: string = departmentsList.filter(
+        (department) => department.deptId === userData.deptId
+      )[0].deptId;
 
-    const daysOffLeft = calculateDaysOffLeft(
-      userData.currentDays,
-      requestedDaysOff,
-      requestType
-    );
-    const onDemandDaysOffLeft = calculateOnDemandLeft(
-      userData.onDemand,
-      requestedDaysOff,
-      requestType
-    );
-
-    const request: Request = {
-      dayFrom: dayFrom,
-      dayTo: dayTo,
-      daysReq: requestedDaysOff,
-      daysLeft: daysOffLeft,
-      deptId: departmentId,
-      requestType: requestType,
-      status: REQUEST_STATUS.Pending,
-      userId: userData.userId,
-      comment: comment,
-      createdAt: Date.now(),
-    };
-
-    const isRequestValid = ValidateLeaveRequest(
-      userData,
-      requestedDaysOff,
-      requestType
-    );
-
-    if (isRequestValid) {
-      await addNewLeaveRequest(request);
-      await updateUserDaysOffLeft(
-        userData.userId,
-        daysOffLeft,
-        onDemandDaysOffLeft
+      const daysOffLeft = calculateDaysOffLeft(
+        userData.currentDays,
+        requestedDaysOff,
+        requestType
+      );
+      const onDemandDaysOffLeft = calculateOnDemandLeft(
+        userData.onDemand,
+        requestedDaysOff,
+        requestType
       );
 
-      await refreshUserViewData();
-      onClose();
+      const request: Request = {
+        dayFrom: dayFrom,
+        dayTo: dayTo,
+        daysReq: requestedDaysOff,
+        daysLeft: daysOffLeft,
+        deptId: departmentId,
+        requestType: requestType,
+        status: REQUEST_STATUS.Pending,
+        userId: userData.userId,
+        comment: comment,
+        createdAt: Date.now(),
+      };
+
+      const isRequestValid = ValidateLeaveRequest(
+        userData,
+        requestedDaysOff,
+        requestType
+      );
+
+      if (isRequestValid) {
+        await addNewLeaveRequest(request);
+        await updateUserDaysOffLeft(
+          userData.userId,
+          daysOffLeft,
+          onDemandDaysOffLeft
+        );
+
+        await refreshUserViewData();
+        onClose();
+      }
     }
   };
 
@@ -159,7 +169,11 @@ export function AddRequest({ onClose }: AddRequestProps) {
 
             <div className={styles.requestEntryLabel}>
               <span className={styles.fieldName}> Comments </span>
-              <input type="text" className={styles.inputField} name="comment" />
+              <textarea
+                id="commentText"
+                className={styles.textName}
+                placeholder="Max comment length 100 characters"
+              ></textarea>
             </div>
           </div>
         </div>

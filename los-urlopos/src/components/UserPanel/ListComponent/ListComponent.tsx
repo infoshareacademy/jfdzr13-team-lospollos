@@ -14,9 +14,9 @@ import {
   DialogContent,
   DialogTitle,
   Button,
-  TextField,
 } from "@mui/material";
 import { Request } from "../../../types-obj/types-obj";
+import toast, { Toaster } from "react-hot-toast";
 import { useLocation } from "react-router-dom";
 import useUserData from "../../../contexts/ViewDataContext";
 import {
@@ -64,15 +64,24 @@ export default function ListComponent() {
   const handleActionConfirm = () => {
     if (currentAction === "accept") {
       acceptRequest(currentRequest);
+      setDialogOpen(false);
     } else if (currentAction === "reject") {
+      const lengthValidation: number = 100;
       let rejectReasonValue: string = (
         document.getElementById("rejectReason") as HTMLInputElement
       ).value;
-      rejectRequest(currentRequest, rejectReasonValue);
+      if (rejectReasonValue.length > lengthValidation) {
+        toast.error(
+          `Comment length is ${rejectReasonValue.length}. Max is ${lengthValidation}`
+        );
+      } else {
+        rejectRequest(currentRequest, rejectReasonValue);
+        setDialogOpen(false);
+      }
     } else if (currentAction === "cancel") {
       cancelRequest(currentRequest);
+      setDialogOpen(false);
     }
-    setDialogOpen(false);
   };
 
   useEffect(() => {
@@ -492,17 +501,13 @@ export default function ListComponent() {
           {`Are you sure you want to ${currentAction} this request?`}
         </DialogTitle>
         <DialogContent>
+          <Toaster position="top-center" reverseOrder={false} />
           {currentAction === "reject" && (
-            <TextField
-              required
-              margin="dense"
+            <textarea
               id="rejectReason"
-              name="rejectReason"
-              label="Reject Reason"
-              type="text"
-              variant="standard"
-              fullWidth
-            />
+              className={styles.textName}
+              placeholder="Max comment length 100 characters"
+            ></textarea>
           )}
         </DialogContent>
         <DialogActions>
