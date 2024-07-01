@@ -6,7 +6,7 @@
   margin: 2% 0 0 0;
 
   display: grid;
-  grid-template-columns: 1.5fr 1.5fr 1.5fr 3fr 3fr;
+  grid-template-columns: 1fr 1fr 1.5fr 2fr 3fr;
   grid-template-rows: 100%;
   grid-template-areas: "profilePicture userDetails daysOffInventory reqStatusStats reqTypeStats";
   border-radius: 5px;
@@ -46,7 +46,7 @@
 .userBusinessCard .daysOffInventory {
   grid-area: daysOffInventory;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.5fr 0.5fr;
   grid-template-rows: 1fr 1fr;
   grid-template-areas:
     "daysOffTitle daysOff"
@@ -57,10 +57,12 @@
 
 .userBusinessCard .daysOffTitle {
   grid-area: daysOffTitle;
+  justify-self: end;
 }
 
 .userBusinessCard .onDemandTitle {
   grid-area: onDemandTitle;
+  justify-self: end;
 }
 
 .userBusinessCard .daysOff {
@@ -87,78 +89,36 @@ h3 {
   font-size: large;
 }
 
-/* .userBusinessCard .label {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: transparent;
-  transition: background-color 0.2s ease-in-out;
-  border-radius: 100px;
-  color: transparent;
-}
-
-.userBusinessCard .label:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-}
-
-.glyphiconCamera {
-  margin-right: 5px;
-}
-
-.userDetails {
-  width: 30%;
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-}
-
-.daysLeft {
-  font-size: 1.5em;
-  display: flex;
-  align-items: center;
-  position: absolute;
-  right: 3%;
-  top: 15%;
-  right: 3%;
-  top: 15%;
-}
-
-.daysLeft span {
-  color: brown;
-  font-size: 1.6em;
-}
-
-.addButtonContainer {
-  position: absolute;
-  display: flex;
-  height: 30%;
-  width: 5%;
-  border-radius: 5px;
-  right: 3%;
-  bottom: 15%;
-}
-
-.addButton {
-  width: 100%;
+.userBusinessCard .reqStatusStats {
   height: 100%;
-  background-color: #3457d5d9;
-  color: white;
-  border-radius: 5px;
-  transition: 0.2s;
-  border: none;
+  max-width: 100%;
+  padding: 5px 5px;
 }
 
-.addButton:hover {
-  cursor: pointer;
-  background-color: #3457d5a7;
-  transition: 0.2s;
+.userBusinessCard .reqStatusStatsLabel {
+  grid-area: reqStatusStatsLabel;
+  justify-self: end;
 }
 
-.addButton:active {
-  transform: scale(0.99);
-  background-color: #3457d5d9;
-  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
-} */
+.userBusinessCard .reqStatusStatsChart {
+  grid-area: reqStatusStatsChart;
+  height: 100%;
+  max-width: 100%;
+}
+
+.userBusinessCard .reqTypeStats {
+  height: 100%;
+  max-width: 100%;
+  padding: 5px 5px;
+}
+
+.userBusinessCard .reqTypeStatsLabel {
+  grid-area: reqTypeStatsLabel;
+  justify-self: end;
+}
+
+.userBusinessCard .reqTypeStatsChart {
+  grid-area: reqTypeStatsChart;
+  height: 100%;
+  width: 100%;
+}

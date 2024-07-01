@@ -63,6 +63,7 @@ export const emptyStatusStats: LeaveRequestStatusStats = {
 };
 
 export const emptyTypeStats: LeaveRequestTypeStats = {
+  totalLeave: 0,
   annualLeave: 0,
   additionalLeave: 0,
   specialLeave: 0,

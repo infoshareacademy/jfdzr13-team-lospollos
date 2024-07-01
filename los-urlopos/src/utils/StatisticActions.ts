@@ -14,8 +14,29 @@ import { Request } from "../types-obj/types-obj";
 import { emptyStatusStats, emptyTypeStats } from "./DefaultObjects";
 
 export async function getReqStatisticForUser(userId: string) {
-  const statusStatistic: LeaveRequestStatusStats = emptyStatusStats;
-  const typeStatistic: LeaveRequestTypeStats = emptyTypeStats;
+  const statusStatistic: LeaveRequestStatusStats = {
+    allRequest: 0,
+    pendingRequest: 0,
+    approvedRequest: 0,
+    rejectedRequest: 0,
+    cancelledRequest: 0,
+  };
+  const typeStatistic: LeaveRequestTypeStats = {
+    totalLeave: 0,
+    annualLeave: 0,
+    additionalLeave: 0,
+    specialLeave: 0,
+    sickLeave: 0,
+    childLeave: 0,
+    unpaidLeave: 0,
+    onDemandLeave: 0,
+  };
+
+  console.log(emptyStatusStats);
+  console.log(emptyTypeStats);
+
+  console.log(statusStatistic);
+  console.log(typeStatistic);
 
   const requestList: Request[] = await getRequestUserId(userId);
 

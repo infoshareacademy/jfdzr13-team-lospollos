@@ -3,10 +3,10 @@ import useUserData from "../../../contexts/ViewDataContext";
 import pfp from "../../../images/Unknown_person.jpg";
 import { toUserView } from "../../../mappers/ViewObjectsMapper";
 import { UserView } from "../../../types-obj/objectViewTypes";
-import { LeaveRequestStats } from "../../../types-obj/statisticsTypes";
 import { Departments, User } from "../../../types-obj/types-obj";
 import { emptyUser } from "../../../utils/DefaultObjects";
-import { getReqStatisticForUser } from "../../../utils/StatisticActions";
+import LeaveRequestStatusChartComponent from "./StatisticsCharts/RequestStatusChartComponent";
+import RequestTypeChartComponent from "./StatisticsCharts/RequstTypeChartComponent";
 import styles from "./userComponent.module.css";
 
 interface UserComponentProps {
@@ -16,8 +16,6 @@ interface UserComponentProps {
 export function UserComponent({ onAddButtonClick }: UserComponentProps) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
   const [userView, setUserView] = useState<UserView>(emptyUser);
-  const [leaveRequestStats, setLeaveRequestStats] =
-    useState<LeaveRequestStats>();
   const { userData, departmentsList } = useUserData();
 
   const toUserViewObject = async (
@@ -28,14 +26,8 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
     setUserView(userView);
   };
 
-  const fetchUserLeaveRequestStats = async () => {
-    const userStatistics = await getReqStatisticForUser(userData.id);
-    setLeaveRequestStats(userStatistics);
-  };
-
   useEffect(() => {
     toUserViewObject(userData, departmentsList);
-    fetchUserLeaveRequestStats();
 
     const savedImage = localStorage.getItem(
       `profileImage_${userView.email}_${userView.id}`
@@ -79,9 +71,17 @@ export function UserComponent({ onAddButtonClick }: UserComponentProps) {
         </span>
       </div>
 
-      <div className={styles.reqTypeStats}></div>
+      <div className={styles.reqStatusStats}>
+        <div className={styles.reqStatusStatsChart}>
+          <LeaveRequestStatusChartComponent />
+        </div>
+      </div>
 
-      <div className={styles.reqTypeStats}></div>
+      <div className={styles.reqTypeStats}>
+        <div className={styles.reqTypeStatsChart}>
+          <RequestTypeChartComponent />
+        </div>
+      </div>
       {/* <div className={styles.addButtonContainer}>
         <button className={styles.addButton} onClick={onAddButtonClick}>
           ADD
