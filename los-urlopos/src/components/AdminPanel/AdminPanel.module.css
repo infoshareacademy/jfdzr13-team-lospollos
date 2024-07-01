@@ -29,28 +29,6 @@
   border-radius: 4px;
 }
 
-.Modal__Overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-}
-
-.Modal__Content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .adminPanel h1,
 h2 {
   color: #333;
@@ -84,7 +62,7 @@ h2 {
   margin-top: 10px;
 }
 
-.adminPanel button {
+.navbar button {
   padding: 5px 10px;
   background-color: #4f79e2;
   color: white;
@@ -93,7 +71,7 @@ h2 {
   cursor: pointer;
 }
 
-.adminPanel button:hover {
+.navbar button:hover {
   background-color: #3457d5;
   scale: 1.1;
   transition: 0.3s;

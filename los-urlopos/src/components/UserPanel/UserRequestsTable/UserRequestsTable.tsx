@@ -117,7 +117,7 @@ export default function UserRequestsTable() {
             id: "dayToColumn",
             accessorKey: "dayTo",
             header: "To",
-            enableSorting: false,
+            enableSorting: true,
             muiTableHeadCellProps: { align: "left" },
             muiTableBodyCellProps: { align: "left" },
             size: 60,
@@ -163,7 +163,7 @@ export default function UserRequestsTable() {
           {
             id: "actionsColumn",
             accessorKey: "actions",
-            header: "Actions",
+            header: "",
             size: 150,
             enableSorting: false,
             muiTableHeadCellProps: { align: "center" },
@@ -299,7 +299,7 @@ export default function UserRequestsTable() {
   }
 
   return (
-    <div className={styles.listWrapper}>
+    <div className={styles.tableWrapper}>
       <MaterialReactTable table={table} />
       <Dialog
         open={dialogOpen}

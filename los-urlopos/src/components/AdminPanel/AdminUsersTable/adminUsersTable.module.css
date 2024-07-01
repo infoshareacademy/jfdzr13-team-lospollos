@@ -1,0 +1,9 @@
+.container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.detailsSpanText {
+  color: rgb(163, 159, 159);
+  letter-spacing: 1.2px;
+}
