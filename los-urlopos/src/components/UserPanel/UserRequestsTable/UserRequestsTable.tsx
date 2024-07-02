@@ -20,7 +20,7 @@ import { getRequestUserId } from "../../../services/LeaveRequestService";
 import { getDepartmentById } from "../../../services/DepartmentService";
 import { cancelRequest } from "../../../utils/RequestActions";
 import { red } from "@mui/material/colors";
-export default function UserRequestsTable() {
+export default function UserRequestsTable({onAddButtonClick}) {
   const { userData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -232,6 +232,28 @@ export default function UserRequestsTable() {
                 justifyContent: "flex-end",
               }}
             ></div>
+                <div className={styles.addButtonContainer}>
+                  <Button
+                    onClick={onAddButtonClick}
+                    sx={{
+                      backgroundColor: "rgba(3, 11, 252, 0.7)",
+                      borderRadius: "5px",
+                      color: "white",
+                      border: "none",
+                      ":hover": {
+                        backgroundColor: "rgba(3, 11, 252, 0.54)",
+                        transition: "0.2s",
+                      },
+                      ":active": {
+                        backgroundColor: "rgba(3, 11, 252, 0.74)",
+                        transform: "scale(0.98) translateY(0.7px)",
+                        boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                      },
+                    }}
+                  >
+                    ADD REQUEST
+                  </Button>
+                </div>
           </div>
         ),
       },

@@ -3,8 +3,9 @@
   display: flex;
   flex-direction: column;
   width: 40vw;
-  height: 80vh;
+  height: 70vh;
   background: url("../../images/lps7.png");
+  background-color: white;
   background-repeat: no-repeat;
   z-index: 10000;
   background-position: center;
@@ -27,6 +28,7 @@
   z-index: 10;
   padding: 0;
   font-size: 4vmin;
+  font-weight: 500;
 }
 
 .requestContentCont {
@@ -34,10 +36,9 @@
   flex-direction: column;
   position: absolute;
   width: 100%;
-  height: 90%;
+  height: 100%;
   align-self: center;
   justify-content: space-around;
-  margin-top: 5%;
   background-color: rgba(255, 255, 255, 0.868);
   border-radius: 50px;
 }
@@ -107,62 +108,6 @@
   justify-content: space-evenly;
 }
 
-.ifOnDemandCheckbox {
-  display: none;
-}
-
-.ifNotOnDemandCheckbox {
-  display: none;
-}
-
-.ifOnDemandCheckbox + label {
-  background-color: rgba(84, 169, 84, 0.782);
-  border: 1px solid;
-  width: 20%;
-  height: 100%;
-  display: flex;
-  padding: 1%;
-  border-radius: 5px;
-  align-self: center;
-  justify-content: center;
-  transition: 0.2s;
-}
-
-.ifOnDemandCheckbox:hover + label {
-  cursor: pointer;
-  background-color: rgb(84, 169, 84);
-  transition: 0.2s;
-}
-
-.ifOnDemandCheckbox:checked + label {
-  background-color: rgb(84, 169, 84);
-}
-
-.ifNotOnDemandCheckbox + label {
-  background-color: rgba(213, 69, 69, 0.73);
-  border: 1px solid;
-  width: 20%;
-  height: 100%;
-  display: flex;
-  padding: 1%;
-  border-radius: 5px;
-  align-self: center;
-  justify-content: center;
-  transition: 0.2s;
-}
-
-.ifNotOnDemandCheckbox:hover + label {
-  background-color: rgb(213, 69, 69);
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.ifNotOnDemandCheckbox:checked + label {
-  background-color: rgb(213, 69, 69);
-  cursor: pointer;
-  transition: 0.2s;
-}
-
 .requestButtons {
   display: flex;
   position: absolute;
@@ -186,7 +131,7 @@
 
 .saveButton:hover {
   cursor: pointer;
-  background-color: rgba(84, 169, 84, 0.853);
+  background-color: rgb(115, 184, 115);
   transition: 0.2s;
 }
 
@@ -210,7 +155,7 @@
 
 .cancelButton:hover {
   cursor: pointer;
-  background-color: rgba(213, 69, 69, 0.804);
+  background-color: rgb(212, 102, 102);
   transition: 0.2s;
 }
 
