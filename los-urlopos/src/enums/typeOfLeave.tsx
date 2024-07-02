@@ -5,6 +5,7 @@ enum TYPE_OF_LEAVE {
   ChildLeave = "Child Leave",
   UnpaidLeave = "Unpaid Leave",
   OnDemandLeave = "On Demand Leave",
+  SickLeave = "Sick leave",
 }
 
 export const GetTypeOfLeaveOptions = () => {
@@ -19,6 +20,7 @@ export const GetTypeOfLeaveOptions = () => {
       <option value={TYPE_OF_LEAVE.SpecialLeave}>
         {TYPE_OF_LEAVE.SpecialLeave}
       </option>
+      <option value={TYPE_OF_LEAVE.SickLeave}>{TYPE_OF_LEAVE.SickLeave}</option>
       <option value={TYPE_OF_LEAVE.ChildLeave}>
         {TYPE_OF_LEAVE.ChildLeave}
       </option>

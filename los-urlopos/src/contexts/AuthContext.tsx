@@ -46,8 +46,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     changePassword,
   };
 
-  console.log("userState", authUser);
-
   return isLoading ? (
     <span>Loading...</span>
   ) : (

@@ -1,82 +1,92 @@
-import {
-  getRequestUserId,
-  getRequestDeptId,
-} from "../services/LeaveRequestService";
-import { getDepartmentByHeadId } from "../services/DepartmentService";
 import REQUEST_STATUS from "../enums/requestStatus";
 import TYPE_OF_LEAVE from "../enums/typeOfLeave";
-import { User } from "../types-obj/types-obj";
+import { getDepartmentByHeadId } from "../services/DepartmentService";
+import {
+  getRequestDeptId,
+  getRequestUserId,
+} from "../services/LeaveRequestService";
+import {
+  LeaveRequestStats,
+  LeaveRequestStatusStats,
+  LeaveRequestTypeStats,
+} from "../types-obj/statisticsTypes";
+import { Request } from "../types-obj/types-obj";
+import { emptyStatusStats, emptyTypeStats } from "./DefaultObjects";
 
-export async function getReqStatisticForUser(user: User) {
-  const requestList: any[] = await getRequestUserId(user.userId);
+export async function getReqStatisticForUser(userId: string) {
+  const statusStatistic: LeaveRequestStatusStats = {
+    allRequest: 0,
+    pendingRequest: 0,
+    approvedRequest: 0,
+    rejectedRequest: 0,
+    cancelledRequest: 0,
+  };
+  const typeStatistic: LeaveRequestTypeStats = {
+    totalLeave: 0,
+    annualLeave: 0,
+    additionalLeave: 0,
+    specialLeave: 0,
+    sickLeave: 0,
+    childLeave: 0,
+    unpaidLeave: 0,
+    onDemandLeave: 0,
+  };
 
-  let allReqNumber: number = 0;
-  let pendingReqNumber: number = 0;
-  let approvedReqNumber: number = 0;
-  let rejectedReqNumber: number = 0;
-  let cancelledReqNumber: number = 0;
+  const requestList: Request[] = await getRequestUserId(userId);
 
-  let annualLeaveNumber: number = 0;
-  let additionalLeaveNumber: number = 0;
-  let specialLeaveNumber: number = 0;
-  let childLeaveNumber: number = 0;
-  let unpaidLeaveNumber: number = 0;
-  let onDemandLeaveNumber: number = 0;
+  statusStatistic.allRequest = requestList.length;
+  typeStatistic.totalLeave = requestList.reduce(
+    (totalDays, req) => totalDays + req.daysReq,
+    0
+  );
 
-  let i: number = 0;
-
-  for (i = 0; i < requestList.length; i++) {
-    allReqNumber++;
-
-    if (requestList[i].status === REQUEST_STATUS.Pending) {
-      pendingReqNumber++;
-    }
-    if (requestList[i].status === REQUEST_STATUS.Approved) {
-      approvedReqNumber++;
-    }
-    if (requestList[i].status === REQUEST_STATUS.Rejected) {
-      rejectedReqNumber++;
-    }
-    if (requestList[i].status === REQUEST_STATUS.Cancelled) {
-      cancelledReqNumber++;
-    }
-    if (requestList[i].requestType === TYPE_OF_LEAVE.AnnualLeave) {
-      annualLeaveNumber++;
-    }
-    if (requestList[i].requestType === TYPE_OF_LEAVE.AdditionalLeave) {
-      additionalLeaveNumber++;
-    }
-    if (requestList[i].requestType === TYPE_OF_LEAVE.SpecialLeave) {
-      specialLeaveNumber++;
-    }
-    if (requestList[i].requestType === TYPE_OF_LEAVE.ChildLeave) {
-      childLeaveNumber++;
-    }
-    if (requestList[i].requestType === TYPE_OF_LEAVE.UnpaidLeave) {
-      unpaidLeaveNumber++;
-    }
-    if (requestList[i].requestType === TYPE_OF_LEAVE.OnDemandLeave) {
-      onDemandLeaveNumber++;
+  for (const request of requestList) {
+    switch (request.status) {
+      case REQUEST_STATUS.Pending:
+        statusStatistic.pendingRequest++;
+        break;
+      case REQUEST_STATUS.Approved:
+        statusStatistic.approvedRequest++;
+        break;
+      case REQUEST_STATUS.Rejected:
+        statusStatistic.rejectedRequest++;
+        break;
+      case REQUEST_STATUS.Cancelled:
+        statusStatistic.cancelledRequest++;
+        break;
     }
   }
-  const userReqStatusStatistic = {
-    allRequest: allReqNumber,
-    pendingRequest: pendingReqNumber,
-    approvedRequest: approvedReqNumber,
-    rejectedRequest: rejectedReqNumber,
-    cancelledRequest: cancelledReqNumber,
-  };
-  const userReqTypeStatistic = {
-    annualLeave: annualLeaveNumber,
-    additionalLeave: additionalLeaveNumber,
-    specialLeave: specialLeaveNumber,
-    childLeave: childLeaveNumber,
-    unpaidLeave: unpaidLeaveNumber,
-    onDemandLeave: onDemandLeaveNumber,
-  };
 
-  const reqStatisticUser = [userReqStatusStatistic, userReqTypeStatistic];
-  return reqStatisticUser;
+  for (const request of requestList) {
+    switch (request.requestType) {
+      case TYPE_OF_LEAVE.AnnualLeave:
+        typeStatistic.annualLeave++;
+        break;
+      case TYPE_OF_LEAVE.OnDemandLeave:
+        typeStatistic.onDemandLeave++;
+        break;
+      case TYPE_OF_LEAVE.AdditionalLeave:
+        typeStatistic.additionalLeave++;
+        break;
+      case TYPE_OF_LEAVE.SickLeave:
+        typeStatistic.sickLeave++;
+        break;
+      case TYPE_OF_LEAVE.ChildLeave:
+        typeStatistic.childLeave++;
+        break;
+      case TYPE_OF_LEAVE.SpecialLeave:
+        typeStatistic.specialLeave++;
+        break;
+      case TYPE_OF_LEAVE.UnpaidLeave:
+        typeStatistic.unpaidLeave++;
+        break;
+    }
+  }
+
+  return {
+    statusStats: statusStatistic,
+    typeStats: typeStatistic,
+  } as LeaveRequestStats;
 }
 
 export async function getReqStatisticForSupervisor(userId: string) {

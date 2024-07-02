@@ -7,8 +7,6 @@ export function ValidateLeaveRequest(
   daysNumberForCheck: number,
   leaveTypeForCheck: string
 ) {
-  console.log(daysNumberForCheck);
-  console.log(userForCheck.currentDays);
 
   if (
     (leaveTypeForCheck === TYPE_OF_LEAVE.AnnualLeave ||

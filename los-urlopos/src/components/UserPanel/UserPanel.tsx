@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import useUserData from "../../contexts/ViewDataContext";
 import { AddRequest } from "../AddRequest/AddRequest";
 import ListComponent from "./ListComponent/ListComponent";
 import { UserComponent } from "./UserComponent/UserComponent";
 import styles from "./userPanel.module.css";
-import useUserData from "../../contexts/ViewDataContext";
 
 export function UserPanel() {
   const [showAddRequest, setShowAddRequest] = useState(false);
@@ -37,8 +37,8 @@ export function UserPanel() {
           showAddRequest ? styles.dimmed : ""
         }`}
       >
-        <UserComponent onAddButtonClick={handleAddButtonClick} />
-        <ListComponent />
+        <UserComponent />
+        <ListComponent onAddButtonClick={handleAddButtonClick} />
       </div>
       {showAddRequest && (
         <>
