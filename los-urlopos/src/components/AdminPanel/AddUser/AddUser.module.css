@@ -118,6 +118,17 @@
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 
+.deptSelector {
+  width: 50%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border: 1px solid black;
+  /* text-align: center; */
+  padding: 1px;
+  background-color: white;
+}
+
 .closePopup {
   display: flex;
   align-self: center;
