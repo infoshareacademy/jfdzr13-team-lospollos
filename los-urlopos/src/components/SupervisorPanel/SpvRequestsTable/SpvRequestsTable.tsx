@@ -158,7 +158,8 @@ export default function SpvRequestsTable() {
         columns: [
           {
             id: "userNameColumn",
-            accessorFn: (row) => `${userData.firstName} ${userData.surname}`,
+            accessorFn: (userData) =>
+              `${userData.firstName} ${userData.surname}`,
             header: "Employee's name",
             enableHiding: false,
             size: 150,
@@ -299,7 +300,7 @@ export default function SpvRequestsTable() {
           {
             id: "actionsColumn",
             accessorKey: "actions",
-            header: "Actions",
+            header: "",
             size: 150,
             enableSorting: false,
             enableColumnFilter: false,
@@ -416,7 +417,7 @@ export default function SpvRequestsTable() {
         ),
       },
     ],
-    [data, spvDepartments, selectedDepartment]
+    [userData.firstName, userData.surname, spvDepartments, selectedDepartment]
   );
 
   const table = useMaterialReactTable({
@@ -479,11 +480,11 @@ export default function SpvRequestsTable() {
   });
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <div className={styles.spinner}></div>;
   }
 
   return (
-    <div className={styles.listWrapper}>
+    <div className={styles.tableWrapper}>
       <MaterialReactTable table={table} />
       <Dialog
         open={dialogOpen}
