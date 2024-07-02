@@ -295,7 +295,7 @@ export default function UserRequestsTable() {
   });
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <div className={styles.spinner}></div>;
   }
 
   return (

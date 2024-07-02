@@ -432,7 +432,7 @@ export default function SpvRequestsTable() {
   });
 
   if (isLoading) {
-    return <CircularProgress />;
+    return <div className={styles.spinner}></div>;
   }
 
   return (

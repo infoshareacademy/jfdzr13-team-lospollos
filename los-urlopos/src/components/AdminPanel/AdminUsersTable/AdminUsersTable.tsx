@@ -13,8 +13,13 @@ import {
 import { getDepartment } from "../../../services/DepartmentService";
 import styles from "./adminUsersTable.module.css";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import AddUser from "../AddUser/AddUser";
 
-const AdminUsersTable = () => {
+interface AdminUsersTableProps {
+  onAddUserBtnClick: () => void;
+}
+
+export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -208,18 +213,59 @@ const AdminUsersTable = () => {
         Header: () => (
           <div
             style={{
-              width: "100%",
-              marginBottom: "5px",
+              display: "flex",
+              width: "80vw",
             }}
           >
-            <span
+            <div
               style={{
-                fontSize: "25px",
-                fontWeight: "bold",
+                width: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "20px",
               }}
             >
-              Users List
-            </span>
+              <span
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  marginRight: "20px",
+                }}
+              >
+                Users List
+              </span>
+            </div>
+            <div
+              style={{
+                width: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              <Button
+                onClick={() => onAddUserBtnClick()}
+                sx={{
+                  backgroundColor: "rgba(3, 11, 252, 0.7)",
+                  borderRadius: "5px",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 20px",
+                  ":hover": {
+                    backgroundColor: "rgba(3, 11, 252, 0.54)",
+                    transition: "0.2s",
+                  },
+                  ":active": {
+                    backgroundColor: "rgba(3, 11, 252, 0.74)",
+                    transform: "scale(0.98) translateY(0.7px)",
+                    boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                  },
+                }}
+              >
+                ADD NEW USER
+              </Button>
+            </div>
           </div>
         ),
       },
@@ -313,6 +359,10 @@ const AdminUsersTable = () => {
     },
   });
 
+  if (isLoading) {
+    return <div className={styles.spinner}></div>;
+  }
+
   return (
     <div className={styles.tableContainer}>
       <MaterialReactTable table={table} />
@@ -373,6 +423,6 @@ const AdminUsersTable = () => {
       </Dialog>
     </div>
   );
-};
+}
 
 export default AdminUsersTable;
