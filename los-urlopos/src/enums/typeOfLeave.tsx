@@ -1,4 +1,4 @@
-enum TYPE_OF_LEAVE {
+export enum TYPE_OF_LEAVE {
   AnnualLeave = "Annual Leave",
   AdditionalLeave = "Additional Leave",
   SpecialLeave = "Special Leave",
