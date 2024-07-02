@@ -86,7 +86,6 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
   if (error) return <div>Error: {error}</div>;
   return (
     <div>
-      <h1>Departments</h1>
       <button onClick={handleOpenDialog}>Add Department</button>
       <dialog open={isDialogOpen}>
         <AddOrEditDepartment

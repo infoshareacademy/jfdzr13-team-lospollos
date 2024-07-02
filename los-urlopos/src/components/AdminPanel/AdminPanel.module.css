@@ -41,24 +41,29 @@
   margin-top: 10px;
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0095ca;
+  border-radius: 3px;
+  height: 40px;
+}
 
 .navbar button {
-  padding: 5px 10px;
-  background-color: #4f79e2;
-  color: white;
   background-color: #0095ca;
+  color: white;
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  width: 10%;
+  width: 100px;
   height: 80%;
 }
 
-
 .navbar button:hover {
-  background-color: #3457d5;
-  scale: 1.1;
+  background-color: #ffffff23;
   transition: 0.3s;
+  scale: 0.95;
 }
 
 .adminPanelBtn:active {

@@ -45,7 +45,6 @@ const UsersList: FC<UsersListProps> = ({}) => {
 
   return (
     <div>
-      <h1>Users</h1>
       <dialog open={isAddUserDialogOpen} onClose={handleCloseDialog}>
         <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
       </dialog>
