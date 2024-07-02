@@ -83,13 +83,11 @@ export default function ListComponent({
   useEffect(() => {
     if (selectedDepartment && selectedDepartment !== "allRequests") {
       getRequestDeptId(selectedDepartment).then((response) => {
-        console.log(response);
         setData(response);
         setIsLoading(false);
       });
     } else if (selectedDepartment === "allRequests") {
       getRequestAll().then((response) => {
-        console.log(response, "all");
         const allRequests = response.filter((request) =>
           spvDepartments.some(
             (department) => department.deptId === request.deptId

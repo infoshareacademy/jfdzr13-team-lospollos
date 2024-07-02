@@ -78,11 +78,6 @@ export function UserComponent() {
           <RequestTypeChartComponent />
         </div>
       </div>
-      {/* <div className={styles.addButtonContainer}>
-        <button className={styles.addButton} onClick={onAddButtonClick}>
-          ADD
-        </button>
-      </div> */}
     </div>
   );
 }

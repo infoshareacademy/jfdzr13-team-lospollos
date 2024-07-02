@@ -32,12 +32,6 @@ export async function getReqStatisticForUser(userId: string) {
     onDemandLeave: 0,
   };
 
-  console.log(emptyStatusStats);
-  console.log(emptyTypeStats);
-
-  console.log(statusStatistic);
-  console.log(typeStatistic);
-
   const requestList: Request[] = await getRequestUserId(userId);
 
   statusStatistic.allRequest = requestList.length;
