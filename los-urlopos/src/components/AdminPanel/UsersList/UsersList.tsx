@@ -5,9 +5,9 @@ import ConfirmAction from "../ConfirmAction";
 import { deleteUser, subscribeToUsers } from "../../../services/UserService";
 import AddUser from "../AddUser/AddUser";
 
-interface UsersListProps {
+type UsersListProps = {
   openAddUserModal: () => void;
-}
+};
 
 const UsersList: FC<UsersListProps> = ({}) => {
   const [users, setUsers] = useState<User[]>([]);
@@ -82,7 +82,7 @@ const UsersList: FC<UsersListProps> = ({}) => {
       <dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
       </dialog>
-      
+
       <ul>
         {users.map((user) => (
           <li key={user.id}>

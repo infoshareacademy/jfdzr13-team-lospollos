@@ -4,13 +4,13 @@ import {
   deleteDepartment,
   subscribeToDepartments,
 } from "../../../services/DepartmentService";
-import Modal from "react-modal";
+
 import ConfirmAction from "../ConfirmAction";
 import AddOrEditDepartment from "./AddOrEditDepartment";
 
-interface DepartmentsListProps {
+type DepartmentsListProps = {
   openAddDepartmentModal: () => void;
-}
+};
 
 const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
   const [departments, setDepartments] = useState<Departments[]>([]);

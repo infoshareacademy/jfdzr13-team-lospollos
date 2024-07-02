@@ -4,10 +4,10 @@ import { createUser, getCurrentUser } from "../../../services/AuthService";
 import { addUser } from "../../../services/UserService";
 import styles from "./AddUser.module.css";
 
-interface AddUserProps {
+type AddUserProps = {
   onUserAdded: () => void;
   onClose: () => void;
-}
+};
 
 const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
   const [newUser, setNewUser] = useState<User>({
