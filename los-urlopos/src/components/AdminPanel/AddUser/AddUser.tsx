@@ -1,8 +1,9 @@
 import React, { FC, FormEvent, ChangeEvent, useState, useEffect } from "react";
-import { User } from "../../../types-obj/types-obj";
+import { Departments, User } from "../../../types-obj/types-obj";
 import { createUser, getCurrentUser } from "../../../services/AuthService";
 import { addUser } from "../../../services/UserService";
 import styles from "./AddUser.module.css";
+import { getDepartment } from "../../../services/DepartmentService";
 
 interface AddUserProps {
   onUserAdded: () => void;
@@ -27,6 +28,26 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
   });
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
+    null
+  );
+  const [departments, setDepartments] = useState<Departments[]>([]);
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const depts = await getDepartment();
+        console.log("Departments:", depts);
+        setDepartments(depts);
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching departments: ", error);
+        setError("Error fetching departments.");
+      }
+    };
+
+    fetchDepartments();
+  }, []);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -61,6 +82,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
     event.preventDefault();
     try {
       const user = await createUser(newUser.email, password);
+      console.log("New User", user);
       await addUser(user.uid, {
         ...newUser,
         userId: user.uid,
@@ -170,16 +192,29 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
               />
             </label>
             <label className={styles.addUserLabel}>
-              Department ID:
-              <input
-                className={styles.addUserInput}
-                type="text"
-                name="deptId"
-                placeholder="Department ID"
-                value={newUser.deptId}
-                onChange={handleInputChange}
-                required
-              />
+              Department:
+              <select
+                className={styles.deptSelector}
+                value={selectedDepartment || ""}
+                onChange={(event) => {
+                  setSelectedDepartment(event.target.value);
+                  console.log(selectedDepartment);
+                  setNewUser((prevUser) => ({
+                    ...prevUser,
+                    deptId: event.target.value,
+                  }));
+                  console.log(newUser);
+                }}
+              >
+                <option value="" disabled hidden>
+                  Select a department
+                </option>
+                {departments.map((department) => (
+                  <option key={department.deptId} value={department.deptId}>
+                    {department.dept}
+                  </option>
+                ))}
+              </select>
             </label>
             <label className={styles.addUserLabel}>
               On Demand:
