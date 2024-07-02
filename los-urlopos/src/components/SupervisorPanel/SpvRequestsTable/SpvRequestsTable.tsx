@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./spvRequestsTable.module.css";
+import toast, { Toaster } from "react-hot-toast";
+import REQUEST_STATUS from "../../../enums/requestStatus";
+import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -16,7 +19,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { Request } from "../../../types-obj/types-obj";
+import { Request, DateToShowOptions } from "../../../types-obj/types-obj";
 import useUserData from "../../../contexts/ViewDataContext";
 import { getDepartment } from "../../../services/DepartmentService";
 import { acceptRequest, rejectRequest } from "../../../utils/RequestActions";
@@ -24,6 +27,12 @@ import {
   getRequestDeptId,
   getRequestAll,
 } from "../../../services/LeaveRequestService";
+
+const dateOptions: DateToShowOptions = {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+};
 
 export default function SpvRequestsTable() {
   const { userData } = useUserData();
@@ -34,7 +43,6 @@ export default function SpvRequestsTable() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
   const [currentRequest, setCurrentRequest] = useState({});
-  const [rejectReasonError, setRejectReasonError] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,15 +107,20 @@ export default function SpvRequestsTable() {
     if (currentAction === "accept") {
       await acceptRequest(currentRequest);
     } else if (currentAction === "reject") {
+      const lengthValidation: number = 100;
       const rejectReasonValue: string = (
         document.getElementById("rejectReason") as HTMLInputElement
       ).value.trim();
-
+      if (rejectReasonValue.length > lengthValidation) {
+        toast.error(
+          `Comment length is ${rejectReasonValue.length}. Max is ${lengthValidation}`
+        );
+        return;
+      }
       if (rejectReasonValue === "") {
-        setRejectReasonError("Reject Reason is required!");
+        toast.error("Reject Reason is required!");
         return;
       } else {
-        setRejectReasonError("");
         await rejectRequest(currentRequest, rejectReasonValue);
       }
     }
@@ -160,7 +173,18 @@ export default function SpvRequestsTable() {
             id: "requestTypeColumn",
             accessorKey: "requestType",
             header: "Request type",
-            enableSorting: true,
+            enableSorting: false,
+            enableColumnFilter: true,
+            filterVariant: "select",
+            filterSelectOptions: [
+              TYPE_OF_LEAVE.AnnualLeave,
+              TYPE_OF_LEAVE.AdditionalLeave,
+              TYPE_OF_LEAVE.SpecialLeave,
+              TYPE_OF_LEAVE.SickLeave,
+              TYPE_OF_LEAVE.ChildLeave,
+              TYPE_OF_LEAVE.UnpaidLeave,
+              TYPE_OF_LEAVE.OnDemandLeave,
+            ],
             size: 100,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
@@ -177,7 +201,8 @@ export default function SpvRequestsTable() {
               return dept ? dept.dept : "Not assigned";
             },
             header: "Department",
-            enableSorting: true,
+            enableSorting: false,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
             size: 60,
@@ -187,6 +212,7 @@ export default function SpvRequestsTable() {
             accessorKey: "daysReq",
             header: "Days requested",
             enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
             size: 60,
@@ -194,35 +220,50 @@ export default function SpvRequestsTable() {
           {
             id: "dayFromColumn",
             accessorKey: "dayFrom",
+            Cell: ({ cell }) => {
+              const date = new Date(cell.getValue<string>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
+            },
             header: "From",
             enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "right" },
             muiTableBodyCellProps: { align: "right" },
             size: 60,
-            Cell: ({ cell }) => {
-              const dateValue = cell.getValue<string>();
-              const date = new Date(dateValue);
-              return date.toLocaleDateString();
-            },
           },
           {
             id: "dayToColumn",
             accessorKey: "dayTo",
+            Cell: ({ cell }) => {
+              const date = new Date(cell.getValue<string>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
+            },
             header: "To",
-            enableSorting: false,
+            enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "left" },
             muiTableBodyCellProps: { align: "left" },
             size: 60,
-            Cell: ({ cell }) => {
-              const dateValue = cell.getValue<string>();
-              const date = new Date(dateValue);
-              return date.toLocaleDateString();
-            },
           },
           {
             id: "statusColumn",
             accessorKey: "status",
             header: "Status",
+            enableSorting: false,
+            enableColumnFilter: true,
+            filterVariant: "select",
+            filterSelectOptions: [
+              REQUEST_STATUS.Approved,
+              REQUEST_STATUS.Cancelled,
+              REQUEST_STATUS.Pending,
+              REQUEST_STATUS.Rejected,
+            ],
             size: 60,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: (props) => {
@@ -244,9 +285,13 @@ export default function SpvRequestsTable() {
             id: "createdAtColumn",
             accessorKey: "createdAt",
             header: "Created At",
+            enableColumnFilter: false,
             Cell: ({ cell }) => {
-              const date = new Date(cell.getValue<number>());
-              return date.toLocaleDateString();
+              const date = new Date(cell.getValue<number>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
             },
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
@@ -258,6 +303,7 @@ export default function SpvRequestsTable() {
             header: "",
             size: 150,
             enableSorting: false,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
             Cell: ({ row }) => (
@@ -376,9 +422,11 @@ export default function SpvRequestsTable() {
 
   const table = useMaterialReactTable({
     columns,
+
     data,
     enableHiding: false,
     enableColumnActions: false,
+    columnFilterDisplayMode: "popover",
     enableExpanding: true,
     enableDensityToggle: false,
     muiPaginationProps: {
@@ -392,8 +440,8 @@ export default function SpvRequestsTable() {
       },
       sorting: [
         {
-          id: "dayFromColumn",
-          desc: false,
+          id: "createdAtColumn",
+          desc: true,
         },
       ],
     },
@@ -449,21 +497,13 @@ export default function SpvRequestsTable() {
           {`Are you sure you want to ${currentAction} this request?`}
         </DialogTitle>
         <DialogContent>
+          <Toaster position="top-center" reverseOrder={false} />
           {currentAction === "reject" && (
-            <>
-              <TextField
-                required
-                error={!!rejectReasonError}
-                helperText={rejectReasonError}
-                margin="dense"
-                id="rejectReason"
-                name="rejectReason"
-                label="Reject Reason"
-                type="text"
-                variant="standard"
-                fullWidth
-              />
-            </>
+            <textarea
+              id="rejectReason"
+              className={styles.textName}
+              placeholder="Max comment length 100 characters"
+            ></textarea>
           )}
         </DialogContent>
         <DialogActions>

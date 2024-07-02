@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./userRequestsTable.module.css";
+import REQUEST_STATUS from "../../../enums/requestStatus";
+import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -14,13 +16,20 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import { Request } from "../../../types-obj/types-obj";
+import { Request, DateToShowOptions } from "../../../types-obj/types-obj";
 import useUserData from "../../../contexts/ViewDataContext";
 import { getRequestUserId } from "../../../services/LeaveRequestService";
 import { getDepartmentById } from "../../../services/DepartmentService";
 import { cancelRequest } from "../../../utils/RequestActions";
 import { red } from "@mui/material/colors";
-export default function UserRequestsTable({onAddButtonClick}) {
+
+const dateOptions: DateToShowOptions = {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+};
+
+export default function UserRequestsTable({ onAddButtonClick }) {
   const { userData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -68,8 +77,19 @@ export default function UserRequestsTable({onAddButtonClick}) {
             id: "requestTypeColumn",
             accessorKey: "requestType",
             header: "Request type",
+            enableSorting: false,
+            enableColumnFilter: true,
+            filterVariant: "select",
+            filterSelectOptions: [
+              TYPE_OF_LEAVE.AnnualLeave,
+              TYPE_OF_LEAVE.AdditionalLeave,
+              TYPE_OF_LEAVE.SpecialLeave,
+              TYPE_OF_LEAVE.SickLeave,
+              TYPE_OF_LEAVE.ChildLeave,
+              TYPE_OF_LEAVE.UnpaidLeave,
+              TYPE_OF_LEAVE.OnDemandLeave,
+            ],
             size: 100,
-            enableSorting: true,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
               align: "center",
@@ -86,6 +106,7 @@ export default function UserRequestsTable({onAddButtonClick}) {
             },
             header: "Department",
             enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
             size: 60,
@@ -95,6 +116,7 @@ export default function UserRequestsTable({onAddButtonClick}) {
             accessorKey: "daysReq",
             header: "Days requested",
             enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
             size: 60,
@@ -104,13 +126,16 @@ export default function UserRequestsTable({onAddButtonClick}) {
             accessorKey: "dayFrom",
             header: "From",
             enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "right" },
             muiTableBodyCellProps: { align: "right" },
             size: 60,
             Cell: ({ cell }) => {
-              const dateValue = cell.getValue<string>();
-              const date = new Date(dateValue);
-              return date.toLocaleDateString();
+              const date = new Date(cell.getValue<string>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
             },
           },
           {
@@ -118,19 +143,31 @@ export default function UserRequestsTable({onAddButtonClick}) {
             accessorKey: "dayTo",
             header: "To",
             enableSorting: true,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "left" },
             muiTableBodyCellProps: { align: "left" },
             size: 60,
             Cell: ({ cell }) => {
-              const dateValue = cell.getValue<string>();
-              const date = new Date(dateValue);
-              return date.toLocaleDateString();
+              const date = new Date(cell.getValue<string>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
             },
           },
           {
             id: "statusColumn",
             accessorKey: "status",
             header: "Status",
+            enableSorting: false,
+            enableColumnFilter: true,
+            filterVariant: "select",
+            filterSelectOptions: [
+              REQUEST_STATUS.Approved,
+              REQUEST_STATUS.Cancelled,
+              REQUEST_STATUS.Pending,
+              REQUEST_STATUS.Rejected,
+            ],
             size: 60,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: (props) => {
@@ -152,9 +189,13 @@ export default function UserRequestsTable({onAddButtonClick}) {
             id: "createdAtColumn",
             accessorKey: "createdAt",
             header: "Created At",
+            enableColumnFilter: false,
             Cell: ({ cell }) => {
-              const date = new Date(cell.getValue<number>());
-              return <span>{date.toLocaleDateString()}</span>;
+              const date = new Date(cell.getValue<number>()).toLocaleDateString(
+                "Pl-pl",
+                dateOptions
+              );
+              return date;
             },
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
@@ -166,6 +207,7 @@ export default function UserRequestsTable({onAddButtonClick}) {
             header: "",
             size: 150,
             enableSorting: false,
+            enableColumnFilter: false,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: { align: "center" },
             Cell: ({ row }) => (
@@ -232,28 +274,28 @@ export default function UserRequestsTable({onAddButtonClick}) {
                 justifyContent: "flex-end",
               }}
             ></div>
-                <div className={styles.addButtonContainer}>
-                  <Button
-                    onClick={onAddButtonClick}
-                    sx={{
-                      backgroundColor: "rgba(3, 11, 252, 0.7)",
-                      borderRadius: "5px",
-                      color: "white",
-                      border: "none",
-                      ":hover": {
-                        backgroundColor: "rgba(3, 11, 252, 0.54)",
-                        transition: "0.2s",
-                      },
-                      ":active": {
-                        backgroundColor: "rgba(3, 11, 252, 0.74)",
-                        transform: "scale(0.98) translateY(0.7px)",
-                        boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
-                      },
-                    }}
-                  >
-                    ADD REQUEST
-                  </Button>
-                </div>
+            <div className={styles.addButtonContainer}>
+              <Button
+                onClick={onAddButtonClick}
+                sx={{
+                  backgroundColor: "rgba(3, 11, 252, 0.7)",
+                  borderRadius: "5px",
+                  color: "white",
+                  border: "none",
+                  ":hover": {
+                    backgroundColor: "rgba(3, 11, 252, 0.54)",
+                    transition: "0.2s",
+                  },
+                  ":active": {
+                    backgroundColor: "rgba(3, 11, 252, 0.74)",
+                    transform: "scale(0.98) translateY(0.7px)",
+                    boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                  },
+                }}
+              >
+                ADD REQUEST
+              </Button>
+            </div>
           </div>
         ),
       },
@@ -265,6 +307,7 @@ export default function UserRequestsTable({onAddButtonClick}) {
     data,
     enableHiding: false,
     enableColumnActions: false,
+    columnFilterDisplayMode: "popover",
     enableDensityToggle: false,
     muiPaginationProps: {
       rowsPerPageOptions: [8, 16, 32, 48, 64, 128],
@@ -277,8 +320,8 @@ export default function UserRequestsTable({onAddButtonClick}) {
       },
       sorting: [
         {
-          id: "dayFromColumn",
-          desc: false,
+          id: "createdAtColumn",
+          desc: true,
         },
       ],
     },
