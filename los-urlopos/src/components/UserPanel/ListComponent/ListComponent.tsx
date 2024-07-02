@@ -1,38 +1,43 @@
-import { useEffect, useMemo, useState } from "react";
-import styles from "./listComponent.module.css";
 import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_ColumnDef,
-} from "material-react-table";
-import {
-  Select,
-  MenuItem,
+  Button,
   CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
+  MenuItem,
+  Select,
   TextField,
 } from "@mui/material";
-import { Request } from "../../../types-obj/types-obj";
+import {
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+} from "material-react-table";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import useUserData from "../../../contexts/ViewDataContext";
-import {
-  getRequestUserId,
-  getRequestDeptId,
-  getRequestAll,
-} from "../../../services/LeaveRequestService";
 import { getDepartment } from "../../../services/DepartmentService";
 import {
-  cancelRequest,
+  getRequestAll,
+  getRequestDeptId,
+  getRequestUserId,
+} from "../../../services/LeaveRequestService";
+import { Request } from "../../../types-obj/types-obj";
+import {
   acceptRequest,
+  cancelRequest,
   rejectRequest,
 } from "../../../utils/RequestActions";
-import { getReqStatisticForUser } from "../../../utils/StatisticActions";
+import styles from "./listComponent.module.css";
 
-export default function ListComponent() {
+interface ListComponentProps {
+  onAddButtonClick: () => void;
+}
+
+export default function ListComponent({
+  onAddButtonClick,
+}: ListComponentProps) {
   const { userData } = useUserData();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
@@ -390,6 +395,30 @@ export default function ListComponent() {
                   ))}
                 </Select>
               )}
+              {userStatus === "roleUser" && (
+                <div className={styles.addButtonContainer}>
+                  <Button
+                    onClick={onAddButtonClick}
+                    sx={{
+                      backgroundColor: "rgba(3, 11, 252, 0.7)",
+                      borderRadius: "5px",
+                      color: "white",
+                      border: "none",
+                      ":hover": {
+                        backgroundColor: "rgba(3, 11, 252, 0.54)",
+                        transition: "0.2s",
+                      },
+                      ":active": {
+                        backgroundColor: "rgba(3, 11, 252, 0.74)",
+                        transform: "scale(0.98) translateY(0.7px)",
+                        boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                      },
+                    }}
+                  >
+                    ADD REQUEST
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         ),
@@ -409,12 +438,12 @@ export default function ListComponent() {
     enableExpanding: true,
     enableDensityToggle: false,
     muiPaginationProps: {
-      rowsPerPageOptions: [8, 16, 32, 48, 64, 128],
+      rowsPerPageOptions: [10, 20, 30, 40, 50],
     },
     initialState: {
       density: "compact",
       pagination: {
-        pageSize: 8,
+        pageSize: 10,
         pageIndex: 0,
       },
     },

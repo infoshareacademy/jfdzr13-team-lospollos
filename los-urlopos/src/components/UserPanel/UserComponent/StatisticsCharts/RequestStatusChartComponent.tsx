@@ -48,13 +48,13 @@ const RequestStatusChartComponent = () => {
           leaveRequestStats?.cancelledRequest,
         ],
         backgroundColor: [
-          "rgba(0, 0, 175, 1)",
+          "rgba(3, 11, 252, 0.7)",
           "rgba(0, 175, 0, 1)",
-          "rgba(175, 0, 0, 1)",
+          "rgba(213, 69, 69, 0.73)",
           "rgba(0, 0, 0, 0.3)",
           ,
         ],
-        hoverOffset: 2,
+        hoverOffset: 10,
       },
     ],
   };
@@ -65,7 +65,7 @@ const RequestStatusChartComponent = () => {
   const options = {
     plugins: {
       title: {
-        text: "Leave Requests statusess:",
+        text: "Requests status:",
         display: true,
         align: "center",
         fullSize: false,

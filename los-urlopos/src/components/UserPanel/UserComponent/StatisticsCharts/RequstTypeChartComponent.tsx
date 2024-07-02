@@ -67,7 +67,7 @@ const RequestTypeChartComponent = () => {
   const options = {
     plugins: {
       title: {
-        text: "Leave Requests types:",
+        text: "Requests type:",
         display: true,
         align: "center",
         fullSize: false,

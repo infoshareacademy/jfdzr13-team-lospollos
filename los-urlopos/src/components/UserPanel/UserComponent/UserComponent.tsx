@@ -9,11 +9,7 @@ import LeaveRequestStatusChartComponent from "./StatisticsCharts/RequestStatusCh
 import RequestTypeChartComponent from "./StatisticsCharts/RequstTypeChartComponent";
 import styles from "./userComponent.module.css";
 
-interface UserComponentProps {
-  onAddButtonClick: () => void;
-}
-
-export function UserComponent({ onAddButtonClick }: UserComponentProps) {
+export function UserComponent() {
   const [profileImage, setProfileImage] = useState<string>(pfp);
   const [userView, setUserView] = useState<UserView>(emptyUser);
   const { userData, departmentsList } = useUserData();
