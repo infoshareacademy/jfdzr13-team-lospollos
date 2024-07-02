@@ -1,113 +1,77 @@
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
+import styles from "./spvRequestsTable.module.css";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import {
+  Select,
+  MenuItem,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button,
+  TextField,
+} from "@mui/material";
+import { Request } from "../../../types-obj/types-obj";
 import useUserData from "../../../contexts/ViewDataContext";
 import { getDepartment } from "../../../services/DepartmentService";
+import { acceptRequest, rejectRequest } from "../../../utils/RequestActions";
 import {
-  getRequestAll,
   getRequestDeptId,
-  getRequestUserId,
+  getRequestAll,
 } from "../../../services/LeaveRequestService";
-import { Request } from "../../../types-obj/types-obj";
-import {
-  acceptRequest,
-  cancelRequest,
-  rejectRequest,
-} from "../../../utils/RequestActions";
-import styles from "./listComponent.module.css";
 
-interface ListComponentProps {
-  onAddButtonClick: () => void;
-}
-
-export default function ListComponent({
-  onAddButtonClick,
-}: ListComponentProps) {
+export default function SpvRequestsTable() {
   const { userData } = useUserData();
-  const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
-  const [userStatus, setUserStatus] = useState<string>("");
   const [spvDepartments, setSpvDepartments] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
   const [currentRequest, setCurrentRequest] = useState({});
-
-  const [columnVisibility, setColumnVisibility] = useState({
-    userNameColumn: true,
-    requestTypeColumn: true,
-    deptColumn: true,
-    dayFromColumn: true,
-    dayToColumn: true,
-    statusColumn: true,
-    createdAtColumn: true,
-    actionsColumn: true,
-  });
-
-  const handleButtonClick = (row: Request, action: string) => {
-    setCurrentAction(action);
-    setCurrentRequest(row);
-    setDialogOpen(true);
-  };
-
-  const handleActionConfirm = () => {
-    if (currentAction === "accept") {
-      acceptRequest(currentRequest);
-    } else if (currentAction === "reject") {
-      let rejectReasonValue: string = (
-        document.getElementById("rejectReason") as HTMLInputElement
-      ).value;
-      rejectRequest(currentRequest, rejectReasonValue);
-    } else if (currentAction === "cancel") {
-      cancelRequest(currentRequest);
-    }
-    setDialogOpen(false);
-  };
+  const [rejectReasonError, setRejectReasonError] = useState<string>("");
 
   useEffect(() => {
-    if (selectedDepartment && selectedDepartment !== "allRequests") {
-      getRequestDeptId(selectedDepartment).then((response) => {
-        setData(response);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        if (selectedDepartment && selectedDepartment !== "allRequests") {
+          const response = await getRequestDeptId(selectedDepartment);
+          setData(response);
+        } else if (selectedDepartment === "allRequests") {
+          const response = await getRequestAll();
+          const allRequests = response.filter((request) =>
+            spvDepartments.some(
+              (department) => department.deptId === request.deptId
+            )
+          );
+          setData(allRequests);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
         setIsLoading(false);
-      });
-    } else if (selectedDepartment === "allRequests") {
-      getRequestAll().then((response) => {
-        const allRequests = response.filter((request) =>
-          spvDepartments.some(
-            (department) => department.deptId === request.deptId
-          )
-        );
-        setData(allRequests);
-        setIsLoading(false);
-      });
-    }
+      }
+    };
+
+    fetchData();
   }, [selectedDepartment, spvDepartments]);
 
   useEffect(() => {
     const fetchDepartments = async () => {
+      setIsLoading(true);
       try {
         const response = await getDepartment();
         const userDepartments = response.filter(
           (department) => department.head === userData.userId
         );
         setSpvDepartments(userDepartments);
-        if (userDepartments.length == 1) {
+        if (userDepartments.length === 1) {
           setSelectedDepartment(userDepartments[0].deptId);
         } else if (
           userDepartments.length > 1 &&
@@ -116,46 +80,62 @@ export default function ListComponent({
           setSelectedDepartment("allRequests");
         }
       } catch (error) {
-        console.error("Error", error);
+        console.error("Error fetching departments:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchDepartments();
-  }, [userData.userId, location.pathname]);
+  }, [userData.userId]);
 
-  useEffect(() => {
-    if (userData.roleSupervisor && location.pathname === "/supervisor-panel") {
-      setUserStatus("roleSupervisor");
-      setColumnVisibility({
-        userNameColumn: true,
-        requestTypeColumn: true,
-        deptColumn: true,
-        dayFromColumn: true,
-        dayToColumn: true,
-        statusColumn: true,
-        createdAtColumn: true,
-        actionsColumn: true,
-      });
-    } else if (userData.roleUser && location.pathname === "/user-panel") {
-      setUserStatus("roleUser");
-      setColumnVisibility({
-        userNameColumn: false,
-        requestTypeColumn: true,
-        deptColumn: true,
-        dayFromColumn: true,
-        dayToColumn: true,
-        statusColumn: true,
-        createdAtColumn: true,
-        actionsColumn: true,
-      });
-      getRequestUserId(userData.userId).then((response) => {
-        setData(response);
-        setIsLoading(false);
-      });
+  const handleButtonClick = (row: Request, action: string) => {
+    setCurrentAction(action);
+    setCurrentRequest(row);
+    setDialogOpen(true);
+  };
+
+  const handleActionConfirm = async () => {
+    if (currentAction === "accept") {
+      await acceptRequest(currentRequest);
+    } else if (currentAction === "reject") {
+      const rejectReasonValue: string = (
+        document.getElementById("rejectReason") as HTMLInputElement
+      ).value.trim();
+
+      if (rejectReasonValue === "") {
+        setRejectReasonError("Reject Reason is required!");
+        return;
+      } else {
+        setRejectReasonError("");
+        await rejectRequest(currentRequest, rejectReasonValue);
+      }
     }
-  }, [userData, location.pathname]);
+    setDialogOpen(false);
+    fetchData();
+  };
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      if (selectedDepartment && selectedDepartment !== "allRequests") {
+        const response = await getRequestDeptId(selectedDepartment);
+        setData(response);
+      } else if (selectedDepartment === "allRequests") {
+        const response = await getRequestAll();
+        const allRequests = response.filter((request) =>
+          spvDepartments.some(
+            (department) => department.deptId === request.deptId
+          )
+        );
+        setData(allRequests);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const columns = useMemo<MRT_ColumnDef<Request>[]>(
     () => [
@@ -165,9 +145,10 @@ export default function ListComponent({
         columns: [
           {
             id: "userNameColumn",
-            accessorFn: (row) => `${row.firstName} ${row.surname}`,
+            accessorFn: (row) => `${userData.firstName} ${userData.surname}`,
             header: "Employee's name",
             enableHiding: false,
+            size: 150,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
               align: "center",
@@ -179,6 +160,7 @@ export default function ListComponent({
             accessorKey: "requestType",
             header: "Request type",
             enableSorting: true,
+            size: 100,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
               align: "center",
@@ -200,13 +182,27 @@ export default function ListComponent({
             size: 60,
           },
           {
+            id: "daysReq",
+            accessorKey: "daysReq",
+            header: "Days requested",
+            enableSorting: true,
+            muiTableHeadCellProps: { align: "center" },
+            muiTableBodyCellProps: { align: "center" },
+            size: 60,
+          },
+          {
             id: "dayFromColumn",
             accessorKey: "dayFrom",
             header: "From",
-            enableSorting: false,
+            enableSorting: true,
             muiTableHeadCellProps: { align: "right" },
             muiTableBodyCellProps: { align: "right" },
             size: 60,
+            Cell: ({ cell }) => {
+              const dateValue = cell.getValue<string>();
+              const date = new Date(dateValue);
+              return date.toLocaleDateString();
+            },
           },
           {
             id: "dayToColumn",
@@ -216,6 +212,11 @@ export default function ListComponent({
             muiTableHeadCellProps: { align: "left" },
             muiTableBodyCellProps: { align: "left" },
             size: 60,
+            Cell: ({ cell }) => {
+              const dateValue = cell.getValue<string>();
+              const date = new Date(dateValue);
+              return date.toLocaleDateString();
+            },
           },
           {
             id: "statusColumn",
@@ -230,7 +231,7 @@ export default function ListComponent({
                 color = "rgba(3, 11, 252, 0.70)";
               } else if (status === "Rejected") {
                 color = "rgba(213, 69, 69, 0.73)";
-              } else if (status === "Accepted") {
+              } else if (status === "Approved") {
                 color = "rgba(84, 169, 84, 0.884)";
               } else if (status === "Cancelled") {
                 color = "gray";
@@ -254,88 +255,59 @@ export default function ListComponent({
             id: "actionsColumn",
             accessorKey: "actions",
             header: "Actions",
+            size: 150,
             enableSorting: false,
+            muiTableHeadCellProps: { align: "center" },
+            muiTableBodyCellProps: { align: "center" },
             Cell: ({ row }) => (
               <div>
-                {row.original.status === "Pending" &&
-                  userStatus === "roleSupervisor" && (
-                    <>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          marginRight: "10px",
-                          backgroundColor: "rgba(84, 169, 84, 0.884)",
-                          borderRadius: "5px",
-                          color: "white",
-                          border: "none",
-                          ":hover": {
-                            backgroundColor: "rgba(84, 169, 84, 0.671)",
-                            transition: "0.2s",
-                          },
-                          ":active": {
-                            backgroundColor: "rgba(84, 169, 84, 0.884)",
-                            transform: "scale(0.98) translateY(0.7px)",
-                            boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
-                          },
-                        }}
-                        onClick={() =>
-                          handleButtonClick(row.original, "accept")
-                        }
-                      >
-                        Accept
-                      </Button>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          marginRight: "10px",
-                          backgroundColor: "rgba(213, 69, 69, 0.73)",
-                          borderRadius: "5px",
-                          color: "white",
-                          border: "none",
-                          ":hover": {
-                            backgroundColor: "rgba(213, 69, 69, 0.549)",
-                            transition: "0.2s",
-                          },
-                          ":active": {
-                            backgroundColor: "rgba(213, 69, 69, 0.73)",
-                            transform: "scale(0.98) translateY(0.7px)",
-                            boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
-                          },
-                        }}
-                        onClick={() =>
-                          handleButtonClick(row.original, "reject")
-                        }
-                      >
-                        Reject
-                      </Button>
-                    </>
-                  )}
-                {row.original.status === "Pending" &&
-                  userStatus === "roleUser" && (
+                {row.original.status === "Pending" && (
+                  <>
                     <Button
                       variant="contained"
-                      color="primary"
                       sx={{
                         marginRight: "10px",
-                        backgroundColor: "rgba(255,165,0, 0.7)",
+                        backgroundColor: "rgba(84, 169, 84, 0.884)",
                         borderRadius: "5px",
                         color: "white",
                         border: "none",
                         ":hover": {
-                          backgroundColor: "rgba(255,165,0, 0.54)",
+                          backgroundColor: "rgba(84, 169, 84, 0.671)",
                           transition: "0.2s",
                         },
                         ":active": {
-                          backgroundColor: "rgba(255,165,0, 0.74)",
+                          backgroundColor: "rgba(84, 169, 84, 0.884)",
                           transform: "scale(0.98) translateY(0.7px)",
                           boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
                         },
                       }}
-                      onClick={() => handleButtonClick(row.original, "cancel")}
+                      onClick={() => handleButtonClick(row.original, "accept")}
                     >
-                      Cancel Request
+                      Accept
                     </Button>
-                  )}
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "rgba(213, 69, 69, 0.73)",
+                        borderRadius: "5px",
+                        color: "white",
+                        border: "none",
+                        ":hover": {
+                          backgroundColor: "rgba(213, 69, 69, 0.549)",
+                          transition: "0.2s",
+                        },
+                        ":active": {
+                          backgroundColor: "rgba(213, 69, 69, 0.73)",
+                          transform: "scale(0.98) translateY(0.7px)",
+                          boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                        },
+                      }}
+                      onClick={() => handleButtonClick(row.original, "reject")}
+                    >
+                      Reject
+                    </Button>
+                  </>
+                )}
               </div>
             ),
           },
@@ -374,7 +346,7 @@ export default function ListComponent({
                 justifyContent: "flex-end",
               }}
             >
-              {userStatus === "roleSupervisor" && spvDepartments.length > 1 && (
+              {spvDepartments.length > 1 && (
                 <Select
                   defaultValue="allRequests"
                   value={selectedDepartment}
@@ -393,109 +365,66 @@ export default function ListComponent({
                   ))}
                 </Select>
               )}
-              {userStatus === "roleUser" && (
-                <div className={styles.addButtonContainer}>
-                  <Button
-                    onClick={onAddButtonClick}
-                    sx={{
-                      backgroundColor: "rgba(3, 11, 252, 0.7)",
-                      borderRadius: "5px",
-                      color: "white",
-                      border: "none",
-                      ":hover": {
-                        backgroundColor: "rgba(3, 11, 252, 0.54)",
-                        transition: "0.2s",
-                      },
-                      ":active": {
-                        backgroundColor: "rgba(3, 11, 252, 0.74)",
-                        transform: "scale(0.98) translateY(0.7px)",
-                        boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
-                      },
-                    }}
-                  >
-                    ADD REQUEST
-                  </Button>
-                </div>
-              )}
             </div>
           </div>
         ),
       },
     ],
-    [data, userStatus, spvDepartments, selectedDepartment]
+    [data, spvDepartments, selectedDepartment]
   );
 
   const table = useMaterialReactTable({
     columns,
     data,
-    state: {
-      columnVisibility,
-    },
     enableHiding: false,
     enableColumnActions: false,
     enableExpanding: true,
     enableDensityToggle: false,
     muiPaginationProps: {
-      rowsPerPageOptions: [10, 20, 30, 40, 50],
+      rowsPerPageOptions: [8, 16, 32, 48, 64, 128],
     },
     initialState: {
       density: "compact",
       pagination: {
-        pageSize: 10,
+        pageSize: 8,
         pageIndex: 0,
       },
+      sorting: [
+        {
+          id: "dayFromColumn",
+          desc: false,
+        },
+      ],
     },
     renderDetailPanel: ({ row }) => {
-      const dept = spvDepartments.find(
-        (dept) => dept.deptId === row.original.deptId
-      );
       return (
         <div
           style={{
-            padding: "16px",
             display: "flex",
-            gap: "36px",
-            alignContent: "center",
           }}
         >
-          <strong>Details:</strong>
-          <p>
-            Name:
-            <br /> {row.original.firstName} {row.original.surname}
-          </p>
-          <p>
-            From:
-            <br /> {row.original.dayFrom}
-          </p>
-          <p>
-            To:
-            <br /> {row.original.dayTo}
-          </p>
-          <p>
-            Request Type:
-            <br /> {row.original.requestType}
-          </p>
-          <p>
-            Days Request:
-            <br /> {row.original.daysReq}
-          </p>
-          <p>
-            Supervisor:
-            <br /> {dept ? dept.head : "Unknown"}
-          </p>
-          <p>
-            Status:
-            <br /> {row.original.status}
-          </p>
-          <p>
-            Created At:
-            <br /> {new Date(row.original.createdAt).toLocaleDateString()}
-          </p>
-          <p>
-            Comment:
-            <br />
-            {row.original.comment}
-          </p>
+          <div
+            style={{
+              display: "flex",
+              width: "50%",
+              justifyContent: "center",
+            }}
+          >
+            <span>Comment: {row.original.comment || "No comment"}</span>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              width: "50%",
+              justifyContent: "center",
+            }}
+          >
+            {row.original.rejectReason && (
+              <span style={{ color: "red" }}>
+                Reject Reason: {row.original.rejectReason}
+              </span>
+            )}
+          </div>
         </div>
       );
     },
@@ -520,16 +449,20 @@ export default function ListComponent({
         </DialogTitle>
         <DialogContent>
           {currentAction === "reject" && (
-            <TextField
-              required
-              margin="dense"
-              id="rejectReason"
-              name="rejectReason"
-              label="Reject Reason"
-              type="text"
-              variant="standard"
-              fullWidth
-            />
+            <>
+              <TextField
+                required
+                error={!!rejectReasonError}
+                helperText={rejectReasonError}
+                margin="dense"
+                id="rejectReason"
+                name="rejectReason"
+                label="Reject Reason"
+                type="text"
+                variant="standard"
+                fullWidth
+              />
+            </>
           )}
         </DialogContent>
         <DialogActions>

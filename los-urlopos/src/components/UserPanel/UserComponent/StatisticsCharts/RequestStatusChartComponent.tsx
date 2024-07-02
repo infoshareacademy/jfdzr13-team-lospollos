@@ -77,7 +77,7 @@ const RequestStatusChartComponent = () => {
       legend: {
         display: true,
         position: "right",
-        align: "end",
+        align: "center",
         labels: {
           boxWidth: 14,
         },
