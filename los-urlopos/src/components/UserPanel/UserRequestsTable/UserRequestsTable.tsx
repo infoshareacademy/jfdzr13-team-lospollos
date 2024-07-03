@@ -8,7 +8,6 @@ import {
   type MRT_ColumnDef,
 } from "material-react-table";
 import {
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -21,7 +20,6 @@ import useUserData from "../../../contexts/ViewDataContext";
 import { getRequestUserId } from "../../../services/LeaveRequestService";
 import { getDepartmentById } from "../../../services/DepartmentService";
 import { cancelRequest } from "../../../utils/RequestActions";
-import { red } from "@mui/material/colors";
 
 const dateOptions: DateToShowOptions = {
   day: "2-digit",
@@ -40,13 +38,19 @@ export default function UserRequestsTable({ onAddButtonClick }) {
 
   const fetchRequests = async () => {
     setIsLoading(true);
-    const departmentData = await getDepartmentById(userData.deptId);
-    if (departmentData) {
-      setDepartment(departmentData);
+    try {
+      const departmentData = await getDepartmentById(userData.deptId);
+      if (departmentData) {
+        setDepartment(departmentData);
+      }
+
+      const requestData = await getRequestUserId(userData.userId);
+      setData(requestData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
-    const requestData = await getRequestUserId(userData.userId);
-    setData(requestData);
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -315,7 +319,7 @@ export default function UserRequestsTable({ onAddButtonClick }) {
     initialState: {
       density: "compact",
       pagination: {
-        pageSize: 8,
+        pageSize: 10,
         pageIndex: 0,
       },
       sorting: [
