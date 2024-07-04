@@ -66,3 +66,21 @@ export const subscribeToUsers = (
 export const addUser = async (uid: string, userData: any) => {
   await setDoc(doc(db, "Users", uid), userData);
 };
+
+export const fetchSupervisors = async (): Promise<User[]> => {
+  try {
+    const q = query(usersCollection, where("roleSupervisor", "==", true));
+    const querySnapshot = await getDocs(q);
+
+    const supervisors: User[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as User),
+    }));
+
+    return supervisors;
+  } catch (error) {
+    console.error("Error fetching supervisors: ", error);
+    throw error;
+    3;
+  }
+};

@@ -1,43 +1,26 @@
 import React, { FC, FormEvent, ChangeEvent, useState, useEffect } from "react";
 import { Departments, User } from "../../../types-obj/types-obj";
-import { createUser, getCurrentUser } from "../../../services/AuthService";
-import { addUser } from "../../../services/UserService";
-import styles from "./AddUser.module.css";
+import { getCurrentUser } from "../../../services/AuthService";
+import { updateUser } from "../../../services/UserService";
+import styles from "../AddUser/AddUser.module.css";
 import { getDepartment } from "../../../services/DepartmentService";
 
-type AddUserProps = {
-  onUserAdded: () => void;
+type EditUserProps = {
+  user: User;
+  onUserUpdated: () => void;
   onClose: () => void;
 };
 
-const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
-  const [newUser, setNewUser] = useState<User>({
-    createdAt: Date.now(),
-    createdBy: "",
-    currentDays: 0,
-    days: 0,
-    deptId: "",
-    email: "",
-    firstName: "",
-    surname: "",
-    onDemand: 0,
-    roleAdmin: false,
-    roleUser: false,
-    roleSupervisor: false,
-    userId: "",
-  });
-  const [password, setPassword] = useState<string>("");
+const EditUser: FC<EditUserProps> = ({ user, onUserUpdated, onClose }) => {
+  const [editedUser, setEditedUser] = useState<User>({ ...user });
   const [error, setError] = useState<string | null>(null);
-  const [selectedDepartment, setSelectedDepartment] = useState<string | null>(
-    null
-  );
+  const [selectedDepartment, setSelectedDepartment] = useState<string | null>();
   const [departments, setDepartments] = useState<Departments[]>([]);
 
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
         const depts = await getDepartment();
-        console.log("Departments:", depts);
         setDepartments(depts);
         setError(null);
       } catch (error) {
@@ -53,7 +36,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
     const fetchCurrentUser = async () => {
       try {
         const currentUser = await getCurrentUser();
-        setNewUser((prevUser) => ({
+        setEditedUser((prevUser) => ({
           ...prevUser,
           createdBy: currentUser ? currentUser.uid : "",
         }));
@@ -68,48 +51,23 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
-    if (name === "password") {
-      setPassword(value);
-    } else {
-      setNewUser((prevUser) => ({
-        ...prevUser,
-        [name]: type === "checkbox" ? checked : value,
-      }));
-    }
+    setEditedUser((prevUser) => ({
+      ...prevUser,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
-  const handleAddUser = async (event: FormEvent) => {
+  const handleEditUser = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      const user = await createUser(newUser.email, password);
-      console.log("New User", user);
-      await addUser(user.uid, {
-        ...newUser,
-        userId: user.uid,
-      });
+      await updateUser(user.userId, editedUser);
 
-      setNewUser({
-        createdAt: Date.now(),
-        createdBy: "",
-        currentDays: 0,
-        days: 0,
-        deptId: "",
-        email: "",
-        firstName: "",
-        surname: "",
-        onDemand: 0,
-        roleAdmin: false,
-        roleUser: true,
-        roleSupervisor: false,
-        userId: "",
-      });
-      setPassword("");
       setError(null);
-      onUserAdded();
+      onUserUpdated();
       onClose();
     } catch (error) {
-      console.error("Error adding user: ", error);
-      setError("Error adding user.");
+      console.error("Error editing user: ", error);
+      setError("Error editing user.");
     }
   };
 
@@ -117,8 +75,8 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
     <div className={styles.popupWrapper}>
       <div className={styles.popupContent}>
         <div className={styles.addUserContent}>
-          <h2 className={styles.addUserH2}>Add User</h2>
-          <form onSubmit={handleAddUser} className={styles.addUserForm}>
+          <h2 className={styles.addUserH2}>Edit User</h2>
+          <form onSubmit={handleEditUser} className={styles.addUserForm}>
             <label className={styles.addUserLabel}>
               First Name:
               <input
@@ -126,7 +84,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 type="text"
                 name="firstName"
                 placeholder="First Name"
-                value={newUser.firstName}
+                value={editedUser.firstName}
                 onChange={handleInputChange}
                 required
               />
@@ -138,35 +96,12 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 type="text"
                 name="surname"
                 placeholder="Surname"
-                value={newUser.surname}
+                value={editedUser.surname}
                 onChange={handleInputChange}
                 required
               />
             </label>
-            <label className={styles.addUserLabel}>
-              Email:
-              <input
-                className={styles.addUserInput}
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={newUser.email}
-                onChange={handleInputChange}
-                required
-              />
-            </label>
-            <label className={styles.addUserLabel}>
-              Initial Password:
-              <input
-                className={styles.addUserInput}
-                type="text"
-                name="password"
-                placeholder="Password"
-                value={password}
-                onChange={handleInputChange}
-                required
-              />
-            </label>
+
             <label className={styles.addUserLabel}>
               Current Days:
               <input
@@ -174,7 +109,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 type="number"
                 name="currentDays"
                 placeholder="Current Days"
-                value={newUser.currentDays}
+                value={editedUser.currentDays}
                 onChange={handleInputChange}
                 required
               />
@@ -186,7 +121,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 type="number"
                 name="days"
                 placeholder="Days"
-                value={newUser.days}
+                value={editedUser.days}
                 onChange={handleInputChange}
                 required
               />
@@ -198,12 +133,10 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 value={selectedDepartment || ""}
                 onChange={(event) => {
                   setSelectedDepartment(event.target.value);
-                  console.log(selectedDepartment);
-                  setNewUser((prevUser) => ({
+                  setEditedUser((prevUser) => ({
                     ...prevUser,
                     deptId: event.target.value,
                   }));
-                  console.log(newUser);
                 }}
               >
                 <option value="" disabled hidden>
@@ -217,24 +150,12 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
               </select>
             </label>
             <label className={styles.addUserLabel}>
-              On Demand:
-              <input
-                className={styles.addUserInput}
-                type="number"
-                name="onDemand"
-                placeholder="On Demand"
-                value={newUser.onDemand}
-                onChange={handleInputChange}
-                required
-              />
-            </label>
-            <label className={styles.addUserLabel}>
               Admin
               <input
                 className={styles.addUserInput}
                 type="checkbox"
                 name="roleAdmin"
-                checked={newUser.roleAdmin}
+                checked={editedUser.roleAdmin}
                 onChange={handleInputChange}
               />
             </label>
@@ -244,7 +165,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 className={styles.addUserInput}
                 type="checkbox"
                 name="roleUser"
-                checked={newUser.roleUser}
+                checked={editedUser.roleUser}
                 onChange={handleInputChange}
               />
             </label>
@@ -254,13 +175,13 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 className={styles.addUserInput}
                 type="checkbox"
                 name="roleSupervisor"
-                checked={newUser.roleSupervisor}
+                checked={editedUser.roleSupervisor}
                 onChange={handleInputChange}
               />
             </label>
             <div className={styles.addUserBtns}>
               <button className={styles.addUserBtn} type="submit">
-                Add User
+                Save Changes
               </button>
               <button
                 className={styles.closePopup}
@@ -278,4 +199,4 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
   );
 };
 
-export default AddUser;
+export default EditUser;

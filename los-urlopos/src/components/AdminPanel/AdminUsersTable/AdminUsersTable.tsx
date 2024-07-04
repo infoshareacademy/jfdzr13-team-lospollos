@@ -14,10 +14,11 @@ import { getDepartment } from "../../../services/DepartmentService";
 import styles from "./adminUsersTable.module.css";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import AddUser from "../AddUser/AddUser";
+import EditUser from "../AddUser/EditUser";
 
-interface AdminUsersTableProps {
+type AdminUsersTableProps = {
   onAddUserBtnClick: () => void;
-}
+};
 
 export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
   const [users, setUsers] = useState<User[]>([]);
@@ -26,6 +27,7 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
   const [departments, setDepartments] = useState<{ [key: string]: string }>({});
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [editUserId, setEditUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -101,6 +103,10 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
     }
     setDialogOpen(false);
     setUserIdToDelete(null);
+  };
+
+  const handleEditClick = (id: string) => {
+    setEditUserId(id);
   };
 
   const columns = useMemo<MRT_ColumnDef<User>[]>(
@@ -205,6 +211,27 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
                   onClick={() => confirmDeleteUser(row.original.userId)}
                 >
                   DELETE
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "rgba(0, 103, 240, 0.73)",
+                    borderRadius: "5px",
+                    color: "white",
+                    border: "none",
+                    ":hover": {
+                      backgroundColor: "rgba(0, 103, 240, 0.549)",
+                      transition: "0.2s",
+                    },
+                    ":active": {
+                      backgroundColor: "rgba(0, 103, 240, 0.73)",
+                      transform: "scale(0.98) translateY(0.7px)",
+                      boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                    },
+                  }}
+                  onClick={() => handleEditClick(row.original.userId)}
+                >
+                  EDIT
                 </Button>
               </div>
             ),
@@ -359,6 +386,10 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
     },
   });
 
+  const handleCloseEditUser = () => {
+    setEditUserId(null);
+  };
+
   if (isLoading) {
     return <div className={styles.spinner}></div>;
   }
@@ -421,6 +452,13 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
           </Button>
         </DialogActions>
       </Dialog>
+      {editUserId && (
+        <EditUser
+          user={users.find((user) => user.userId === editUserId)}
+          onUserUpdated={() => {}}
+          onClose={handleCloseEditUser}
+        />
+      )}
     </div>
   );
 }
