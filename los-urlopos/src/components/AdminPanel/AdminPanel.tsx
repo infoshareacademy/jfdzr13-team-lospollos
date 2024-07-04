@@ -23,8 +23,6 @@ const AdminPanel: FC = () => {
   return (
     <div className={styles.adminPanel}>
       <div className={styles.navbar}>
-        <span className={styles.adminPanelSpan}> | </span>
-
         <button
           className={styles.adminPanelBtn}
           onClick={() => setSelectedSection("users")}
@@ -32,7 +30,6 @@ const AdminPanel: FC = () => {
           Users
         </button>
         <span className={styles.adminPanelSpan}> | </span>
-
         <button
           className={styles.adminPanelBtn}
           onClick={() => setSelectedSection("departments")}
@@ -40,14 +37,12 @@ const AdminPanel: FC = () => {
           Departments
         </button>
         <span className={styles.adminPanelSpan}> | </span>
-
         <button
           className={styles.adminPanelBtn}
           onClick={() => setSelectedSection("bankHolidays")}
         >
           Bank Holidays
-        </button>
-        <span className={styles.adminPanelSpan}> | </span>
+        </button>{" "}
       </div>
       {renderSection()}
     </div>

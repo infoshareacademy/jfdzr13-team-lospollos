@@ -5,9 +5,9 @@ import { subscribeToUsers } from "../../../services/UserService";
 import AddUser from "../AddUser/AddUser";
 import AdminUsersTable from "../AdminUsersTable/AdminUsersTable";
 
-interface UsersListProps {
+type UsersListProps = {
   openAddUserModal: () => void;
-}
+};
 
 const UsersList: FC<UsersListProps> = ({}) => {
   const [users, setUsers] = useState<User[]>([]);
@@ -45,7 +45,6 @@ const UsersList: FC<UsersListProps> = ({}) => {
 
   return (
     <div>
-      <h1>Users</h1>
       <dialog open={isAddUserDialogOpen} onClose={handleCloseDialog}>
         <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
       </dialog>
