@@ -9,7 +9,7 @@ import {
 } from "../services/UserService";
 import toast from "react-hot-toast";
 
-export async function AddAnnualDaysLeave() {
+export async function addAnnualDaysLeave() {
   const currentYears = new Date().getFullYear();
   let yearForComparison: any = await getPermisionToAddAnnualLeave();
   let listUsersForUpdateAnnualDays: any;
