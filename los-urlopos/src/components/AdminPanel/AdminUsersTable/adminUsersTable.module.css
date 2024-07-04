@@ -1,40 +1,11 @@
-.userHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.userDetails {
-  margin-top: 10px;
-}
-
-.adminUsersList {
+.container {
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-around;
+  overflow-x: auto;
 }
 
-.tableWrapper {
-  width: 95%;
-  height: 95%;
-  margin: 2% 0;
-}
-
-.addUserBtn {
-  padding: 5px 10px;
-  background-color: #4f79e2;
-  color: white;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-.addUserBtn:hover {
-  background-color: #3457d5;
-  scale: 1.1;
-  transition: 0.3s;
+.detailsSpanText {
+  color: rgb(163, 159, 159);
+  letter-spacing: 1.2px;
 }
 
 .spinner {

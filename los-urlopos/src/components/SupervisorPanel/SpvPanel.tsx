@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { AddRequest } from "../AddRequest/AddRequest";
-import ListComponent from "../UserPanel/ListComponent/ListComponent";
 import { UserComponent } from "../UserPanel/UserComponent/UserComponent";
 import useUserData from "../../contexts/ViewDataContext";
 import styles from "./spvPanel.module.css";
+import SpvRequestsTable from "./SpvRequestsTable/SpvRequestsTable";
 
 export function SpvPanel() {
   const [showAddRequest, setShowAddRequest] = useState(false);
@@ -42,7 +42,7 @@ export function SpvPanel() {
         }`}
       >
         <UserComponent onAddButtonClick={handleAddButtonClick} />
-        <ListComponent />
+        <SpvRequestsTable />
       </div>
       {showAddRequest && (
         <>

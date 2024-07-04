@@ -14,7 +14,7 @@
 }
 
 .bgAdmin {
-  background: url("../../images/bgblue.png");
+  background: url("../../images/bgblue2.png");
 }
 
 .bgSupervisor {
@@ -26,7 +26,7 @@
 }
 
 .navbarAdmin {
-  background-color: rgb(96, 96, 255);
+  background-color: #0095ca;
 }
 
 .navbarSupervisor {

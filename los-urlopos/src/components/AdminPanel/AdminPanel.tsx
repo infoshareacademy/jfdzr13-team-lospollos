@@ -1,8 +1,8 @@
+import React, { FC, useState } from "react";
 import styles from "./AdminPanel.module.css";
 import UsersList from "./UsersList/UsersList";
 import DepartmentsList from "./DepartmentsList/DepartmentsList";
 import BankHolidaysForm from "./BankHolidaysForm/BankHolidaysForm";
-import React, { FC, useState } from "react";
 
 const AdminPanel: FC = () => {
   const [selectedSection, setSelectedSection] = useState<string>("users");
@@ -23,11 +23,24 @@ const AdminPanel: FC = () => {
   return (
     <div className={styles.adminPanel}>
       <div className={styles.navbar}>
-        <button onClick={() => setSelectedSection("users")}>Users</button>
-        <button onClick={() => setSelectedSection("departments")}>
+        <button
+          className={styles.adminPanelBtn}
+          onClick={() => setSelectedSection("users")}
+        >
+          Users
+        </button>
+        <span className={styles.adminPanelSpan}> | </span>
+        <button
+          className={styles.adminPanelBtn}
+          onClick={() => setSelectedSection("departments")}
+        >
           Departments
         </button>
-        <button onClick={() => setSelectedSection("bankHolidays")}>
+        <span className={styles.adminPanelSpan}> | </span>
+        <button
+          className={styles.adminPanelBtn}
+          onClick={() => setSelectedSection("bankHolidays")}
+        >
           Bank Holidays
         </button>
       </div>

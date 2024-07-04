@@ -31,54 +31,56 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.loginWrapper}>
-      <div className={styles.contentCont}>
-        <div className={styles.loginContent}>
-          <h2 className={styles.loginH2}>Login</h2>
-          <span
-            className={`${styles.loginError} ${
-              unsuccessLogin ? styles.loginErrorVisible : ""
-            }`}
-          >
-            Login failed - invalid email or password
-          </span>
-          <form onSubmit={handleLogin} className={styles.loginForm}>
-            <div className={styles.inputsCont}>
-              <label className={styles.emailLabel}>
-                Email
-                <input
-                  className={styles.labelInput}
-                  type="email"
-                  name="email"
-                  id="email"
-                  placeholder="Enter your email"
-                />
-              </label>
-              <label className={styles.passwordLabel}>
-                Password
-                <input
-                  className={styles.passwordInput}
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="Enter your password"
-                />
-              </label>
-            </div>
-            <div className={styles.btnCont}>
-              <button
-                className={styles.loginBtn}
-                type="submit"
-                formMethod="POST"
-              >
-                Login
-              </button>
-            </div>
-          </form>
+    <div className={styles.loginPanelWrapper}>
+      <div className={styles.loginWrapper}>
+        <div className={styles.contentCont}>
+          <div className={styles.loginContent}>
+            <h2 className={styles.loginH2}>Login</h2>
+            <span
+              className={`${styles.loginError} ${
+                unsuccessLogin ? styles.loginErrorVisible : ""
+              }`}
+            >
+              Login failed - invalid email or password
+            </span>
+            <form onSubmit={handleLogin} className={styles.loginForm}>
+              <div className={styles.inputsCont}>
+                <label className={styles.emailLabel}>
+                  Email
+                  <input
+                    className={styles.labelInput}
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Enter your email"
+                  />
+                </label>
+                <label className={styles.passwordLabel}>
+                  Password
+                  <input
+                    className={styles.passwordInput}
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Enter your password"
+                  />
+                </label>
+              </div>
+              <div className={styles.btnCont}>
+                <button
+                  className={styles.loginBtn}
+                  type="submit"
+                  formMethod="POST"
+                >
+                  Login
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
-      <div className={styles.imageCont}>
-        <img src={image} className={styles.loginImage} alt="Work from home" />
+        <div className={styles.imageCont}>
+          <img src={image} className={styles.loginImage} alt="Work from home" />
+        </div>
       </div>
     </div>
   );
