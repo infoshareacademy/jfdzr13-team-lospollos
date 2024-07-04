@@ -107,4 +107,6 @@
 .adminPanelSpan {
   font-size: 3vmin;
   color: white;
+  display: flex;
+  align-self: center;
 }
