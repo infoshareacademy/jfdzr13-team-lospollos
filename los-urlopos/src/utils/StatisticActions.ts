@@ -6,86 +6,41 @@ import {
   getRequestUserId,
 } from "../services/LeaveRequestService";
 import {
-  LeaveRequestStats,
-  LeaveRequestStatusStats,
-  LeaveRequestTypeStats,
+  LeaveRequestStats
 } from "../types-obj/statisticsTypes";
 import { Request } from "../types-obj/types-obj";
-import { emptyStatusStats, emptyTypeStats } from "./DefaultObjects";
+
+
+const sumDaysForRequestType = (requests: Request[], requestType: TYPE_OF_LEAVE) => {
+  return requests.filter(x => x.status === requestType).reduce((totalDays, req) => totalDays + req.daysReq,
+  0);
+}
 
 export async function getReqStatisticForUser(userId: string) {
-  const statusStatistic: LeaveRequestStatusStats = {
-    allRequest: 0,
-    pendingRequest: 0,
-    approvedRequest: 0,
-    rejectedRequest: 0,
-    cancelledRequest: 0,
-  };
-  const typeStatistic: LeaveRequestTypeStats = {
-    totalLeave: 0,
-    annualLeave: 0,
-    additionalLeave: 0,
-    specialLeave: 0,
-    sickLeave: 0,
-    childLeave: 0,
-    unpaidLeave: 0,
-    onDemandLeave: 0,
-  };
 
   const requestList: Request[] = await getRequestUserId(userId);
 
-  statusStatistic.allRequest = requestList.length;
-  typeStatistic.totalLeave = requestList.reduce(
-    (totalDays, req) => totalDays + req.daysReq,
-    0
-  );
-
-  for (const request of requestList) {
-    switch (request.status) {
-      case REQUEST_STATUS.Pending:
-        statusStatistic.pendingRequest++;
-        break;
-      case REQUEST_STATUS.Approved:
-        statusStatistic.approvedRequest++;
-        break;
-      case REQUEST_STATUS.Rejected:
-        statusStatistic.rejectedRequest++;
-        break;
-      case REQUEST_STATUS.Cancelled:
-        statusStatistic.cancelledRequest++;
-        break;
-    }
-  }
-
-  for (const request of requestList) {
-    switch (request.requestType) {
-      case TYPE_OF_LEAVE.AnnualLeave:
-        typeStatistic.annualLeave++;
-        break;
-      case TYPE_OF_LEAVE.OnDemandLeave:
-        typeStatistic.onDemandLeave++;
-        break;
-      case TYPE_OF_LEAVE.AdditionalLeave:
-        typeStatistic.additionalLeave++;
-        break;
-      case TYPE_OF_LEAVE.SickLeave:
-        typeStatistic.sickLeave++;
-        break;
-      case TYPE_OF_LEAVE.ChildLeave:
-        typeStatistic.childLeave++;
-        break;
-      case TYPE_OF_LEAVE.SpecialLeave:
-        typeStatistic.specialLeave++;
-        break;
-      case TYPE_OF_LEAVE.UnpaidLeave:
-        typeStatistic.unpaidLeave++;
-        break;
-    }
-  }
-
   return {
-    statusStats: statusStatistic,
-    typeStats: typeStatistic,
+    statusStats:{
+      allRequest: requestList.length,
+      pendingRequest: requestList.filter(x => x.status === REQUEST_STATUS.Pending).length,
+      approvedRequest: requestList.filter(x => x.status === REQUEST_STATUS.Approved).length,
+      rejectedRequest: requestList.filter(x => x.status === REQUEST_STATUS.Rejected).length,
+      cancelledRequest: requestList.filter(x => x.status === REQUEST_STATUS.Cancelled).length,
+    },
+    typeStats: {
+      totalLeave: requestList.reduce(
+        (totalDays, req) => totalDays + req.daysReq,
+        0
+      ),
+      annualLeave: sumDaysForRequestType(requestList, TYPE_OF_LEAVE.AnnualLeave),
+      additionalLeave: sumDaysForRequestType(requestList, TYPE_OF_LEAVE.AdditionalLeave),
+      specialLeave: sumDaysForRequestType(requestList, TYPE_OF_LEAVE.SpecialLeave),
+      sickLeave: sumDaysForRequestType(requestList, TYPE_OF_LEAVE.SickLeave),
+      childLeave: sumDaysForRequestType(requestList, TYPE_OF_LEAVE.ChildLeave),
+      unpaidLeave: sumDaysForRequestType(requestList, TYPE_OF_LEAVE.UnpaidLeave),
+      onDemandLeave: sumDaysForRequestType(requestList, TYPE_OF_LEAVE.OnDemandLeave),
+    } 
   } as LeaveRequestStats;
 }
 
