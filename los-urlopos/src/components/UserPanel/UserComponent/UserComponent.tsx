@@ -3,15 +3,19 @@ import useUserData from "../../../contexts/ViewDataContext";
 import pfp from "../../../images/Unknown_person.jpg";
 import { toUserView } from "../../../mappers/ViewObjectsMapper";
 import { UserView } from "../../../types-obj/objectViewTypes";
+import { UserStatistics } from "../../../types-obj/statisticsTypes";
 import { Departments, User } from "../../../types-obj/types-obj";
-import { emptyUser } from "../../../utils/DefaultObjects";
-import LeaveRequestStatusChartComponent from "./StatisticsCharts/RequestStatusChartComponent";
-import RequestTypeChartComponent from "./StatisticsCharts/RequstTypeChartComponent";
+import { emptyUser, emptyUserStatistics } from "../../../utils/DefaultObjects";
+import { getReqStatisticForUser } from "../../../utils/StatisticActions";
+import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusChartComponent";
+import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./userComponent.module.css";
 
 export function UserComponent() {
   const [profileImage, setProfileImage] = useState<string>(pfp);
   const [userView, setUserView] = useState<UserView>(emptyUser);
+  const [userStats, setUserStats] =
+    useState<UserStatistics>(emptyUserStatistics);
   const { userData, departmentsList } = useUserData();
 
   const toUserViewObject = async (
@@ -22,8 +26,14 @@ export function UserComponent() {
     setUserView(userView);
   };
 
+  const fetchUserLeaveRequestStats = async () => {
+    const userStatistics = await getReqStatisticForUser(userData.userId);
+    setUserStats(userStatistics);
+  };
+
   useEffect(() => {
     toUserViewObject(userData, departmentsList);
+    fetchUserLeaveRequestStats();
 
     const savedImage = localStorage.getItem(
       `profileImage_${userView.email}_${userView.id}`
@@ -69,13 +79,17 @@ export function UserComponent() {
 
       <div className={styles.reqStatusStats}>
         <div className={styles.reqStatusStatsChart}>
-          <LeaveRequestStatusChartComponent />
+          <RequestStatusChartComponent
+            statusStatistics={userStats.leaveRequestsStat.statusStats}
+          />
         </div>
       </div>
 
       <div className={styles.reqTypeStats}>
         <div className={styles.reqTypeStatsChart}>
-          <RequestTypeChartComponent />
+          <RequestTypeChartComponent
+            typeStatistics={userStats.leaveRequestsStat.typeStats}
+          />
         </div>
       </div>
     </div>
