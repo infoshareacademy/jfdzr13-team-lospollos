@@ -1,61 +1,82 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import useUserData from "../../../contexts/ViewDataContext";
 import pfp from "../../../images/Unknown_person.jpg";
+import { toUserView } from "../../../mappers/ViewObjectsMapper";
+import { UserView } from "../../../types-obj/objectViewTypes";
+import { Departments, User } from "../../../types-obj/types-obj";
+import { emptyUser } from "../../../utils/DefaultObjects";
+import SvpRequestStatusChartComponent from "./StatisticsCharts/SvpRequestStatusChartComponent";
+import SvpRequestTypeChartComponent from "./StatisticsCharts/SvpRequstTypeChartComponent";
 import styles from "./spvComponent.module.css";
 
-interface UserComponentProps {
-  onAddButtonClick: () => void;
-}
-
-export function SpvComponent({ onAddButtonClick }: UserComponentProps) {
+export function SpvComponent({ departmentId }) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
+  const [userView, setUserView] = useState<UserView>(emptyUser);
+  const { userData, departmentsList } = useUserData();
+
+  const toUserViewObject = async (
+    userData: User,
+    departmentList: Departments[]
+  ) => {
+    const userView = await toUserView(userData, departmentList);
+    setUserView(userView);
+  };
 
   useEffect(() => {
-    const savedImage = localStorage.getItem("profileImage");
+    toUserViewObject(userData, departmentsList);
+
+    const savedImage = localStorage.getItem(
+      `profileImage_${userView.email}_${userView.id}`
+    );
     if (savedImage) {
       setProfileImage(savedImage);
     }
-  }, []);
-
-  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const image = document.getElementById("output") as HTMLImageElement;
-    if (event.target.files && event.target.files[0]) {
-      const imageUrl = URL.createObjectURL(event.target.files[0]);
-      image.src = imageUrl;
-      setProfileImage(imageUrl);
-      localStorage.setItem("profileImage", imageUrl);
-    }
-  };
+  }, [userData]);
 
   return (
-    <div className={styles.profilePictureWrapper}>
-      <div className={styles.profilePictureCont}>
-        <label className={styles.label} htmlFor="file">
-          <span
-            className={`${styles.glyphicon} ${styles.glyphiconCamera}`}
-          ></span>
-          <span>Change</span>
-        </label>
-        <input id="file" type="file" onChange={loadFile} />
+    <div className={styles.userBusinessCard}>
+      <div className={styles.profilePicture}>
         <img
-          className={styles.profilePicture}
+          className={styles.profilePictureImg}
           src={profileImage}
-          id="output"
-          width="200"
-          alt="Profile"
+          alt="User profile picture"
         />
       </div>
+
       <div className={styles.userDetails}>
-        <span>dsgfhds</span>
-        <span>janusz.kukulka@urlopos.com</span>
-        <span>Department</span>
+        <div>
+          <h2>
+            {userView.firstName} {userView.lastName}
+          </h2>
+          <h4>{userView.email}</h4>
+        </div>
+        <div>
+          <h3>{userView.department.name}</h3>
+          <h5>{userView.department.leader.name}</h5>
+        </div>
       </div>
-      <div className={styles.daysLeft}>
-        U have <span>XX</span> days left
+
+      <div className={styles.daysOffInventory}>
+        <label className={styles.daysOffTitle}>Days off:</label>
+        <span className={styles.daysOff}>
+          {userView.daysOffLeft} / {userView.daysOffTotal}
+        </span>
+        <label className={styles.onDemandTitle}>On demand:</label>
+        <span className={styles.onDemand}>
+          {userView.onDemandLeft} / {userView.onDemandTotal}
+        </span>
       </div>
-      <div className={styles.addButtonContainer}>
-        <button className={styles.addButton} onClick={onAddButtonClick}>
-          ADD
-        </button>
+
+      <div className={styles.reqStatusStats}>
+        <div className={styles.reqStatusStatsChart}>
+          <SvpRequestStatusChartComponent departmentId={departmentId} />
+        </div>
+      </div>
+
+      <div className={styles.reqTypeStats}>
+        <div className={styles.reqTypeStatsChart}>
+          <SvpRequestTypeChartComponent departmentId={departmentId} />
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import {
   ArcElement,
   Chart as ChartJS,
-  Colors,
   Legend,
   Title,
   Tooltip,
@@ -10,21 +9,21 @@ import {
 import { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import useUserData from "../../../../contexts/ViewDataContext";
-import TYPE_OF_LEAVE from "../../../../enums/typeOfLeave";
-import { LeaveRequestTypeStats } from "../../../../types-obj/statisticsTypes";
+import REQUEST_STATUS from "../../../../enums/requestStatus";
+import { LeaveRequestStatusStats } from "../../../../types-obj/statisticsTypes";
 import { getReqStatisticForUser } from "../../../../utils/StatisticActions";
 
 defaults.maintainAspectRatio = false;
 
-const RequestTypeChartComponent = () => {
-  ChartJS.register(ArcElement, Tooltip, Legend, Title, Colors);
+const SvpRequestStatusChartComponent = ({ departmentId }) => {
+  ChartJS.register(ArcElement, Tooltip, Legend, Title);
   const [leaveRequestStats, setLeaveRequestStats] =
-    useState<LeaveRequestTypeStats>();
+    useState<LeaveRequestStatusStats>();
   const { userData } = useUserData();
 
   const fetchUserLeaveRequestStats = async () => {
     const { leaveRequestsStat } = await getReqStatisticForUser(userData.userId);
-    setLeaveRequestStats(leaveRequestsStat.typeStats);
+    setLeaveRequestStats(leaveRequestsStat.statusStats);
   };
 
   useEffect(() => {
@@ -33,28 +32,27 @@ const RequestTypeChartComponent = () => {
 
   const data = {
     labels: [
-      `${TYPE_OF_LEAVE.AnnualLeave}: ${leaveRequestStats?.annualLeave ?? 0}`,
-      `${TYPE_OF_LEAVE.OnDemandLeave}: ${
-        leaveRequestStats?.onDemandLeave ?? 0
+      `${REQUEST_STATUS.Pending}: ${leaveRequestStats?.pendingRequest ?? 0}`,
+      `${REQUEST_STATUS.Approved}: ${leaveRequestStats?.approvedRequest ?? 0}`,
+      `${REQUEST_STATUS.Rejected}: ${leaveRequestStats?.rejectedRequest ?? 0}`,
+      `${REQUEST_STATUS.Cancelled}: ${
+        leaveRequestStats?.cancelledRequest ?? 0
       }`,
-      `${TYPE_OF_LEAVE.AdditionalLeave}: ${
-        leaveRequestStats?.additionalLeave ?? 0
-      }`,
-      `${TYPE_OF_LEAVE.SpecialLeave}: ${leaveRequestStats?.specialLeave ?? 0}`,
-      `${TYPE_OF_LEAVE.SickLeave}: ${leaveRequestStats?.sickLeave ?? 0}`,
-      `${TYPE_OF_LEAVE.ChildLeave}: ${leaveRequestStats?.childLeave ?? 0}`,
-      `${TYPE_OF_LEAVE.UnpaidLeave}: ${leaveRequestStats?.unpaidLeave ?? 0}`,
     ],
     datasets: [
       {
         data: [
-          leaveRequestStats?.annualLeave,
-          leaveRequestStats?.onDemandLeave,
-          leaveRequestStats?.additionalLeave,
-          leaveRequestStats?.specialLeave,
-          leaveRequestStats?.sickLeave,
-          leaveRequestStats?.childLeave,
-          leaveRequestStats?.unpaidLeave,
+          leaveRequestStats?.pendingRequest,
+          leaveRequestStats?.approvedRequest,
+          leaveRequestStats?.rejectedRequest,
+          leaveRequestStats?.cancelledRequest,
+        ],
+        backgroundColor: [
+          "rgba(3, 11, 252, 0.7)",
+          "rgba(0, 175, 0, 1)",
+          "rgba(213, 69, 69, 0.73)",
+          "rgba(0, 0, 0, 0.3)",
+          ,
         ],
         hoverOffset: 10,
       },
@@ -67,10 +65,10 @@ const RequestTypeChartComponent = () => {
   const options = {
     plugins: {
       title: {
-        text: "Requests type:",
+        text: "Requests status:",
         display: true,
         align: "center",
-        fullSize: false,
+        fullSize: true,
         color: "black",
         font: {
           size: 16,
@@ -96,9 +94,6 @@ const RequestTypeChartComponent = () => {
         },
       },
     },
-    colors: {
-      enabled: false,
-    },
   };
 
   return (
@@ -113,4 +108,4 @@ const RequestTypeChartComponent = () => {
   );
 };
 
-export default RequestTypeChartComponent;
+export default SvpRequestStatusChartComponent;

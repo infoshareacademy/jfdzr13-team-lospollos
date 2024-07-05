@@ -22,8 +22,8 @@ const RequestStatusChartComponent = () => {
   const { userData } = useUserData();
 
   const fetchUserLeaveRequestStats = async () => {
-    const { statusStats } = await getReqStatisticForUser(userData.userId);
-    setLeaveRequestStats(statusStats);
+    const { leaveRequestsStat } = await getReqStatisticForUser(userData.userId);
+    setLeaveRequestStats(leaveRequestsStat.statusStats);
   };
 
   useEffect(() => {
@@ -32,12 +32,12 @@ const RequestStatusChartComponent = () => {
 
   const data = {
     labels: [
-      `${REQUEST_STATUS.Pending} [${leaveRequestStats?.pendingRequest ?? 0}]`,
-      `${REQUEST_STATUS.Approved} [${leaveRequestStats?.approvedRequest ?? 0}]`,
-      `${REQUEST_STATUS.Rejected} [${leaveRequestStats?.rejectedRequest ?? 0}]`,
-      `${REQUEST_STATUS.Cancelled} [${
+      `${REQUEST_STATUS.Pending}: ${leaveRequestStats?.pendingRequest ?? 0}`,
+      `${REQUEST_STATUS.Approved}: ${leaveRequestStats?.approvedRequest ?? 0}`,
+      `${REQUEST_STATUS.Rejected}: ${leaveRequestStats?.rejectedRequest ?? 0}`,
+      `${REQUEST_STATUS.Cancelled}: ${
         leaveRequestStats?.cancelledRequest ?? 0
-      }]`,
+      }`,
     ],
     datasets: [
       {
@@ -68,10 +68,11 @@ const RequestStatusChartComponent = () => {
         text: "Requests status:",
         display: true,
         align: "center",
-        fullSize: false,
+        fullSize: true,
         color: "black",
         font: {
-          size: 14,
+          size: 16,
+          family: "Phudu",
         },
       },
       legend: {
@@ -79,7 +80,11 @@ const RequestStatusChartComponent = () => {
         position: "right",
         align: "center",
         labels: {
-          boxWidth: 14,
+          boxWidth: 16,
+          font: {
+            size: 16,
+            family: "Phudu",
+          },
         },
       },
       tooltip: {

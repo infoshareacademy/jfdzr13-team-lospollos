@@ -1,119 +1,130 @@
-.profilePictureWrapper {
+.userBusinessCard {
   box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
-  display: flex;
-  padding: 0.6%;
-  height: 17%;
-  width: 94.99%;
-  position: relative;
-  background-color: white;
-  margin-top: 1%;
+
+  width: 95%;
+  height: 220px;
+  margin: 1% 0 0 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 2fr 2fr;
+  grid-template-rows: 100%;
+  grid-template-areas: "profilePicture userDetails daysOffInventory reqStatusStats reqTypeStats";
   border-radius: 5px;
-  background-color: white;
-  margin-top: 1%;
-  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
 }
-
-.profilePictureCont {
-  position: relative;
-  left: 2%;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  align-self: center;
-}
-
-.profilePictureCont input {
-  display: none;
-}
-
-.profilePicture {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 100px;
-  box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
-}
-
-.label {
-  position: absolute;
-  width: 100px;
-  height: 100px;
+.userBusinessCard .profilePicture {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  grid-area: profilePicture;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
-  background-color: transparent;
-  transition: background-color 0.2s ease-in-out;
+}
+
+.userBusinessCard .profilePictureImg {
+  height: 100%;
+  width: auto;
   border-radius: 100px;
-  color: transparent;
+  box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
 }
 
-.label:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
-}
-
-.glyphiconCamera {
-  margin-right: 5px;
-}
-
-.userDetails {
+.userBusinessCard .userDetails {
+  grid-area: userDetails;
   display: flex;
   flex-direction: column;
-  padding: 10px 0 0 30px;
-  gap: 5px;
-  width: 20%;
-  width: 20%;
-  height: 100%;
-  font-size: 1.2em;
-  margin-left: 3%;
-  margin-left: 3%;
+  justify-content: space-around;
 }
 
-.daysLeft {
-  font-size: 1.5em;
+.userBusinessCard .userStatistics {
+  grid-area: userStatistics;
   display: flex;
+  flex-direction: column;
+}
+
+.userBusinessCard .daysOffInventory {
+  grid-area: daysOffInventory;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 1fr 0.5fr 1fr;
+  grid-template-areas:
+    "daysOffTitle"
+    "daysOff"
+    "onDemandTitle"
+    "onDemand";
+  justify-items: center;
   align-items: center;
-  position: absolute;
-  right: 3%;
-  top: 15%;
-  right: 3%;
-  top: 15%;
 }
 
-.daysLeft span {
-  color: brown;
-  font-size: 1.6em;
+.userBusinessCard .daysOffTitle {
+  grid-area: daysOffTitle;
+  align-self: end;
+  font-size: medium;
+  font-weight: bold;
 }
 
-.addButtonContainer {
-  position: absolute;
-  display: flex;
-  height: 30%;
-  width: 5%;
-  border-radius: 5px;
-  right: 3%;
-  bottom: 15%;
+.userBusinessCard .onDemandTitle {
+  grid-area: onDemandTitle;
+  align-self: end;
+  font-size: medium;
+  font-weight: bold;
 }
 
-.addButton {
-  width: 100%;
+.userBusinessCard .daysOff {
+  grid-area: daysOff;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.userBusinessCard .onDemand {
+  grid-area: onDemand;
+  font-size: x-large;
+}
+
+.userBusinessCard .userDetails h2,
+h3 {
+  font-weight: bold;
+}
+
+.userBusinessCard .daysOffInventory .daysOff span {
+  font-size: x-large;
+}
+
+.userBusinessCard .daysOffInventory .onDemand span {
+  font-size: large;
+}
+
+.userBusinessCard .reqStatusStats {
   height: 100%;
-  background-color: #3457d5d9;
-  color: white;
-  border-radius: 5px;
-  transition: 0.2s;
-  border: none;
+  max-width: 100%;
+  padding: 5px 50px;
 }
 
-.addButton:hover {
-  cursor: pointer;
-  background-color: #3457d5a7;
-  transition: 0.2s;
+.userBusinessCard .reqStatusStatsLabel {
+  grid-area: reqStatusStatsLabel;
+  justify-self: end;
 }
 
-.addButton:active {
-  transform: scale(0.99);
-  background-color: #3457d5d9;
-  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+.userBusinessCard .reqStatusStatsChart {
+  grid-area: reqStatusStatsChart;
+  height: 100%;
+  max-width: 100%;
+}
+
+.userBusinessCard .reqTypeStats {
+  height: 100%;
+  max-width: 100%;
+  padding: 5px 5px;
+}
+
+.userBusinessCard .reqTypeStatsLabel {
+  grid-area: reqTypeStatsLabel;
+  justify-self: end;
+}
+
+.userBusinessCard .reqTypeStatsChart {
+  grid-area: reqTypeStatsChart;
+  height: 100%;
+  width: 100%;
 }

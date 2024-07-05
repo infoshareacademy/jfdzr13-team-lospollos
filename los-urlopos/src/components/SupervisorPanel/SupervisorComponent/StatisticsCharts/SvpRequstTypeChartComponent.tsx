@@ -12,24 +12,26 @@ import { Doughnut } from "react-chartjs-2";
 import useUserData from "../../../../contexts/ViewDataContext";
 import TYPE_OF_LEAVE from "../../../../enums/typeOfLeave";
 import { LeaveRequestTypeStats } from "../../../../types-obj/statisticsTypes";
-import { getReqStatisticForUser } from "../../../../utils/StatisticActions";
+import { getReqStatisticForSupervisor } from "../../../../utils/StatisticActions";
 
 defaults.maintainAspectRatio = false;
 
-const RequestTypeChartComponent = () => {
+const SvpRequestTypeChartComponent = ({ departmentId }) => {
   ChartJS.register(ArcElement, Tooltip, Legend, Title, Colors);
   const [leaveRequestStats, setLeaveRequestStats] =
     useState<LeaveRequestTypeStats>();
   const { userData } = useUserData();
 
-  const fetchUserLeaveRequestStats = async () => {
-    const { leaveRequestsStat } = await getReqStatisticForUser(userData.userId);
+  const fetchSvpLeaveRequestStats = async () => {
+    const { leaveRequestsStat } = await getReqStatisticForSupervisor(
+      departmentId
+    );
     setLeaveRequestStats(leaveRequestsStat.typeStats);
   };
 
   useEffect(() => {
-    fetchUserLeaveRequestStats();
-  }, [userData]);
+    fetchSvpLeaveRequestStats();
+  }, [userData, departmentId]);
 
   const data = {
     labels: [
@@ -113,4 +115,4 @@ const RequestTypeChartComponent = () => {
   );
 };
 
-export default RequestTypeChartComponent;
+export default SvpRequestTypeChartComponent;

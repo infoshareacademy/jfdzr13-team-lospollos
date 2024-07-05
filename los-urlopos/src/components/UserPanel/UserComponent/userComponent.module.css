@@ -2,11 +2,11 @@
   box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
 
   width: 95%;
-  height: 180px;
+  height: 220px;
   margin: 1% 0 0 0;
 
   display: grid;
-  grid-template-columns: 1fr 1fr 1.5fr 2fr 2fr;
+  grid-template-columns: 1fr 1fr 1fr 2fr 2fr;
   grid-template-rows: 100%;
   grid-template-areas: "profilePicture userDetails daysOffInventory reqStatusStats reqTypeStats";
   border-radius: 5px;
@@ -46,23 +46,29 @@
 .userBusinessCard .daysOffInventory {
   grid-area: daysOffInventory;
   display: grid;
-  grid-template-columns: 0.5fr 0.5fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 1fr 0.5fr 1fr;
   grid-template-areas:
-    "daysOffTitle daysOff"
-    "onDemandTitle onDemand";
+    "daysOffTitle"
+    "daysOff"
+    "onDemandTitle"
+    "onDemand";
   justify-items: center;
   align-items: center;
 }
 
 .userBusinessCard .daysOffTitle {
   grid-area: daysOffTitle;
-  justify-self: end;
+  align-self: end;
+  font-size: medium;
+  font-weight: bold;
 }
 
 .userBusinessCard .onDemandTitle {
   grid-area: onDemandTitle;
-  justify-self: end;
+  align-self: end;
+  font-size: medium;
+  font-weight: bold;
 }
 
 .userBusinessCard .daysOff {
@@ -92,7 +98,7 @@ h3 {
 .userBusinessCard .reqStatusStats {
   height: 100%;
   max-width: 100%;
-  padding: 5px 5px;
+  padding: 5px 50px;
 }
 
 .userBusinessCard .reqStatusStatsLabel {

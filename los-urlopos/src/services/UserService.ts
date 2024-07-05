@@ -1,13 +1,13 @@
 import {
+  collection,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  onSnapshot,
+  query,
   setDoc,
   where,
-  query,
-  collection,
-  getDocs,
-  deleteDoc,
-  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { User } from "../types-obj/types-obj";
@@ -29,7 +29,7 @@ export const updateUser = async (userId: string, updatedValues: object) => {
   await setDoc(doc(db, "Users", userId), updatedValues, { merge: true });
 };
 
-export const getAllUsersForAddAnnualLeave = async () => {
+export const getAllUsers = async () => {
   const q = query(usersCollection, where("isActive", "==", true));
   let usersForAddAnnualLeave: any = [];
   const querySnapshot = await getDocs(q);
@@ -81,6 +81,27 @@ export const fetchSupervisors = async (): Promise<User[]> => {
   } catch (error) {
     console.error("Error fetching supervisors: ", error);
     throw error;
-    3;
+  }
+};
+
+export const getUsersByDeptId = async (departmentId: string) => {
+  try {
+    const docQuery = query(
+      usersCollection,
+      where("deptId", "==", departmentId)
+    );
+
+    const supervisors: User[] = (await getDocs(docQuery)).docs.map(
+      (doc) =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        } as User)
+    );
+
+    return supervisors;
+  } catch (error) {
+    console.error("Error fetching users: ", error);
+    throw error;
   }
 };
