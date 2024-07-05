@@ -1,25 +1,20 @@
 import REQUEST_STATUS from "../enums/requestStatus";
 import TYPE_OF_LEAVE from "../enums/typeOfLeave";
+import { getDepartmentsByUserId } from "../services/DepartmentService";
 import {
-  getRequestAll,
   getRequestDeptId,
   getRequestUserId,
+  getRequestsByDeptIds,
 } from "../services/LeaveRequestService";
-import { getAllUsers, getUsersByDeptId } from "../services/UserService";
+import {
+  getAllUsersByDeptIds,
+  getUsersByDeptId,
+} from "../services/UserService";
 import {
   SupervisorStatistics,
   UserStatistics,
 } from "../types-obj/statisticsTypes";
 import { Request, User } from "../types-obj/types-obj";
-
-const sumDaysForRequestType = (
-  requests: Request[],
-  requestType: TYPE_OF_LEAVE
-) => {
-  return requests
-    .filter((x) => x.status === requestType)
-    .reduce((totalDays, req) => (totalDays += req.daysReq), 0);
-};
 
 export async function getReqStatisticForUser(userId: string) {
   const requestList: Request[] = await getRequestUserId(userId);
@@ -73,14 +68,22 @@ export async function getReqStatisticForUser(userId: string) {
 }
 
 export async function getReqStatisticForSupervisor(
-  departmentId: string | null
+  departmentId: string | null,
+  userId: string
 ) {
-  const requestList: Request[] = departmentId
-    ? await getRequestDeptId(departmentId)
-    : await getRequestAll();
-  const employeeList: User[] = departmentId
-    ? await getUsersByDeptId(departmentId)
-    : await getAllUsers();
+  let requestList: Request[] = [];
+  let employeeList: User[] = [];
+
+  if (departmentId) {
+    requestList = await getRequestDeptId(departmentId);
+    employeeList = await getUsersByDeptId(departmentId);
+  } else {
+    const departmentsIds = (await getDepartmentsByUserId(userId)).map(
+      (x) => x.deptId
+    );
+    requestList = await getRequestsByDeptIds(departmentsIds);
+    employeeList = await getAllUsersByDeptIds(departmentsIds);
+  }
 
   return {
     leaveRequestsStat: {
@@ -122,13 +125,16 @@ export async function getReqStatisticForSupervisor(
         ).length,
       },
     },
-    allRequests: requestList.length,
+    allRequests: requestList.filter((x) => x.status === REQUEST_STATUS.Pending)
+      .length,
     totalDaysOff: requestList.reduce(
       (totalDays, req) => totalDays + req.daysReq,
       0
     ),
     expiriedRequests: requestList.filter(
-      (x) => Date.parse(x.dayFrom) <= Date.now()
+      (x) =>
+        Date.parse(x.dayFrom) <= Date.now() &&
+        x.status === REQUEST_STATUS.Pending
     ).length,
     totalEmployees: employeeList.length,
     employeesOnLeave: requestList

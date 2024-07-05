@@ -1,29 +1,52 @@
 import { useEffect, useState } from "react";
 import useUserData from "../../../contexts/ViewDataContext";
 import pfp from "../../../images/Unknown_person.jpg";
-import { toUserView } from "../../../mappers/ViewObjectsMapper";
-import { UserView } from "../../../types-obj/objectViewTypes";
-import { Departments, User } from "../../../types-obj/types-obj";
-import { emptyUser } from "../../../utils/DefaultObjects";
-import SvpRequestStatusChartComponent from "./StatisticsCharts/SvpRequestStatusChartComponent";
-import SvpRequestTypeChartComponent from "./StatisticsCharts/SvpRequstTypeChartComponent";
+import {
+  toDepartmentViewById,
+  toUserView,
+} from "../../../mappers/ViewObjectsMapper";
+import { DepartmentView, UserView } from "../../../types-obj/objectViewTypes";
+import { SupervisorStatistics } from "../../../types-obj/statisticsTypes";
+import {
+  emptyDepartment,
+  emptySupervisorStatistics,
+  emptyUser,
+} from "../../../utils/DefaultObjects";
+import { getReqStatisticForSupervisor } from "../../../utils/StatisticActions";
+import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusChartComponent";
+import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./spvComponent.module.css";
 
 export function SpvComponent({ departmentId }) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
   const [userView, setUserView] = useState<UserView>(emptyUser);
+  const [deptView, setDeptView] = useState<DepartmentView>(emptyDepartment);
+  const [spvStats, setSpvStats] = useState<SupervisorStatistics>(
+    emptySupervisorStatistics
+  );
   const { userData, departmentsList } = useUserData();
 
-  const toUserViewObject = async (
-    userData: User,
-    departmentList: Departments[]
-  ) => {
-    const userView = await toUserView(userData, departmentList);
+  const toUserViewObject = async () => {
+    const userView = await toUserView(userData, departmentsList);
     setUserView(userView);
   };
 
+  const toDeptViewObject = async () => {
+    const deptView = await toDepartmentViewById(departmentsList, departmentId);
+    console.log(deptView);
+    setDeptView(deptView);
+  };
+
+  const fetchSvpLeaveRequestStats = async () => {
+    const svpStats = await getReqStatisticForSupervisor(
+      departmentId,
+      userData.userId
+    );
+    setSpvStats(svpStats);
+  };
+
   useEffect(() => {
-    toUserViewObject(userData, departmentsList);
+    toUserViewObject();
 
     const savedImage = localStorage.getItem(
       `profileImage_${userView.email}_${userView.id}`
@@ -33,8 +56,13 @@ export function SpvComponent({ departmentId }) {
     }
   }, [userData]);
 
+  useEffect(() => {
+    fetchSvpLeaveRequestStats();
+    toDeptViewObject();
+  }, [userData, departmentId]);
+
   return (
-    <div className={styles.userBusinessCard}>
+    <div className={styles.spvBusinessCard}>
       <div className={styles.profilePicture}>
         <img
           className={styles.profilePictureImg}
@@ -43,7 +71,7 @@ export function SpvComponent({ departmentId }) {
         />
       </div>
 
-      <div className={styles.userDetails}>
+      <div className={styles.spvDetails}>
         <div>
           <h2>
             {userView.firstName} {userView.lastName}
@@ -51,31 +79,34 @@ export function SpvComponent({ departmentId }) {
           <h4>{userView.email}</h4>
         </div>
         <div>
-          <h3>{userView.department.name}</h3>
-          <h5>{userView.department.leader.name}</h5>
+          <h3>{deptView.name === "" ? "All departments" : deptView.name} </h3>
         </div>
       </div>
 
-      <div className={styles.daysOffInventory}>
-        <label className={styles.daysOffTitle}>Days off:</label>
-        <span className={styles.daysOff}>
-          {userView.daysOffLeft} / {userView.daysOffTotal}
+      <div className={styles.importantSpvInfo}>
+        <label className={styles.expiredTitle}>Expired reuqests:</label>
+        <span className={styles.expiried}>
+          {spvStats.expiriedRequests} / {spvStats.allRequests}
         </span>
-        <label className={styles.onDemandTitle}>On demand:</label>
-        <span className={styles.onDemand}>
-          {userView.onDemandLeft} / {userView.onDemandTotal}
+        <label className={styles.onLeaveTitle}>Employees on leave:</label>
+        <span className={styles.onLeave}>
+          {spvStats.employeesOnLeave} / {spvStats.totalEmployees}
         </span>
       </div>
 
       <div className={styles.reqStatusStats}>
         <div className={styles.reqStatusStatsChart}>
-          <SvpRequestStatusChartComponent departmentId={departmentId} />
+          <RequestStatusChartComponent
+            statusStatistics={spvStats.leaveRequestsStat.statusStats}
+          />
         </div>
       </div>
 
       <div className={styles.reqTypeStats}>
         <div className={styles.reqTypeStatsChart}>
-          <SvpRequestTypeChartComponent departmentId={departmentId} />
+          <RequestTypeChartComponent
+            typeStatistics={spvStats.leaveRequestsStat.typeStats}
+          />
         </div>
       </div>
     </div>

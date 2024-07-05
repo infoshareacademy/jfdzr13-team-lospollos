@@ -43,6 +43,17 @@ export const getRequestDeptId = async (deptId: String) => {
   return requestListDept;
 };
 
+export const getRequestsByDeptIds = async (deptIds: string[]) => {
+  var allRequests: Request[] = [];
+
+  for (var deptId of deptIds) {
+    var requestsForDept = await getRequestDeptId(deptId);
+    allRequests = allRequests.concat(requestsForDept);
+  }
+
+  return allRequests;
+};
+
 export const updateRequestAfterAction = async (
   docId: string,
   updatedValues: object

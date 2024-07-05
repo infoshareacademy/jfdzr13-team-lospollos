@@ -105,3 +105,14 @@ export const getUsersByDeptId = async (departmentId: string) => {
     throw error;
   }
 };
+
+export const getAllUsersByDeptIds = async (deptIds: string[]) => {
+  var allUsers: User[] = [];
+
+  for (var deptId of deptIds) {
+    var requestsForDept = await getUsersByDeptId(deptId);
+    allUsers = allUsers.concat(requestsForDept);
+  }
+
+  return allUsers;
+};

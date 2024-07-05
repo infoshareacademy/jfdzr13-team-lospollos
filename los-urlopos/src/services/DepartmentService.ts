@@ -53,6 +53,20 @@ export const getDepartmentById = async (departmentId: string) => {
   }
 };
 
+export const getDepartmentsByUserId = async (headId: string) => {
+  const q = query(collection(db, "Departments"), where("head", "==", headId));
+  let deptList: Departments[] = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) =>
+    deptList.push({
+      deptId: doc.id,
+      dept: doc.data().dept,
+      head: doc.data().head,
+    } as Departments)
+  );
+  return deptList;
+};
+
 export const subscribeToDepartments = (
   onUpdate: (departments: Departments[]) => void
 ) => {

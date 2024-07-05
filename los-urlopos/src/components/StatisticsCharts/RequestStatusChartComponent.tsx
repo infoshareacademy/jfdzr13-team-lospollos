@@ -6,46 +6,28 @@ import {
   Tooltip,
   defaults,
 } from "chart.js";
-import { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
-import useUserData from "../../../../contexts/ViewDataContext";
-import REQUEST_STATUS from "../../../../enums/requestStatus";
-import { LeaveRequestStatusStats } from "../../../../types-obj/statisticsTypes";
-import { getReqStatisticForUser } from "../../../../utils/StatisticActions";
+import REQUEST_STATUS from "../../enums/requestStatus";
 
 defaults.maintainAspectRatio = false;
 
-const SvpRequestStatusChartComponent = ({ departmentId }) => {
+const RequestStatusChartComponent = ({ statusStatistics }) => {
   ChartJS.register(ArcElement, Tooltip, Legend, Title);
-  const [leaveRequestStats, setLeaveRequestStats] =
-    useState<LeaveRequestStatusStats>();
-  const { userData } = useUserData();
-
-  const fetchUserLeaveRequestStats = async () => {
-    const { leaveRequestsStat } = await getReqStatisticForUser(userData.userId);
-    setLeaveRequestStats(leaveRequestsStat.statusStats);
-  };
-
-  useEffect(() => {
-    fetchUserLeaveRequestStats();
-  }, [userData]);
 
   const data = {
     labels: [
-      `${REQUEST_STATUS.Pending}: ${leaveRequestStats?.pendingRequest ?? 0}`,
-      `${REQUEST_STATUS.Approved}: ${leaveRequestStats?.approvedRequest ?? 0}`,
-      `${REQUEST_STATUS.Rejected}: ${leaveRequestStats?.rejectedRequest ?? 0}`,
-      `${REQUEST_STATUS.Cancelled}: ${
-        leaveRequestStats?.cancelledRequest ?? 0
-      }`,
+      `${REQUEST_STATUS.Pending}: ${statusStatistics?.pendingRequest ?? 0}`,
+      `${REQUEST_STATUS.Approved}: ${statusStatistics?.approvedRequest ?? 0}`,
+      `${REQUEST_STATUS.Rejected}: ${statusStatistics?.rejectedRequest ?? 0}`,
+      `${REQUEST_STATUS.Cancelled}: ${statusStatistics?.cancelledRequest ?? 0}`,
     ],
     datasets: [
       {
         data: [
-          leaveRequestStats?.pendingRequest,
-          leaveRequestStats?.approvedRequest,
-          leaveRequestStats?.rejectedRequest,
-          leaveRequestStats?.cancelledRequest,
+          statusStatistics?.pendingRequest,
+          statusStatistics?.approvedRequest,
+          statusStatistics?.rejectedRequest,
+          statusStatistics?.cancelledRequest,
         ],
         backgroundColor: [
           "rgba(3, 11, 252, 0.7)",
@@ -68,7 +50,7 @@ const SvpRequestStatusChartComponent = ({ departmentId }) => {
         text: "Requests status:",
         display: true,
         align: "center",
-        fullSize: true,
+        fullSize: false,
         color: "black",
         font: {
           size: 16,
@@ -108,4 +90,4 @@ const SvpRequestStatusChartComponent = ({ departmentId }) => {
   );
 };
 
-export default SvpRequestStatusChartComponent;
+export default RequestStatusChartComponent;
