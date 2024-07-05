@@ -1,61 +1,113 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import useUserData from "../../../contexts/ViewDataContext";
 import pfp from "../../../images/Unknown_person.jpg";
+import {
+  toDepartmentViewById,
+  toUserView,
+} from "../../../mappers/ViewObjectsMapper";
+import { DepartmentView, UserView } from "../../../types-obj/objectViewTypes";
+import { SupervisorStatistics } from "../../../types-obj/statisticsTypes";
+import {
+  emptyDepartment,
+  emptySupervisorStatistics,
+  emptyUser,
+} from "../../../utils/DefaultObjects";
+import { getReqStatisticForSupervisor } from "../../../utils/StatisticActions";
+import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusChartComponent";
+import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./spvComponent.module.css";
 
-interface UserComponentProps {
-  onAddButtonClick: () => void;
-}
-
-export function SpvComponent({ onAddButtonClick }: UserComponentProps) {
+export function SpvComponent({ departmentId }) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
+  const [userView, setUserView] = useState<UserView>(emptyUser);
+  const [deptView, setDeptView] = useState<DepartmentView>(emptyDepartment);
+  const [spvStats, setSpvStats] = useState<SupervisorStatistics>(
+    emptySupervisorStatistics
+  );
+  const { userData, departmentsList } = useUserData();
+
+  const toUserViewObject = async () => {
+    const userView = await toUserView(userData, departmentsList);
+    setUserView(userView);
+  };
+
+  const toDeptViewObject = async () => {
+    const deptView = await toDepartmentViewById(departmentsList, departmentId);
+    console.log(deptView);
+    setDeptView(deptView);
+  };
+
+  const fetchSvpLeaveRequestStats = async () => {
+    const svpStats = await getReqStatisticForSupervisor(
+      departmentId,
+      userData.userId
+    );
+    setSpvStats(svpStats);
+  };
 
   useEffect(() => {
-    const savedImage = localStorage.getItem("profileImage");
+    toUserViewObject();
+
+    const savedImage = localStorage.getItem(
+      `profileImage_${userView.email}_${userView.id}`
+    );
     if (savedImage) {
       setProfileImage(savedImage);
     }
-  }, []);
+  }, [userData]);
 
-  const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const image = document.getElementById("output") as HTMLImageElement;
-    if (event.target.files && event.target.files[0]) {
-      const imageUrl = URL.createObjectURL(event.target.files[0]);
-      image.src = imageUrl;
-      setProfileImage(imageUrl);
-      localStorage.setItem("profileImage", imageUrl);
-    }
-  };
+  useEffect(() => {
+    fetchSvpLeaveRequestStats();
+    toDeptViewObject();
+  }, [userData, departmentId]);
 
   return (
-    <div className={styles.profilePictureWrapper}>
-      <div className={styles.profilePictureCont}>
-        <label className={styles.label} htmlFor="file">
-          <span
-            className={`${styles.glyphicon} ${styles.glyphiconCamera}`}
-          ></span>
-          <span>Change</span>
-        </label>
-        <input id="file" type="file" onChange={loadFile} />
+    <div className={styles.spvBusinessCard}>
+      <div className={styles.profilePicture}>
         <img
-          className={styles.profilePicture}
+          className={styles.profilePictureImg}
           src={profileImage}
-          id="output"
-          width="200"
-          alt="Profile"
+          alt="User profile picture"
         />
       </div>
-      <div className={styles.userDetails}>
-        <span>dsgfhds</span>
-        <span>janusz.kukulka@urlopos.com</span>
-        <span>Department</span>
+
+      <div className={styles.spvDetails}>
+        <div>
+          <h2>
+            {userView.firstName} {userView.lastName}
+          </h2>
+          <h4>{userView.email}</h4>
+        </div>
+        <div>
+          <h3>{deptView.name === "" ? "All departments" : deptView.name} </h3>
+        </div>
       </div>
-      <div className={styles.daysLeft}>
-        U have <span>XX</span> days left
+
+      <div className={styles.importantSpvInfo}>
+        <label className={styles.expiredTitle}>Expired reuqests:</label>
+        <span className={styles.expiried}>
+          {spvStats.expiriedRequests} / {spvStats.allRequests}
+        </span>
+        <label className={styles.onLeaveTitle}>Employees on leave:</label>
+        <span className={styles.onLeave}>
+          {spvStats.employeesOnLeave} / {spvStats.totalEmployees}
+        </span>
       </div>
-      <div className={styles.addButtonContainer}>
-        <button className={styles.addButton} onClick={onAddButtonClick}>
-          ADD
-        </button>
+
+      <div className={styles.reqStatusStats}>
+        <div className={styles.reqStatusStatsChart}>
+          <RequestStatusChartComponent
+            statusStatistics={spvStats.leaveRequestsStat.statusStats}
+          />
+        </div>
+      </div>
+
+      <div className={styles.reqTypeStats}>
+        <div className={styles.reqTypeStatsChart}>
+          <RequestTypeChartComponent
+            typeStatistics={spvStats.leaveRequestsStat.typeStats}
+          />
+        </div>
       </div>
     </div>
   );

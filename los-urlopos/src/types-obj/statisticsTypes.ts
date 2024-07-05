@@ -1,5 +1,4 @@
 export type LeaveRequestStatusStats = {
-  allRequest: number;
   pendingRequest: number;
   approvedRequest: number;
   rejectedRequest: number;
@@ -7,7 +6,6 @@ export type LeaveRequestStatusStats = {
 };
 
 export type LeaveRequestTypeStats = {
-  totalLeave: number;
   annualLeave: number;
   additionalLeave: number;
   specialLeave: number;
@@ -24,4 +22,15 @@ export type LeaveRequestStats = {
 
 export type UserStatistics = {
   leaveRequestsStat: LeaveRequestStats;
+  allRequests: number;
+  totalDaysOff: number;
+};
+
+export type SupervisorStatistics = {
+  leaveRequestsStat: LeaveRequestStats;
+  allRequests: number;
+  totalDaysOff: number;
+  expiriedRequests: number;
+  totalEmployees: number;
+  employeesOnLeave: number;
 };

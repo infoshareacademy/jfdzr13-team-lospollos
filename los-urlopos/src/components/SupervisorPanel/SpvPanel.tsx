@@ -1,15 +1,16 @@
-import { useState, useEffect } from "react";
-import { AddRequest } from "../AddRequest/AddRequest";
-import { UserComponent } from "../UserPanel/UserComponent/UserComponent";
+import { useEffect, useState } from "react";
 import useUserData from "../../contexts/ViewDataContext";
-import styles from "./spvPanel.module.css";
+import { AddRequest } from "../AddRequest/AddRequest";
 import SpvRequestsTable from "./SpvRequestsTable/SpvRequestsTable";
+import { SpvComponent } from "./SupervisorComponent/SpvComponent";
+import styles from "./spvPanel.module.css";
 
 export function SpvPanel() {
   const [showAddRequest, setShowAddRequest] = useState(false);
   const { userData } = useUserData();
   const [bgClass, setBgClass] = useState(styles.bgUser); // Default class
   const [navbarClass, setNavbarClass] = useState(styles.navbarUser); // Default class
+  const [deptContext, setDeptContext] = useState<string | null>(null);
 
   useEffect(() => {
     if (userData) {
@@ -34,6 +35,10 @@ export function SpvPanel() {
     setShowAddRequest(false);
   };
 
+  const getDeptIfFromChild = (departmentId: string | null) => {
+    setDeptContext(departmentId);
+  };
+
   return (
     <div className={`${styles.mainContainer} ${bgClass}`}>
       <div
@@ -41,8 +46,8 @@ export function SpvPanel() {
           showAddRequest ? styles.dimmed : ""
         }`}
       >
-        <UserComponent onAddButtonClick={handleAddButtonClick} />
-        <SpvRequestsTable />
+        <SpvComponent departmentId={deptContext} />
+        <SpvRequestsTable getDeptContext={getDeptIfFromChild} />
       </div>
       {showAddRequest && (
         <>
