@@ -85,16 +85,21 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
   return (
     <div className={styles.departmentsListWrapper}>
-      {/* <button onClick={handleOpenDialog}>Add Department</button> */}
-      <dialog open={isDialogOpen}>
-        <AddOrEditDepartment
-          onDepartmentAddedOrEdited={handleDepartmentAddedOrEdited}
-          onClose={handleCloseDialog}
-          departmentToEdit={deptToEdit}
-        />
-      </dialog>
+      {/* Overlay and dialog */}
+      {isDialogOpen && (
+        <div className={styles.dialogOverlay}>
+          <div className={styles.dialog}>
+            <AddOrEditDepartment
+              onDepartmentAddedOrEdited={handleDepartmentAddedOrEdited}
+              onClose={handleCloseDialog}
+              departmentToEdit={deptToEdit}
+            />
+          </div>
+        </div>
+      )}
 
       <ul className={styles.departmentsList}>
         {departments.map((dept) => (
