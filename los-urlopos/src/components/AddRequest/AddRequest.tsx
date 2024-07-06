@@ -70,7 +70,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
       const dayFrom = formData.get("dayFrom") as string;
       const dayTo = formData.get("dayTo") as string;
       const requestType = formData.get("typeOfLeave") as string;
-      const comment = formData.get("comment") as string;
+      const comment = formData.get("commentText") as string;
 
       const departmentId: string = departmentsList.filter(
         (department) => department.deptId === userData.deptId
@@ -172,6 +172,7 @@ export function AddRequest({ onClose }: AddRequestProps) {
               <span className={styles.fieldName}> Comments </span>
               <textarea
                 id="commentText"
+                name="commentText"
                 className={styles.textName}
                 placeholder="Max comment length 100 characters"
               ></textarea>
