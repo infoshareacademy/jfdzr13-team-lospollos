@@ -116,3 +116,13 @@ export const getAllUsersByDeptIds = async (deptIds: string[]) => {
 
   return allUsers;
 };
+
+export const getAllUsersForAddAnnualLeave = async () => {
+  const q = query(usersCollection, where("isActive", "==", true));
+  let usersForAddAnnualLeave: any = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) =>
+    usersForAddAnnualLeave.push({ ...doc.data() })
+  );
+  return usersForAddAnnualLeave;
+};
