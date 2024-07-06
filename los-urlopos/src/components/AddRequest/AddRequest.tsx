@@ -13,6 +13,7 @@ import {
 import { updateUserDaysOffLeft } from "../../utils/UserModification";
 import { ValidateLeaveRequest } from "../../validators/LeaveRequestValidator";
 import styles from "./AddRequest.module.css";
+
 interface AddRequestProps {
   onClose: () => void;
 }

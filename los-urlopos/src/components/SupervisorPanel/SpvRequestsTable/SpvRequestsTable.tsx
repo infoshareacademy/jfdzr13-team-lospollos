@@ -1,8 +1,3 @@
-import { useEffect, useMemo, useState } from "react";
-import styles from "./spvRequestsTable.module.css";
-import toast, { Toaster } from "react-hot-toast";
-import REQUEST_STATUS from "../../../enums/requestStatus";
-import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -11,20 +6,30 @@ import {
 import {
   Select,
   MenuItem,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
 } from "@mui/material";
-import { Request, DateToShowOptions } from "../../../types-obj/types-obj";
-import useUserData from "../../../contexts/ViewDataContext";
-import { getDepartment } from "../../../services/DepartmentService";
-import { acceptRequest, rejectRequest } from "../../../utils/RequestActions";
 import {
-  getRequestDeptId,
+  MaterialReactTable,
+  useMaterialReactTable,
+  type MRT_ColumnDef,
+} from "material-react-table";
+import { useEffect, useMemo, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import useUserData from "../../../contexts/ViewDataContext";
+import REQUEST_STATUS from "../../../enums/requestStatus";
+import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
+import { getDepartment } from "../../../services/DepartmentService";
+import {
   getRequestAll,
+  getRequestDeptId,
 } from "../../../services/LeaveRequestService";
+import { DateToShowOptions, Request } from "../../../types-obj/types-obj";
+import { acceptRequest, rejectRequest } from "../../../utils/RequestActions";
+import styles from "./spvRequestsTable.module.css";
 
 const dateOptions: DateToShowOptions = {
   day: "2-digit",
@@ -32,7 +37,7 @@ const dateOptions: DateToShowOptions = {
   year: "numeric",
 };
 
-export default function SpvRequestsTable() {
+export default function SpvRequestsTable({ getDeptContext }) {
   const { userData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -49,6 +54,7 @@ export default function SpvRequestsTable() {
         if (selectedDepartment && selectedDepartment !== "allRequests") {
           const response = await getRequestDeptId(selectedDepartment);
           setData(response);
+          getDeptContext(selectedDepartment);
         } else if (selectedDepartment === "allRequests") {
           const response = await getRequestAll();
           const allRequests = response.filter((request) =>
@@ -57,6 +63,7 @@ export default function SpvRequestsTable() {
             )
           );
           setData(allRequests);
+          getDeptContext(null);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
