@@ -25,6 +25,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
     roleUser: false,
     roleSupervisor: false,
     userId: "",
+    isActive: true,
   });
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -114,6 +115,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
         roleUser: true,
         roleSupervisor: false,
         userId: "",
+        isActive: true,
       });
       setPassword("");
       setError(null);
@@ -231,6 +233,8 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
             <label className={styles.addUserLabel}>
               On Demand:
               <input
+                min={0}
+                max={4}
                 className={styles.addUserInput}
                 type="number"
                 name="onDemand"

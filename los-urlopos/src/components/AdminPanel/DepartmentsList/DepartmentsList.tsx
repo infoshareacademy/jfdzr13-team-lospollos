@@ -7,6 +7,7 @@ import {
 import { getUserById } from "../../../services/UserService";
 import ConfirmAction from "../ConfirmAction";
 import AddOrEditDepartment from "./AddOrEditDepartment";
+import styles from "./DepartmentsList.module.css";
 
 type DepartmentsListProps = {
   openAddDepartmentModal: () => void;
@@ -21,7 +22,9 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
   const [deptToEdit, setDeptToEdit] = useState<Departments | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
   const [deptIdToDelete, setDeptIdToDelete] = useState<string | null>(null);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<{
+    [key: string]: { firstName: string; surname: string };
+  }>({});
 
   useEffect(() => {
     const fetchHeadData = async () => {
@@ -113,30 +116,40 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
   return (
-    <div>
-      <button onClick={handleOpenDialog}>Add Department</button>
-      <dialog open={isDialogOpen}>
-        <AddOrEditDepartment
-          onDepartmentAddedOrEdited={handleDepartmentAddedOrEdited}
-          onClose={handleCloseDialog}
-          departmentToEdit={deptToEdit}
-        />
-      </dialog>
-      <ul>
+    <div className={styles.departmentsListWrapper}>
+      {isDialogOpen && (
+        <div className={styles.dialogOverlay}>
+          <div className={styles.dialog}>
+            <AddOrEditDepartment
+              onDepartmentAddedOrEdited={handleDepartmentAddedOrEdited}
+              onClose={handleCloseDialog}
+              departmentToEdit={deptToEdit}
+            />
+          </div>
+        </div>
+      )}
+
+      <ul className={styles.departmentsList}>
         {departments.map((dept) => (
-          <li key={dept.deptId}>
-            <div>
-              <span>Name: {dept.dept}</span>
-              <button onClick={() => toggleDepartmentDetails(dept.deptId!)}>
+          <li className={styles.listLi} key={dept.deptId}>
+            <div className={styles.liContent}>
+              <span className={styles.label}>
+                Name: <span className={styles.dept}>{dept.dept}</span>
+              </span>
+              <button
+                className={styles.showDetailsBtn}
+                onClick={() => toggleDepartmentDetails(dept.deptId!)}
+              >
                 {expandedDeptId === dept.deptId
                   ? "Hide details"
                   : "Show details"}
               </button>
             </div>
             {expandedDeptId === dept.deptId && (
-              <div>
-                <span>
+              <div className={styles.liContent}>
+                <span className={styles.insideLabel}>
                   Head:{" "}
                   {users[dept.head]
                     ? `${users[dept.head].firstName} ${
@@ -144,17 +157,23 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
                       }`
                     : "Loading..."}
                 </span>
-                <button
-                  onClick={() => {
-                    setDeptToEdit(dept);
-                    handleOpenDialog();
-                  }}
-                >
-                  Edit
-                </button>
-                <button onClick={() => confirmDeleteDepartment(dept.deptId)}>
-                  Delete
-                </button>
+                <div className={styles.listBtns}>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() => {
+                      setDeptToEdit(dept);
+                      handleOpenDialog();
+                    }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={() => confirmDeleteDepartment(dept.deptId)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             )}
           </li>
@@ -166,6 +185,9 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
       />
+      <button className={styles.addDeptBtn} onClick={handleOpenDialog}>
+        Add Department
+      </button>
     </div>
   );
 };
