@@ -22,7 +22,9 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
   const [deptToEdit, setDeptToEdit] = useState<Departments | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
   const [deptIdToDelete, setDeptIdToDelete] = useState<string | null>(null);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<{
+    [key: string]: { firstName: string; surname: string };
+  }>({});
 
   useEffect(() => {
     const fetchHeadData = async () => {
@@ -117,7 +119,6 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
 
   return (
     <div className={styles.departmentsListWrapper}>
-      {/* Overlay and dialog */}
       {isDialogOpen && (
         <div className={styles.dialogOverlay}>
           <div className={styles.dialog}>
@@ -148,7 +149,14 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
             </div>
             {expandedDeptId === dept.deptId && (
               <div className={styles.liContent}>
-                <span className={styles.insideLabel}>Head: {dept.head}</span>
+                <span className={styles.insideLabel}>
+                  Head:{" "}
+                  {users[dept.head]
+                    ? `${users[dept.head].firstName} ${
+                        users[dept.head].surname
+                      }`
+                    : "Loading..."}
+                </span>
                 <div className={styles.listBtns}>
                   <button
                     className={styles.editBtn}
@@ -166,26 +174,6 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
                     Delete
                   </button>
                 </div>
-              <div>
-                <span>
-                  Head:{" "}
-                  {users[dept.head]
-                    ? `${users[dept.head].firstName} ${
-                        users[dept.head].surname
-                      }`
-                    : "Loading..."}
-                </span>
-                <button
-                  onClick={() => {
-                    setDeptToEdit(dept);
-                    handleOpenDialog();
-                  }}
-                >
-                  Edit
-                </button>
-                <button onClick={() => confirmDeleteDepartment(dept.deptId)}>
-                  Delete
-                </button>
               </div>
             )}
           </li>
