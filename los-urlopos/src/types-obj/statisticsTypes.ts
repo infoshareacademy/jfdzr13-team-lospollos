@@ -30,7 +30,7 @@ export type SupervisorStatistics = {
   leaveRequestsStat: LeaveRequestStats;
   allRequests: number;
   totalDaysOff: number;
-  expiriedRequests: number;
+  expiredRequests: number;
   totalEmployees: number;
   employeesOnLeave: number;
 };

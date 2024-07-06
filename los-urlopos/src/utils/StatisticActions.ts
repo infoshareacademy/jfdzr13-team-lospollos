@@ -131,7 +131,7 @@ export async function getReqStatisticForSupervisor(
       (totalDays, req) => totalDays + req.daysReq,
       0
     ),
-    expiriedRequests: requestList.filter(
+    expiredRequests: requestList.filter(
       (x) =>
         Date.parse(x.dayFrom) <= Date.now() &&
         x.status === REQUEST_STATUS.Pending
