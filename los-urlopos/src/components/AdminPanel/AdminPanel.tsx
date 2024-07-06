@@ -34,22 +34,33 @@ const AdminPanel: FC = () => {
       <div className={styles.navbar}>
         <button
           className={styles.adminPanelBtn}
-          onClick={() => setSelectedSection("users")}
+          onClick={() => {
+            setSelectedSection("users");
+            setIsDialogOpen(true);
+          }}
         >
           Users
         </button>
         <span className={styles.adminPanelSpan}> | </span>
         <button
           className={styles.adminPanelBtn}
-          onClick={() => setSelectedSection("departments")}
+          onClick={() => {
+            setSelectedSection("departments");
+            setIsDialogOpen(true);
+          }}
+
         >
           Departments
         </button>
+        
         <span className={styles.adminPanelSpan}> | </span>
         <button
           className={styles.adminPanelBtn}
           onClick={() => setSelectedSection("bankHolidays")}
         >
+          Admin Actions
+        </button>
+        
           Bank Holidays
         </button>
         <div className={styles.navbarWrapper}>
@@ -81,7 +92,7 @@ const AdminPanel: FC = () => {
           </button>
         </div>
       </div>
-      {renderSection()}
+      <div className={styles.adminUsersList}>{renderSection()}</div>
     </div>
   );
 };

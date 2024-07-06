@@ -41,6 +41,8 @@
 .navbarUser .menuSpan {
   font-size: 3vmin;
   color: white;
+  display: flex;
+  align-self: center;
 }
 
 /* SUPERVISOR */
@@ -86,6 +88,8 @@
 .navbarSupervisor .menuSpan {
   font-size: 3vmin;
   color: white;
+  display: flex;
+  align-self: center;
 }
 
 /* ADMIN */
@@ -131,6 +135,8 @@
 .navbarAdmin .menuSpan {
   font-size: 3vmin;
   color: white;
+  display: flex;
+  align-self: center;
 }
 
 /* ALL ROLES */
@@ -176,4 +182,6 @@
 .navbarAllRoles .menuSpan {
   font-size: 3vmin;
   color: white;
+  display: flex;
+  align-self: center;
 }

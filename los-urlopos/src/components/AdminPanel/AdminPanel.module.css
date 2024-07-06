@@ -16,27 +16,13 @@ body {
   background: url("../../images/bgblue2.png");
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .adminPanel h1,
 .adminPanel h2 {
   color: #333;
-}
-
-.adminPanel ul {
-  list-style-type: none;
-  padding: 0;
-  width: 100%;
-  max-width: 800px;
-}
-
-.adminPanel li {
-  background-color: #f9f9f9;
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .userHeader {
@@ -48,30 +34,34 @@ body {
 .userDetails {
   margin-top: 10px;
 }
+
 .navbar {
   display: flex;
-  justify-content: center;
-  align-items: center;
   background-color: #0095ca;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 5%;
+  position: relative;
+  padding-left: 1%;
+  gap: 2%;
+  justify-content: center;
   font-size: 2vmin;
   border-top: 2px solid white;
 }
 
 .adminPanelBtn {
-  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
   background-color: #0095ca;
-  color: white;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   cursor: pointer;
-  width: 7%;
-  height: 60%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 8%;
+  height: 40%;
+  padding: 1% 0;
 }
 
 .adminPanelBtn:hover {
@@ -80,15 +70,9 @@ body {
   height: 80%;
 }
 
-.navbar button:hover {
-  background-color: #214ef0;
-  transition: 0.3s;
-  transform: scale(1.1);
-}
-
 .adminPanelBtn:active {
   background-color: #0095ca;
-  transform: scale(1);
+  transform: scale(0.95);
   transition: 0.3s;
 }
 
@@ -121,4 +105,15 @@ body {
   color: white;
   margin: 0 1%;
   justify-self: center;
+  display: flex;
+  align-self: center;
+}
+
+.adminUsersList {
+  display: flex;
+  height: 95%;
+  width: 95%;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
 }
