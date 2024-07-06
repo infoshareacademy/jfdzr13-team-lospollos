@@ -71,7 +71,7 @@
   font-weight: bold;
 }
 
-.spvBusinessCard .expiried {
+.spvBusinessCard .expired {
   grid-area: expiried;
   font-size: x-large;
   font-weight: bold;
@@ -86,7 +86,7 @@
   font-weight: bold;
 }
 
-.spvBusinessCard .importantSpvInfo .expiried span {
+.spvBusinessCard .importantSpvInfo .expired span {
   font-size: x-large;
 }
 

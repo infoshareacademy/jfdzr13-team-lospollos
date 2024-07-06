@@ -93,7 +93,7 @@ export function SpvComponent({ departmentId }) {
       <div className={styles.importantSpvInfo}>
         <label className={styles.expiredTitle}>Expired requests:</label>
         <span className={styles.expired}>
-          {spvStats.expiredRequests} / {spvStats.allRequests}
+          {spvStats.expiriedRequests} / {spvStats.allRequests}
         </span>
         <label className={styles.onLeaveTitle}>Employees on leave:</label>
         <span className={styles.onLeave}>
