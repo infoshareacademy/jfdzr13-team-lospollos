@@ -1,3 +1,11 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 .adminPanel {
   height: 100%;
   width: 100%;
@@ -37,6 +45,8 @@ body {
   position: relative;
   padding-left: 1%;
   gap: 2%;
+  justify-content: center;
+  font-size: 2vmin;
   border-top: 2px solid white;
 }
 
@@ -56,13 +66,13 @@ body {
 
 .adminPanelBtn:hover {
   background-color: #ffffff23;
-  scale: 1.1;
-  transition: 0.3s;
+  width: 40%;
+  height: 80%;
 }
 
 .adminPanelBtn:active {
   background-color: #0095ca;
-  scale: 0.95;
+  transform: scale(0.95);
   transition: 0.3s;
 }
 
@@ -93,6 +103,7 @@ body {
 .adminPanelSpan {
   font-size: 3vmin;
   color: white;
+  margin: 0 1%;
   justify-self: center;
   display: flex;
   align-self: center;

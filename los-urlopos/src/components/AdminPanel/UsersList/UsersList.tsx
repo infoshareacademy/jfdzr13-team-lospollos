@@ -44,7 +44,7 @@ const UsersList: FC<UsersListProps> = ({}) => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
+    <div className={styles.adminUsersList}>
       <dialog open={isAddUserDialogOpen} onClose={handleCloseDialog}>
         <AddUser onUserAdded={handleCloseDialog} onClose={handleCloseDialog} />
       </dialog>
