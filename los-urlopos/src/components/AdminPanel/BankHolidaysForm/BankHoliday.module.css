@@ -65,7 +65,7 @@
 .addAnnualDaysWrap {
   display: flex;
   justify-content: space-between;
-  gap: 5px;
+  gap: 20px;
   height: 50px;
 }
 .currentYearWrap {
@@ -126,7 +126,7 @@
 
 .closePopup {
   align-self: flex-end;
-  margin-top: 36vb;
+  margin-top: 41vb;
   width: 20%;
   height: 7%;
   background-color: rgb(213, 69, 69);
@@ -151,4 +151,5 @@
 .currentYear {
   margin: auto;
   align-self: center;
+  font-size: 2em;
 }

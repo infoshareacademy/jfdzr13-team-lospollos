@@ -1,4 +1,3 @@
-import React, { FC, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import styles from "./BankHoliday.module.css";
 import { addDayToBankHolidayList } from "../../../utils/AddBankholidays";
@@ -7,6 +6,8 @@ import { addAnnualDaysLeave } from "../../../utils/AddAnnualDaysLeave";
 interface BankHolidayProps {
   onClose: () => void;
 }
+
+const currentYear = new Date().getFullYear();
 
 const BankHolidaysForm = ({ onClose }: BankHolidayProps) => {
   function addHoliday() {
@@ -52,7 +53,7 @@ const BankHolidaysForm = ({ onClose }: BankHolidayProps) => {
               <label className={styles.adminActionsLabel}>
                 add annual leave days for each user:
                 <div className={styles.currentYearWrap}>
-                  <p className={styles.currentYear}>2024</p>
+                  <p className={styles.currentYear}>{currentYear}</p>
                 </div>
               </label>
 
