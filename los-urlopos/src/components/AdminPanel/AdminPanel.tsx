@@ -48,11 +48,9 @@ const AdminPanel: FC = () => {
             setSelectedSection("departments");
             setIsDialogOpen(true);
           }}
-
         >
           Departments
         </button>
-        
         <span className={styles.adminPanelSpan}> | </span>
         <button
           className={styles.adminPanelBtn}
@@ -60,37 +58,6 @@ const AdminPanel: FC = () => {
         >
           Admin Actions
         </button>
-        
-          Bank Holidays
-        </button>
-        <div className={styles.navbarWrapper}>
-          <button
-            className={styles.adminPanelBtn}
-            onClick={() => {
-              setSelectedSection("users");
-              setIsDialogOpen(true);
-            }}
-          >
-            Users
-          </button>
-          <span className={styles.adminPanelSpan}> | </span>
-          <button
-            className={styles.adminPanelBtn}
-            onClick={() => {
-              setSelectedSection("departments");
-              setIsDialogOpen(true);
-            }}
-          >
-            Departments
-          </button>
-          <span className={styles.adminPanelSpan}> | </span>
-          <button
-            className={styles.adminPanelBtn}
-            onClick={() => setSelectedSection("bankHolidays")}
-          >
-            Admin Actions
-          </button>
-        </div>
       </div>
       <div className={styles.adminUsersList}>{renderSection()}</div>
     </div>
