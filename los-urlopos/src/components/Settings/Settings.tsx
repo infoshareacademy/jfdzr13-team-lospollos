@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useAuth from "../../contexts/AuthContext";
 import useUserData from "../../contexts/ViewDataContext";
-import styles from "./Settings.module.css";
 import pfp from "../../images/Unknown_person.jpg";
+import styles from "./Settings.module.css";
 
 const Settings = () => {
   const { changePassword, authUser, login } = useAuth();
@@ -107,7 +107,7 @@ const Settings = () => {
       setProfileImage(imageUrl);
       if (authUser) {
         localStorage.setItem(
-          `profileImage_${authUser.email}_${authUser.uid}`,
+          `profileImage_${authUser.email}_${authUser.id}`,
           imageUrl
         );
       }
