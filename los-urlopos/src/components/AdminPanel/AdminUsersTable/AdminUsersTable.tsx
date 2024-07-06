@@ -7,7 +7,7 @@ import {
 import { User } from "../../../types-obj/types-obj";
 import {
   deleteUser,
-y  getAllUsers,
+  getAllUsers,
   subscribeToUsers,
 } from "../../../services/UserService";
 import { getDepartment } from "../../../services/DepartmentService";

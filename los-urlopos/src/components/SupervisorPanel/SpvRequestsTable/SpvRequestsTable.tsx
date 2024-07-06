@@ -1,9 +1,10 @@
+import { useEffect, useMemo, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-
 import {
   Select,
   MenuItem,
@@ -13,20 +14,19 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import styles from "./spvRequestsTable.module.css";
 
-import { useEffect, useMemo, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import useUserData from "../../../contexts/ViewDataContext";
-import REQUEST_STATUS from "../../../enums/requestStatus";
-import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
 import { getDepartment } from "../../../services/DepartmentService";
 import {
   getRequestAll,
   getRequestDeptId,
 } from "../../../services/LeaveRequestService";
-import { DateToShowOptions, Request } from "../../../types-obj/types-obj";
 import { acceptRequest, rejectRequest } from "../../../utils/RequestActions";
-import styles from "./spvRequestsTable.module.css";
+import { DateToShowOptions, Request } from "../../../types-obj/types-obj";
+import REQUEST_STATUS from "../../../enums/requestStatus";
+import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
+import { getUserById } from "../../../services/UserService";
 
 const dateOptions: DateToShowOptions = {
   day: "2-digit",
@@ -160,8 +160,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
         columns: [
           {
             id: "userNameColumn",
-            accessorFn: (userData) =>
-              `${userData.firstName} ${userData.surname}`,
+            accessorKey: "userId",
             header: "Employee's name",
             enableHiding: false,
             size: 150,
@@ -169,6 +168,34 @@ export default function SpvRequestsTable({ getDeptContext }) {
             muiTableBodyCellProps: {
               align: "center",
               sx: { fontWeight: "bold" },
+            },
+            Cell: ({ row }) => {
+              const userId = row.original.userId;
+              const [name, setName] = useState("");
+
+              useEffect(() => {
+                const fetchUserName = async () => {
+                  try {
+                    const user = await getUserById(userId);
+                    if (user) {
+                      setName(`${user.firstName} ${user.surname}`);
+                    } else {
+                      setName("Unknown");
+                    }
+                  } catch (error) {
+                    console.error("Error fetching user:", error);
+                    setName("Unknown");
+                  }
+                };
+
+                fetchUserName();
+              }, [userId]);
+
+              return (
+                <div style={{ fontWeight: "bold", fontSize: "1.2em" }}>
+                  {name}
+                </div>
+              );
             },
           },
           {
