@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useUserData from "../../../contexts/ViewDataContext";
-import pfp from "../../../images/Unknown_person.jpg";
 import { toUserView } from "../../../mappers/ViewObjectsMapper";
 import { UserView } from "../../../types-obj/objectViewTypes";
 import { UserStatistics } from "../../../types-obj/statisticsTypes";
@@ -10,9 +9,10 @@ import { getReqStatisticForUser } from "../../../utils/StatisticActions";
 import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusChartComponent";
 import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./userComponent.module.css";
+import { useProfileImage } from "../../../contexts/ProfileImageContext";
 
 export function UserComponent() {
-  const [profileImage, setProfileImage] = useState<string>(pfp);
+  const { profileImage } = useProfileImage();
   const [userView, setUserView] = useState<UserView>(emptyUser);
   const [userStats, setUserStats] =
     useState<UserStatistics>(emptyUserStatistics);
@@ -34,13 +34,6 @@ export function UserComponent() {
   useEffect(() => {
     toUserViewObject(userData, departmentsList);
     fetchUserLeaveRequestStats();
-
-    const savedImage = localStorage.getItem(
-      `profileImage_${userView.email}_${userView.id}`
-    );
-    if (savedImage) {
-      setProfileImage(savedImage);
-    }
   }, [userData]);
 
   return (
