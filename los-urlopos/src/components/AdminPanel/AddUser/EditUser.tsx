@@ -57,6 +57,14 @@ const EditUser: FC<EditUserProps> = ({ user, onUserUpdated, onClose }) => {
     }));
   };
 
+  const handleInputChangeNumber = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked }: any = e.target;
+    setEditedUser((prevUser) => ({
+      ...prevUser,
+      [name]: type === "checkbox" ? checked : parseInt(value),
+    }));
+  };
+
   const handleEditUser = async (event: FormEvent) => {
     event.preventDefault();
     try {
@@ -110,7 +118,7 @@ const EditUser: FC<EditUserProps> = ({ user, onUserUpdated, onClose }) => {
                 name="currentDays"
                 placeholder="Current Days"
                 value={editedUser.currentDays}
-                onChange={handleInputChange}
+                onChange={handleInputChangeNumber}
                 required
               />
             </label>
@@ -122,7 +130,7 @@ const EditUser: FC<EditUserProps> = ({ user, onUserUpdated, onClose }) => {
                 name="days"
                 placeholder="Days"
                 value={editedUser.days}
-                onChange={handleInputChange}
+                onChange={handleInputChangeNumber}
                 required
               />
             </label>

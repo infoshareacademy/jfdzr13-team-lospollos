@@ -384,7 +384,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
                   marginRight: "20px",
                 }}
               >
-                Request List
+                Requests List
               </span>
             </div>
             <div

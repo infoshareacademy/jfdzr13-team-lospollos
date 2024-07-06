@@ -4,7 +4,7 @@ import {
   deleteDepartment,
   subscribeToDepartments,
 } from "../../../services/DepartmentService";
-
+import { getUserById } from "../../../services/UserService";
 import ConfirmAction from "../ConfirmAction";
 import AddOrEditDepartment from "./AddOrEditDepartment";
 import styles from "./DepartmentsList.module.css";
@@ -15,13 +15,42 @@ type DepartmentsListProps = {
 
 const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
   const [departments, setDepartments] = useState<Departments[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedDeptId, setExpandedDeptId] = useState<string | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [deptToEdit, setDeptToEdit] = useState<Departments | null>(null);
   const [confirmDialogOpen, setConfirmDialogOpen] = useState<boolean>(false);
   const [deptIdToDelete, setDeptIdToDelete] = useState<string | null>(null);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchHeadData = async () => {
+      if (expandedDeptId) {
+        const department = departments.find(
+          (dept) => dept.deptId === expandedDeptId
+        );
+        if (department && department.head && !users[department.head]) {
+          try {
+            const user = await getUserById(department.head);
+            if (user) {
+              setUsers((prevUsers) => ({
+                ...prevUsers,
+                [department.head]: {
+                  firstName: user.firstName,
+                  surname: user.surname,
+                },
+              }));
+            }
+          } catch (error) {
+            console.error("Error fetching user data: ", error);
+          }
+        }
+      }
+    };
+
+    fetchHeadData();
+  }, [expandedDeptId, departments, users]);
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -40,11 +69,11 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
     const unsub = subscribeToDepartments(
       (departmentsData) => {
         setDepartments(departmentsData);
-        setLoading(false);
+        setIsLoading(false);
       },
       (errorMessage) => {
         setError(errorMessage);
-        setLoading(false);
+        setIsLoading(false);
       }
     );
 
@@ -83,7 +112,7 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
     setExpandedDeptId(expandedDeptId === id ? null : id);
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -137,6 +166,26 @@ const DepartmentsList: FC<DepartmentsListProps> = ({}) => {
                     Delete
                   </button>
                 </div>
+              <div>
+                <span>
+                  Head:{" "}
+                  {users[dept.head]
+                    ? `${users[dept.head].firstName} ${
+                        users[dept.head].surname
+                      }`
+                    : "Loading..."}
+                </span>
+                <button
+                  onClick={() => {
+                    setDeptToEdit(dept);
+                    handleOpenDialog();
+                  }}
+                >
+                  Edit
+                </button>
+                <button onClick={() => confirmDeleteDepartment(dept.deptId)}>
+                  Delete
+                </button>
               </div>
             )}
           </li>
