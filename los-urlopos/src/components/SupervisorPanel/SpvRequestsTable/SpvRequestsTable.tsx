@@ -5,13 +5,13 @@ import {
 } from "material-react-table";
 
 import {
-  Select,
-  MenuItem,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  MenuItem,
+  Select,
 } from "@mui/material";
 
 import { useEffect, useMemo, useState } from "react";
@@ -35,7 +35,7 @@ const dateOptions: DateToShowOptions = {
 };
 
 export default function SpvRequestsTable({ getDeptContext }) {
-  const { userData } = useUserData();
+  const { userData, refreshUserViewData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
@@ -108,6 +108,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
   const handleActionConfirm = async () => {
     if (currentAction === "accept") {
       await acceptRequest(currentRequest);
+      await refreshUserViewData();
     } else if (currentAction === "reject") {
       const lengthValidation: number = 100;
       const rejectReasonValue: string = (
@@ -124,6 +125,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
         return;
       } else {
         await rejectRequest(currentRequest, rejectReasonValue);
+        await refreshUserViewData();
       }
     }
     setDialogOpen(false);
