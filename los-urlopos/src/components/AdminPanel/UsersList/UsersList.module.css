@@ -9,8 +9,10 @@
 }
 
 .tableWrapper {
-  margin: 20px;
+  display: flex;
   width: 100%;
+  height: 100%;
+  margin: 2% 0;
 }
 
 .addUserBtn {
