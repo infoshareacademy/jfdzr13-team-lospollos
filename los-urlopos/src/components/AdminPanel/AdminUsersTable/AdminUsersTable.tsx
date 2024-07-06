@@ -6,8 +6,7 @@ import {
 } from "material-react-table";
 import { User } from "../../../types-obj/types-obj";
 import {
-  deleteUser,
-y  getAllUsers,
+  deleteUser, getAllUsers,
   subscribeToUsers,
 } from "../../../services/UserService";
 import { getDepartment } from "../../../services/DepartmentService";
