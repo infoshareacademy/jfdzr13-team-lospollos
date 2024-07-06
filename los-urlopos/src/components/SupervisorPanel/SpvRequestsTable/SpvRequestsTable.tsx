@@ -12,11 +12,6 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-  type MRT_ColumnDef,
-} from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import useUserData from "../../../contexts/ViewDataContext";
