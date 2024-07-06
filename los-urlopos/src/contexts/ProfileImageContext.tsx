@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import pfp from "../images/Unknown_person.jpg";
-import useAuth from "./AuthContext"; // Dostosuj ścieżkę, jeśli to konieczne
+import useAuth from "./AuthContext"; // Adjust path if necessary
 
 const ProfileImageContext = createContext();
 

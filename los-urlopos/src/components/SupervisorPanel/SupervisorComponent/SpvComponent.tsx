@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import useUserData from "../../../contexts/ViewDataContext";
-import pfp from "../../../images/Unknown_person.jpg";
 import {
   toDepartmentViewById,
   toUserView,
@@ -16,6 +15,8 @@ import { getReqStatisticForSupervisor } from "../../../utils/StatisticActions";
 import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusChartComponent";
 import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./spvComponent.module.css";
+import { useProfileImage } from "../../../contexts/ProfileImageContext"; // Import the context
+import pfp from "../../../images/Unknown_person.jpg"; // Default profile picture
 
 export function SpvComponent({ departmentId }) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
@@ -25,6 +26,7 @@ export function SpvComponent({ departmentId }) {
     emptySupervisorStatistics
   );
   const { userData, departmentsList } = useUserData();
+  const { updateProfileImage } = useProfileImage(); // Use the context hook
 
   const toUserViewObject = async () => {
     const userView = await toUserView(userData, departmentsList);
@@ -33,7 +35,6 @@ export function SpvComponent({ departmentId }) {
 
   const toDeptViewObject = async () => {
     const deptView = await toDepartmentViewById(departmentsList, departmentId);
-    console.log(deptView);
     setDeptView(deptView);
   };
 
@@ -47,12 +48,18 @@ export function SpvComponent({ departmentId }) {
 
   useEffect(() => {
     toUserViewObject();
+  }, [userData]);
 
-    const savedImage = localStorage.getItem(
-      `profileImage_${userView.email}_${userView.id}`
-    );
-    if (savedImage) {
-      setProfileImage(savedImage);
+  useEffect(() => {
+    if (userData) {
+      const savedImage = localStorage.getItem(
+        `profileImage_${userData.email}_${userData.id}`
+      );
+      if (savedImage) {
+        setProfileImage(savedImage);
+      } else {
+        setProfileImage(pfp); // Default image if no custom image is set
+      }
     }
   }, [userData]);
 
@@ -84,9 +91,9 @@ export function SpvComponent({ departmentId }) {
       </div>
 
       <div className={styles.importantSpvInfo}>
-        <label className={styles.expiredTitle}>Expired reuqests:</label>
-        <span className={styles.expiried}>
-          {spvStats.expiriedRequests} / {spvStats.allRequests}
+        <label className={styles.expiredTitle}>Expired requests:</label>
+        <span className={styles.expired}>
+          {spvStats.expiredRequests} / {spvStats.allRequests}
         </span>
         <label className={styles.onLeaveTitle}>Employees on leave:</label>
         <span className={styles.onLeave}>
