@@ -302,18 +302,6 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
     },
 
     renderDetailPanel: ({ row }) => {
-      const [creatorName, setCreatorName] = useState("");
-
-      useEffect(() => {
-        const fetchCreator = async () => {
-          const creator = await getUserById(row.original.createdBy);
-          if (creator) {
-            setCreatorName(`${creator.firstName} ${creator.surname}`);
-          }
-        };
-        fetchCreator();
-      }, [row.original.createdBy]);
-
       const date = new Date(row.original.createdAt).toLocaleDateString();
 
       return (
