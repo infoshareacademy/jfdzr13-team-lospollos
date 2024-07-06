@@ -25,6 +25,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
     roleUser: false,
     roleSupervisor: false,
     userId: "",
+    isActive: true,
   });
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);

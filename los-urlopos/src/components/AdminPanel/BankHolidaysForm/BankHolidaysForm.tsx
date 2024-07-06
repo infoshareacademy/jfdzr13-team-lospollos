@@ -48,13 +48,22 @@ const BankHolidaysForm = ({ onClose }: BankHolidayProps) => {
                 Add
               </button>
             </div>
-            <button
-              className={styles.addAnnualDayButton}
-              type="button"
-              onClick={addAnnualDays}
-            >
-              Click to add annual leave days for each user
-            </button>
+            <div className={styles.addAnnualDaysWrap}>
+              <label className={styles.adminActionsLabel}>
+                add annual leave days for each user:
+                <div className={styles.currentYearWrap}>
+                  <p className={styles.currentYear}>2024</p>
+                </div>
+              </label>
+
+              <button
+                className={styles.addButton}
+                type="button"
+                onClick={addAnnualDays}
+              >
+                add
+              </button>
+            </div>
             <button
               className={styles.closePopup}
               type="button"
