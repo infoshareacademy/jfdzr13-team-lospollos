@@ -10,13 +10,15 @@ import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusCha
 import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./userComponent.module.css";
 import { useProfileImage } from "../../../contexts/ProfileImageContext";
+import pfp from "../../../images/Unknown_person.jpg"; // Default profile picture
 
 export function UserComponent() {
-  const { profileImage } = useProfileImage();
+  const [profileImage, setProfileImage] = useState<string>(pfp); // Start with default image
   const [userView, setUserView] = useState<UserView>(emptyUser);
   const [userStats, setUserStats] =
     useState<UserStatistics>(emptyUserStatistics);
   const { userData, departmentsList } = useUserData();
+  const { updateProfileImage } = useProfileImage(); // Use the context hook
 
   const toUserViewObject = async (
     userData: User,
@@ -30,6 +32,19 @@ export function UserComponent() {
     const userStatistics = await getReqStatisticForUser(userData.userId);
     setUserStats(userStatistics);
   };
+
+  useEffect(() => {
+    if (userData) {
+      const savedImage = localStorage.getItem(
+        `profileImage_${userData.email}_${userData.id}`
+      );
+      if (savedImage) {
+        setProfileImage(savedImage);
+      } else {
+        setProfileImage(pfp); // Default image if no custom image is set
+      }
+    }
+  }, [userData]);
 
   useEffect(() => {
     toUserViewObject(userData, departmentsList);

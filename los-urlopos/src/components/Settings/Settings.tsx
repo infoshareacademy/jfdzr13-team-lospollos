@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import useAuth from "../../contexts/AuthContext";
 import useUserData from "../../contexts/ViewDataContext";
-import { useProfileImage } from "../../contexts/ProfileImageContext"; // Import the context
 import styles from "./Settings.module.css";
 import pfp from "../../images/Unknown_person.jpg";
 
 const Settings = () => {
   const { changePassword, authUser, login } = useAuth();
   const { userData } = useUserData();
-  const { profileImage, updateProfileImage } = useProfileImage(); // Use the context
   const [changePassResult, setChangePassResult] = useState<string | null>(null);
-  const [panelClass, setPanelClass] = useState(styles.panelUser);
+  const [panelClass, setPanelClass] = useState(styles.panelUser); // Default class
 
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -86,12 +84,33 @@ const Settings = () => {
     }
   }, [userData]);
 
+  const [profileImage, setProfileImage] = useState<string>(pfp);
+
+  useEffect(() => {
+    if (authUser) {
+      const savedImage = localStorage.getItem(
+        `profileImage_${authUser.email}_${authUser.uid}`
+      );
+      if (savedImage) {
+        setProfileImage(savedImage);
+      } else {
+        setProfileImage(pfp); // Default image if no custom image is set
+      }
+    }
+  }, [authUser]);
+
   const loadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const image = document.getElementById("output") as HTMLImageElement;
     if (event.target.files && event.target.files[0]) {
       const imageUrl = URL.createObjectURL(event.target.files[0]);
       image.src = imageUrl;
-      updateProfileImage(imageUrl); // Update the profile image in the context
+      setProfileImage(imageUrl);
+      if (authUser) {
+        localStorage.setItem(
+          `profileImage_${authUser.email}_${authUser.uid}`,
+          imageUrl
+        );
+      }
     }
   };
 

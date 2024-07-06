@@ -16,10 +16,6 @@ body {
   background: url("../../images/bgblue2.png");
 }
 
-body {
-  overflow-x: hidden;
-}
-
 .adminPanel h1,
 .adminPanel h2 {
   color: #333;

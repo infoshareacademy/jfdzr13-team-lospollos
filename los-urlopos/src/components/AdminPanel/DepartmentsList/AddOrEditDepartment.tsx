@@ -5,6 +5,7 @@ import {
   updateDepartment,
 } from "../../../services/DepartmentService";
 import { fetchSupervisors } from "../../../services/UserService";
+import styles from "./AddOrEditDepartment.module.css";
 
 type AddOrEditDepartmentProps = {
   onDepartmentAddedOrEdited: () => void;
@@ -72,22 +73,24 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
   };
 
   return (
-    <>
+    <div className={styles.contentWrapper}>
       <h2>{departmentToEdit ? "Edit Department" : "Add Department"}</h2>
       {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form className={styles.addEditForm} onSubmit={handleSubmit}>
+        <label className={styles.addEditLabel}>
           Department Name:
           <input
+            className={styles.providedInfo}
             type="text"
             value={departmentName}
             onChange={(e) => setDepartmentName(e.target.value)}
             required
           />
         </label>
-        <label>
+        <label className={styles.addEditLabel}>
           Department Head:
           <select
+            className={styles.providedInfo}
             value={departmentHead}
             onChange={(e) => setDepartmentHead(e.target.value)}
             required
@@ -104,14 +107,17 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
             )}
           </select>
         </label>
-        <button type="submit">
-          {departmentToEdit ? "Save Changes" : "Create"}
-        </button>
-        <button type="button" onClick={onClose}>
-          Cancel
-        </button>
+
+        <div className={styles.addEditBtns}>
+          <button className={styles.createBtn} type="submit">
+            {departmentToEdit ? "Save Changes" : "Create"}
+          </button>
+          <button className={styles.cancelBtn} type="button" onClick={onClose}>
+            Cancel
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
 

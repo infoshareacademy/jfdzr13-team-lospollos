@@ -206,6 +206,7 @@
   width: 50%;
   display: flex;
   align-self: flex-end;
+  font-size: 2.5vmin;
 }
 
 .panelAdmin .buttonsCont {
@@ -434,6 +435,7 @@
   width: 50%;
   display: flex;
   align-self: flex-end;
+  font-size: 2.5vmin;
 }
 
 .panelSupervisor .buttonsCont {
@@ -661,6 +663,7 @@
   width: 50%;
   display: flex;
   align-self: flex-end;
+  font-size: 2.5vmin;
 }
 
 .panelUser .buttonsCont {
@@ -883,12 +886,14 @@
   display: flex;
   justify-content: space-between;
   align-self: center;
+  font-size: 2.5vmin;
 }
 
 .panelMulti input {
   width: 50%;
   display: flex;
   align-self: flex-end;
+  font-size: 2.5vmin;
 }
 
 .panelMulti .buttonsCont {
