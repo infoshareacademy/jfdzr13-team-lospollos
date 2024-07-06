@@ -78,6 +78,18 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
     }
   };
 
+  const handleInputChangeNumber = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    if (name === "password") {
+      setPassword(value);
+    } else {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        [name]: type === "checkbox" ? checked : parseInt(value),
+      }));
+    }
+  };
+
   const handleAddUser = async (event: FormEvent) => {
     event.preventDefault();
     try {
@@ -175,7 +187,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 name="currentDays"
                 placeholder="Current Days"
                 value={newUser.currentDays}
-                onChange={handleInputChange}
+                onChange={handleInputChangeNumber}
                 required
               />
             </label>
@@ -187,7 +199,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 name="days"
                 placeholder="Days"
                 value={newUser.days}
-                onChange={handleInputChange}
+                onChange={handleInputChangeNumber}
                 required
               />
             </label>
@@ -224,7 +236,7 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
                 name="onDemand"
                 placeholder="On Demand"
                 value={newUser.onDemand}
-                onChange={handleInputChange}
+                onChange={handleInputChangeNumber}
                 required
               />
             </label>
