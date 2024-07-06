@@ -328,7 +328,9 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
           <p>
             Created By:
             <br />
-            <span className={styles.detailsSpanText}>{creatorName}</span>
+            <span className={styles.detailsSpanText}>
+              {row.original.createdBy}
+            </span>
           </p>
           <p>
             Current Days:
