@@ -16,28 +16,6 @@ body {
   background: url("../../images/bgblue2.png");
 }
 
-.Modal__Overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-}
-
-.Modal__Content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .adminPanel h1,
 .adminPanel h2 {
   color: #333;
@@ -47,7 +25,7 @@ body {
   list-style-type: none;
   padding: 0;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .adminPanel li {
@@ -70,7 +48,6 @@ body {
 .userDetails {
   margin-top: 10px;
 }
-
 .navbar {
   display: flex;
   justify-content: center;
@@ -83,6 +60,8 @@ body {
 }
 
 .adminPanelBtn {
+  padding: 5px 10px;
+  color: white;
   background-color: #0095ca;
   color: white;
   border: none;
@@ -97,6 +76,12 @@ body {
 
 .adminPanelBtn:hover {
   background-color: #ffffff23;
+  width: 40%;
+  height: 80%;
+}
+
+.navbar button:hover {
+  background-color: #214ef0;
   transition: 0.3s;
   transform: scale(1.1);
 }
@@ -118,6 +103,14 @@ body {
   margin-right: 5px;
 }
 
+.adminPanel label {
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  width: 100%;
+  margin: 5px 0;
+}
+
 .error {
   color: red;
   margin-top: 10px;
@@ -127,4 +120,5 @@ body {
   font-size: 3vmin;
   color: white;
   margin: 0 1%;
+  justify-self: center;
 }

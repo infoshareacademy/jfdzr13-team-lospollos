@@ -14,7 +14,7 @@ import { getDepartment } from "../../../services/DepartmentService";
 import styles from "./adminUsersTable.module.css";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import AddUser from "../AddUser/AddUser";
-import EditUser from "../AddUser/EditUser";
+import EditUser from "../AddUser/EditUser"
 
 type AdminUsersTableProps = {
   onAddUserBtnClick: () => void;
@@ -276,8 +276,9 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
                 sx={{
                   backgroundColor: "rgba(3, 11, 252, 0.7)",
                   borderRadius: "5px",
-                  color: "white",
                   border: "none",
+                  color: "white",
+                  marginRight: "20px",
                   padding: "10px 20px",
                   ":hover": {
                     backgroundColor: "rgba(3, 11, 252, 0.54)",
@@ -285,8 +286,8 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
                   },
                   ":active": {
                     backgroundColor: "rgba(3, 11, 252, 0.74)",
-                    transform: "scale(0.98) translateY(0.7px)",
                     boxShadow: "3px 2px 22px 1px rgba(0, 0, 0, 0.24)",
+                    transform: "scale(0.98) translateY(0.7px)",
                   },
                 }}
               >

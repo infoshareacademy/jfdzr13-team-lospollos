@@ -26,7 +26,7 @@ function App() {
           <Route path="logout" element={<Logout />} />
         </Route>
         {/* safe route to always redirect to / when logged*/}
-        <Route path="*" element={<Layout />} /> {/* Handle unknown routes */}
+        <Route path="*" element={<Settings />} /> {/* Handle unknown routes */}
       </Route>
     </Routes>
   );
