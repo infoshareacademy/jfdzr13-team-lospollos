@@ -24,6 +24,7 @@
   color: white;
   border-radius: 5px;
   padding: 6px 16px;
+  font-size: 2.5vmin;
 }
 
 .navbarUser a:hover {
@@ -71,6 +72,7 @@
   color: white;
   border-radius: 5px;
   padding: 6px 16px;
+  font-size: 2.5vmin;
 }
 
 .navbarSupervisor a:hover {
@@ -118,6 +120,7 @@
   color: white;
   border-radius: 5px;
   padding: 6px 16px;
+  font-size: 2.5vmin;
 }
 
 .navbarAdmin a:hover {
@@ -165,6 +168,7 @@
   color: white;
   border-radius: 5px;
   padding: 6px 16px;
+  font-size: 2.5vmin;
 }
 
 .navbarAllRoles a:hover {
