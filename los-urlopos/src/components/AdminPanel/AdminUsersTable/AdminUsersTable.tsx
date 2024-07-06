@@ -13,8 +13,7 @@ import {
 import { getDepartment } from "../../../services/DepartmentService";
 import styles from "./adminUsersTable.module.css";
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import AddUser from "../AddUser/AddUser";
-import EditUser from "../AddUser/EditUser"
+import EditUser from "../AddUser/EditUser";
 
 type AdminUsersTableProps = {
   onAddUserBtnClick: () => void;
@@ -30,9 +29,16 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
   const [editUserId, setEditUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       setIsLoading(true);
       try {
+        const departments = await getDepartment();
+        const departmentsMap = departments.reduce((acc, department) => {
+          acc[department.deptId] = department.dept;
+          return acc;
+        }, {});
+        setDepartments(departmentsMap);
+
         const unsub = subscribeToUsers(
           (usersData) => {
             setUsers(usersData);
@@ -46,39 +52,13 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
 
         return () => unsub();
       } catch (error) {
-        console.error("Error subscribing to users:", error);
+        console.error("Error fetching data:", error);
         setIsLoading(false);
-        setError("Error subscribing to users.");
+        setError("Error fetching data.");
       }
     };
 
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      setIsLoading(true);
-
-      try {
-        const deptList = await getDepartment();
-        const deptMap = deptList.reduce(
-          (acc, dept) => ({
-            ...acc,
-            [dept.deptId]: dept.dept,
-          }),
-          {}
-        );
-        console.log(deptMap);
-        setDepartments(deptMap);
-      } catch (error) {
-        console.error("Error fetching departments:", error);
-        setDepartments({});
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchDepartments();
+    fetchData();
   }, []);
 
   const handleDeleteUser = async (id: string) => {
@@ -164,7 +144,6 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
             id: "departmentColumn",
             accessorFn: (user) => departments[user.deptId] || "Not assigned",
             header: "Department",
-            className: styles.departmentColumn,
             muiTableHeadCellProps: { align: "center" },
             muiTableBodyCellProps: {
               align: "center",
