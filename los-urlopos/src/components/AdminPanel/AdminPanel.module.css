@@ -17,7 +17,7 @@
   list-style-type: none;
   padding: 0;
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
 }
 
 .adminPanel li {
@@ -40,12 +40,9 @@
 .userDetails {
   margin-top: 10px;
 }
-
 .navbar {
-  border-top: 2px solid white;
-  /* border-bottom: 1px solid white; */
-  background-color: #0095ca;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -62,17 +59,19 @@
   justify-content: center;
   color: white;
   background-color: #0095ca;
+  color: white;
   border: none;
   border-radius: 3px;
   cursor: pointer;
-  width: 10%;
+  width: 40%;
   height: 80%;
 }
 
-.adminPanelBtn:hover {
-  background-color: #ffffff23;
-  scale: 1.1;
+.navbar button:hover {
+  background-color: #214ef0;
+  scale: 1.05;
   transition: 0.3s;
+  scale: 0.95;
 }
 
 .adminPanelBtn:active {
@@ -95,6 +94,7 @@
 .adminPanel label {
   display: flex;
   align-items: center;
+  justify-self: center;
   width: 100%;
   margin: 5px 0;
 }
@@ -107,6 +107,7 @@
 .adminPanelSpan {
   font-size: 3vmin;
   color: white;
+  justify-self: center;
   display: flex;
   align-self: center;
 }

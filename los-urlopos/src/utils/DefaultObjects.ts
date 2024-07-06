@@ -4,6 +4,13 @@ import {
   RelationalUserView,
   UserView,
 } from "../types-obj/objectViewTypes";
+import {
+  LeaveRequestStats,
+  LeaveRequestStatusStats,
+  LeaveRequestTypeStats,
+  SupervisorStatistics,
+  UserStatistics,
+} from "../types-obj/statisticsTypes";
 
 export const emptyRelationalUser: RelationalUserView = {
   id: "",
@@ -35,16 +42,53 @@ export const emptyUser: UserView = {
 };
 
 export const emptyLeaveRequest: LeaveRequestView = {
-    id: "",
-    status: "",
-    requestType: "",
-    dateFrom: "",
-    dateTo: "",
-    daysOffRequested: 0,
-    daysOffLeft: 0,
-    department: emptyDepartment,
-    comment: "",
-    rejectReason: "",
-    createdBy: emptyRelationalUser,
-    createdAt: 0
-}
+  id: "",
+  status: "",
+  requestType: "",
+  dateFrom: "",
+  dateTo: "",
+  daysOffRequested: 0,
+  daysOffLeft: 0,
+  department: emptyDepartment,
+  comment: "",
+  rejectReason: "",
+  createdBy: emptyRelationalUser,
+  createdAt: 0,
+};
+
+export const emptyStatusStats: LeaveRequestStatusStats = {
+  pendingRequest: 0,
+  approvedRequest: 0,
+  rejectedRequest: 0,
+  cancelledRequest: 0,
+};
+
+export const emptyTypeStats: LeaveRequestTypeStats = {
+  annualLeave: 0,
+  additionalLeave: 0,
+  specialLeave: 0,
+  sickLeave: 0,
+  childLeave: 0,
+  unpaidLeave: 0,
+  onDemandLeave: 0,
+};
+
+export const emptyLeaveRequestStats: LeaveRequestStats = {
+  statusStats: emptyStatusStats,
+  typeStats: emptyTypeStats,
+};
+
+export const emptyUserStatistics: UserStatistics = {
+  leaveRequestsStat: emptyLeaveRequestStats,
+  allRequests: 0,
+  totalDaysOff: 0,
+};
+
+export const emptySupervisorStatistics: SupervisorStatistics = {
+  leaveRequestsStat: emptyLeaveRequestStats,
+  allRequests: 0,
+  totalDaysOff: 0,
+  expiriedRequests: 0,
+  totalEmployees: 0,
+  employeesOnLeave: 0,
+};

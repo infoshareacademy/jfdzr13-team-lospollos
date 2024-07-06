@@ -1,13 +1,13 @@
 import {
+  collection,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
+  onSnapshot,
+  query,
   setDoc,
   where,
-  query,
-  collection,
-  getDocs,
-  deleteDoc,
-  onSnapshot,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { User } from "../types-obj/types-obj";
@@ -29,7 +29,7 @@ export const updateUser = async (userId: string, updatedValues: object) => {
   await setDoc(doc(db, "Users", userId), updatedValues, { merge: true });
 };
 
-export const getAllUsersForAddAnnualLeave = async () => {
+export const getAllUsers = async () => {
   const q = query(usersCollection, where("isActive", "==", true));
   let usersForAddAnnualLeave: any = [];
   const querySnapshot = await getDocs(q);
@@ -65,4 +65,64 @@ export const subscribeToUsers = (
 
 export const addUser = async (uid: string, userData: any) => {
   await setDoc(doc(db, "Users", uid), userData);
+};
+
+export const fetchSupervisors = async (): Promise<User[]> => {
+  try {
+    const q = query(usersCollection, where("roleSupervisor", "==", true));
+    const querySnapshot = await getDocs(q);
+
+    const supervisors: User[] = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as User),
+    }));
+
+    return supervisors;
+  } catch (error) {
+    console.error("Error fetching supervisors: ", error);
+    throw error;
+  }
+};
+
+export const getUsersByDeptId = async (departmentId: string) => {
+  try {
+    const docQuery = query(
+      usersCollection,
+      where("deptId", "==", departmentId)
+    );
+
+    const supervisors: User[] = (await getDocs(docQuery)).docs.map(
+      (doc) =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        } as User)
+    );
+
+    return supervisors;
+  } catch (error) {
+    console.error("Error fetching users: ", error);
+    throw error;
+  }
+};
+
+export const getAllUsersByDeptIds = async (deptIds: string[]) => {
+  var allUsers: User[] = [];
+
+  for (var deptId of deptIds) {
+    var requestsForDept = await getUsersByDeptId(deptId);
+    allUsers = allUsers.concat(requestsForDept);
+  }
+
+  return allUsers;
+};
+
+export const getAllUsersForAddAnnualLeave = async () => {
+  const q = query(usersCollection, where("isActive", "==", true));
+  let usersForAddAnnualLeave: any = [];
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) =>
+    usersForAddAnnualLeave.push({ ...doc.data() })
+  );
+  return usersForAddAnnualLeave;
 };

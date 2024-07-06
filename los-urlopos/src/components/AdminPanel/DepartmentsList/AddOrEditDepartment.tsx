@@ -4,12 +4,13 @@ import {
   createDepartment,
   updateDepartment,
 } from "../../../services/DepartmentService";
+import { fetchSupervisors } from "../../../services/UserService";
 
-interface AddOrEditDepartmentProps {
+type AddOrEditDepartmentProps = {
   onDepartmentAddedOrEdited: () => void;
   onClose: () => void;
   departmentToEdit?: Departments | null;
-}
+};
 
 const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
   onDepartmentAddedOrEdited,
@@ -19,6 +20,8 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
   const [departmentName, setDepartmentName] = useState<string>("");
   const [departmentHead, setDepartmentHead] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [supervisors, setSupervisors] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (departmentToEdit) {
@@ -27,6 +30,23 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
     }
   }, [departmentToEdit]);
 
+  useEffect(() => {
+    const fetchSupervisorsList = async () => {
+      setLoading(true);
+      try {
+        const supervisorList = await fetchSupervisors();
+        setSupervisors(supervisorList);
+      } catch (error) {
+        console.error("Error fetching supervisors: ", error);
+        setError("Error fetching supervisors.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSupervisorsList();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -34,9 +54,14 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
         await updateDepartment(departmentToEdit.deptId!, {
           dept: departmentName,
           head: departmentHead,
+          deptId: "",
         });
       } else {
-        await createDepartment({ dept: departmentName, head: departmentHead });
+        await createDepartment({
+          dept: departmentName,
+          head: departmentHead,
+          deptId: "",
+        });
       }
       onDepartmentAddedOrEdited();
       onClose();
@@ -62,12 +87,22 @@ const AddOrEditDepartment: FC<AddOrEditDepartmentProps> = ({
         </label>
         <label>
           Department Head:
-          <input
-            type="text"
+          <select
             value={departmentHead}
             onChange={(e) => setDepartmentHead(e.target.value)}
             required
-          />
+          >
+            <option></option>
+            {loading ? (
+              <option disabled>Loading...</option>
+            ) : (
+              supervisors.map((supervisor) => (
+                <option key={supervisor.id} value={supervisor.id}>
+                  {`${supervisor.firstName} ${supervisor.surname}`}
+                </option>
+              ))
+            )}
+          </select>
         </label>
         <button type="submit">
           {departmentToEdit ? "Save Changes" : "Create"}
