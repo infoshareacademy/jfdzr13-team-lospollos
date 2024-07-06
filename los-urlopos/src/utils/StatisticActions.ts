@@ -71,8 +71,11 @@ export async function getReqStatisticForSupervisor(
   departmentId: string | null,
   userId: string
 ) {
+  const currentDate = new Date().setHours(0, 0, 0, 0);
   let requestList: Request[] = [];
   let employeeList: User[] = [];
+
+  console.log(currentDate);
 
   if (departmentId) {
     requestList = await getRequestDeptId(departmentId);
@@ -84,6 +87,10 @@ export async function getReqStatisticForSupervisor(
     requestList = await getRequestsByDeptIds(departmentsIds);
     employeeList = await getAllUsersByDeptIds(departmentsIds);
   }
+
+  console.log(currentDate);
+  console.log(Date.parse(requestList[0].dayFrom));
+  console.log(Date.parse(requestList[0].dayTo));
 
   return {
     leaveRequestsStat: {
@@ -133,11 +140,17 @@ export async function getReqStatisticForSupervisor(
     ),
     expiredRequests: requestList.filter(
       (x) =>
-        Date.parse(x.dayFrom) <= Date.now() &&
+        Date.parse(x.dayFrom) <= currentDate &&
         x.status === REQUEST_STATUS.Pending
     ).length,
     totalEmployees: employeeList.length,
     employeesOnLeave: requestList
+      .filter((x) => x.status === REQUEST_STATUS.Approved)
+      .filter(
+        (x) =>
+          currentDate >= Date.parse(x.dayFrom) &&
+          currentDate <= Date.parse(x.dayTo)
+      )
       .map((x) => x.userId)
       .filter((value, index, self) => self.indexOf(value) === index).length,
   } as SupervisorStatistics;
