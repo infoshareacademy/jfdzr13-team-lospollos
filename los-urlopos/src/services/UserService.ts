@@ -55,12 +55,10 @@ export const subscribeToUsers = (
   const unsub = onSnapshot(
     usersCollection,
     (snapshot) => {
-      const usersData: User[] = snapshot.docs
-        .filter((doc) => doc.data().isActive)
-        .map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as User),
-        }));
+      const usersData: User[] = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as User),
+      }));
       onUpdate(usersData);
     },
     (error) => {
