@@ -75,8 +75,6 @@ export async function getReqStatisticForSupervisor(
   let requestList: Request[] = [];
   let employeeList: User[] = [];
 
-  console.log(currentDate);
-
   if (departmentId) {
     requestList = await getRequestDeptId(departmentId);
     employeeList = await getUsersByDeptId(departmentId);
@@ -87,10 +85,6 @@ export async function getReqStatisticForSupervisor(
     requestList = await getRequestsByDeptIds(departmentsIds);
     employeeList = await getAllUsersByDeptIds(departmentsIds);
   }
-
-  console.log(currentDate);
-  console.log(Date.parse(requestList[0].dayFrom));
-  console.log(Date.parse(requestList[0].dayTo));
 
   return {
     leaveRequestsStat: {
