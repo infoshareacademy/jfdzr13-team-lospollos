@@ -17,11 +17,20 @@ const ConfirmAction: FC<ConfirmActionProps> = ({
   if (!open) return null;
 
   return (
-    <dialog open className={styles.popup}>
-      <p>{message}</p>
-      <button onClick={onConfirm}>Yes</button>
-      <button onClick={onCancel}>No</button>
-    </dialog>
+    <div className={styles.actionWrapper}>
+      <div className={styles.overlay} />
+      <dialog open className={styles.popup}>
+        <p>{message}</p>
+        <div className={styles.buttons}>
+          <button className={styles.yesBtn} onClick={onConfirm}>
+            Yes
+          </button>
+          <button className={styles.noBtn} onClick={onCancel}>
+            No
+          </button>
+        </div>
+      </dialog>
+    </div>
   );
 };
 

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useProfileImage } from "../../../contexts/ProfileImageContext"; // Import the context
 import useUserData from "../../../contexts/ViewDataContext";
+import pfp from "../../../images/Unknown_person.jpg"; // Default profile picture
 import {
   toDepartmentViewById,
   toUserView,
@@ -15,8 +17,6 @@ import { getReqStatisticForSupervisor } from "../../../utils/StatisticActions";
 import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusChartComponent";
 import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./spvComponent.module.css";
-import { useProfileImage } from "../../../contexts/ProfileImageContext"; // Import the context
-import pfp from "../../../images/Unknown_person.jpg"; // Default profile picture
 
 export function SpvComponent({ departmentId }) {
   const [profileImage, setProfileImage] = useState<string>(pfp);
@@ -53,7 +53,7 @@ export function SpvComponent({ departmentId }) {
   useEffect(() => {
     if (userData) {
       const savedImage = localStorage.getItem(
-        `profileImage_${userData.email}_${userData.id}`
+        `profileImage_${userData.email}_${userData.userId}`
       );
       if (savedImage) {
         setProfileImage(savedImage);

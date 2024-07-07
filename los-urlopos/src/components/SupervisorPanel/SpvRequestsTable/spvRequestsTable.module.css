@@ -42,6 +42,19 @@
   border-radius: 10px;
 }
 
+.detailsSpanText {
+  color: rgb(163, 159, 159);
+  letter-spacing: 1.2px;
+}
+
+.detailsRejectSpan {
+  color: white;
+  background-color: red;
+  padding: 5px 10px;
+  border-radius: 5px;
+  letter-spacing: 1.2px;
+}
+
 .spinner {
   width: 88px;
   height: 88px;

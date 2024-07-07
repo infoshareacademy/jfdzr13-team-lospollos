@@ -46,7 +46,7 @@ export async function getReqStatisticForUser(userId: string) {
           (x) => x.requestType === TYPE_OF_LEAVE.SpecialLeave
         ).length,
         sickLeave: requestList.filter(
-          (x) => x.status === TYPE_OF_LEAVE.SickLeave
+          (x) => x.requestType === TYPE_OF_LEAVE.SickLeave
         ).length,
         childLeave: requestList.filter(
           (x) => x.requestType === TYPE_OF_LEAVE.ChildLeave
@@ -71,6 +71,7 @@ export async function getReqStatisticForSupervisor(
   departmentId: string | null,
   userId: string
 ) {
+  const currentDate = new Date().setUTCHours(0, 0, 0, 0);
   let requestList: Request[] = [];
   let employeeList: User[] = [];
 
@@ -112,7 +113,7 @@ export async function getReqStatisticForSupervisor(
           (x) => x.requestType === TYPE_OF_LEAVE.SpecialLeave
         ).length,
         sickLeave: requestList.filter(
-          (x) => x.status === TYPE_OF_LEAVE.SickLeave
+          (x) => x.requestType === TYPE_OF_LEAVE.SickLeave
         ).length,
         childLeave: requestList.filter(
           (x) => x.requestType === TYPE_OF_LEAVE.ChildLeave
@@ -133,11 +134,17 @@ export async function getReqStatisticForSupervisor(
     ),
     expiredRequests: requestList.filter(
       (x) =>
-        Date.parse(x.dayFrom) <= Date.now() &&
+        Date.parse(x.dayFrom) <= currentDate &&
         x.status === REQUEST_STATUS.Pending
     ).length,
     totalEmployees: employeeList.length,
     employeesOnLeave: requestList
+      .filter((x) => x.status === REQUEST_STATUS.Approved)
+      .filter(
+        (x) =>
+          currentDate >= Date.parse(x.dayFrom) &&
+          currentDate <= Date.parse(x.dayTo)
+      )
       .map((x) => x.userId)
       .filter((value, index, self) => self.indexOf(value) === index).length,
   } as SupervisorStatistics;

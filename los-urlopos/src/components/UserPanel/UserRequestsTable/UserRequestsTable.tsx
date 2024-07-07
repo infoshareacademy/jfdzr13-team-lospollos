@@ -28,7 +28,7 @@ const dateOptions: DateToShowOptions = {
 };
 
 export default function UserRequestsTable({ onAddButtonClick }) {
-  const { userData } = useUserData();
+  const { userData, refreshUserViewData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [department, setDepartment] = useState<string>("");
@@ -66,6 +66,7 @@ export default function UserRequestsTable({ onAddButtonClick }) {
   const handleActionConfirm = async () => {
     if (currentAction === "cancel") {
       await cancelRequest(currentRequest);
+      await refreshUserViewData();
     }
     setDialogOpen(false);
     fetchRequests();
@@ -286,6 +287,9 @@ export default function UserRequestsTable({ onAddButtonClick }) {
                   borderRadius: "5px",
                   color: "white",
                   border: "none",
+                  padding: "6px 16px",
+                  boxShadow:
+                    "0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)",
                   ":hover": {
                     backgroundColor: "rgba(3, 11, 252, 0.54)",
                     transition: "0.2s",
@@ -325,7 +329,7 @@ export default function UserRequestsTable({ onAddButtonClick }) {
       sorting: [
         {
           id: "dayFromColumn",
-          desc: true,
+          desc: false,
         },
       ],
     },
@@ -334,28 +338,37 @@ export default function UserRequestsTable({ onAddButtonClick }) {
         <div
           style={{
             display: "flex",
+            alignContent: "center",
+            justifyContent: "space-around",
           }}
         >
           <div
             style={{
-              display: "flex",
               width: "50%",
+              display: "flex",
               justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <span>Comment: {row.original.comment || "No comment"}</span>
+            <div>
+              <p style={{ textAlign: "center" }}>
+                Comment:
+                <br />
+                <span className={styles.detailsSpanText}>
+                  {row.original.comment || "No comment"}
+                </span>
+              </p>
+            </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "50%",
-              justifyContent: "center",
-            }}
-          >
+          <div style={{ width: "50%" }}>
             {row.original.rejectReason && (
-              <span style={{ color: "red" }}>
-                Reject Reason: {row.original.rejectReason}
-              </span>
+              <p style={{ textAlign: "center" }}>
+                Reject Reason:
+                <br />
+                <span className={styles.detailsRejectSpan}>
+                  {row.original.rejectReason}
+                </span>
+              </p>
             )}
           </div>
         </div>

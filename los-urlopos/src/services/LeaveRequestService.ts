@@ -1,11 +1,12 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   query,
-  where,
   setDoc,
-  doc,
+  where,
 } from "firebase/firestore";
 import { db } from "../../firebase";
 import { Request } from "../types-obj/types-obj";
@@ -61,4 +62,17 @@ export const updateRequestAfterAction = async (
   await setDoc(doc(db, "Requests", docId), updatedValues, {
     merge: true,
   });
+};
+
+export const deleteRequest = async (id: string) => {
+  await deleteDoc(doc(db, "Requests", id));
+};
+
+export const deleteAllRequestsByUserId = async (userId: string) => {
+  const allRequests: Request[] = await getRequestUserId(userId);
+
+  for (var request of allRequests) {
+    console.log(request);
+    await deleteRequest(request.reqId);
+  }
 };

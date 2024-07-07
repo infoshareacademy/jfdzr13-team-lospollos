@@ -6,13 +6,13 @@ import {
   type MRT_ColumnDef,
 } from "material-react-table";
 import {
-  Select,
-  MenuItem,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import styles from "./spvRequestsTable.module.css";
 
@@ -35,7 +35,7 @@ const dateOptions: DateToShowOptions = {
 };
 
 export default function SpvRequestsTable({ getDeptContext }) {
-  const { userData } = useUserData();
+  const { userData, refreshUserViewData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [users, setUsers] = useState([]);
@@ -125,6 +125,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
   const handleActionConfirm = async () => {
     if (currentAction === "accept") {
       await acceptRequest(currentRequest);
+      await refreshUserViewData();
     } else if (currentAction === "reject") {
       const lengthValidation: number = 100;
       const rejectReasonValue: string = (
@@ -141,6 +142,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
         return;
       } else {
         await rejectRequest(currentRequest, rejectReasonValue);
+        await refreshUserViewData();
       }
     }
     setDialogOpen(false);
@@ -449,7 +451,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
       sorting: [
         {
           id: "dayFromColumn",
-          desc: true,
+          desc: false,
         },
       ],
     },
@@ -458,28 +460,37 @@ export default function SpvRequestsTable({ getDeptContext }) {
         <div
           style={{
             display: "flex",
+            alignContent: "center",
+            justifyContent: "space-around",
           }}
         >
           <div
             style={{
-              display: "flex",
               width: "50%",
+              display: "flex",
               justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <span>Comment: {row.original.comment || "No comment"}</span>
+            <div>
+              <p style={{ textAlign: "center" }}>
+                Comment:
+                <br />
+                <span className={styles.detailsSpanText}>
+                  {row.original.comment || "No comment"}
+                </span>
+              </p>
+            </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "50%",
-              justifyContent: "center",
-            }}
-          >
+          <div style={{ width: "50%" }}>
             {row.original.rejectReason && (
-              <span style={{ color: "red" }}>
-                Reject Reason: {row.original.rejectReason}
-              </span>
+              <p style={{ textAlign: "center" }}>
+                Reject Reason:
+                <br />
+                <span className={styles.detailsRejectSpan}>
+                  {row.original.rejectReason}
+                </span>
+              </p>
             )}
           </div>
         </div>
