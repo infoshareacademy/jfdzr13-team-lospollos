@@ -60,14 +60,15 @@ export function UserComponent() {
           alt="User profile picture"
         />
       </div>
-      <div className={styles.userDetails}>
-        <div>
+
+      <div className={styles.userDetailsCont}>
+        <div className={styles.userDetails}>
           <h2>
             {userView.firstName} {userView.lastName}
           </h2>
           <h4>{userView.email}</h4>
         </div>
-        <div>
+        <div className={styles.userDetails}>
           <h3>{userView.department.name}</h3>
           <h5>{userView.department.leader.name}</h5>
         </div>
