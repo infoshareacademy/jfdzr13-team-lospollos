@@ -83,8 +83,8 @@ export function SpvComponent({ departmentId }) {
           <h2>
             {userView.firstName} {userView.lastName}
           </h2>
+          <h4>{userView.email}</h4>
         </div>
-        <h4>{userView.email}</h4>
         <div>
           <h3>{deptView.name === "" ? "All departments" : deptView.name} </h3>
         </div>
