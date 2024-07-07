@@ -329,7 +329,7 @@ export default function UserRequestsTable({ onAddButtonClick }) {
       sorting: [
         {
           id: "dayFromColumn",
-          desc: true,
+          desc: false,
         },
       ],
     },
