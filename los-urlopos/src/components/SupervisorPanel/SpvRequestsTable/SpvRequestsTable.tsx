@@ -46,11 +46,14 @@ export default function SpvRequestsTable({ getDeptContext }) {
   const [currentRequest, setCurrentRequest] = useState({});
 
   const fetchUsers = async () => {
+    setIsLoading(true);
     try {
       const allUsers = await getAllUsers();
       setUsers(allUsers);
     } catch (error) {
       console.error("Error fetching users:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
