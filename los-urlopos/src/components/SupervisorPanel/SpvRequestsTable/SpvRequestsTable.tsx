@@ -451,7 +451,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
       sorting: [
         {
           id: "dayFromColumn",
-          desc: true,
+          desc: false,
         },
       ],
     },
