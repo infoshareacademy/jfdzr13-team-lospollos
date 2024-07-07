@@ -6,8 +6,7 @@ import {
 } from "material-react-table";
 import { User } from "../../../types-obj/types-obj";
 import {
-  deleteUser,
-  getUserById,
+  deleteUser, getAllUsers,
   subscribeToUsers,
 } from "../../../services/UserService";
 import { getDepartment } from "../../../services/DepartmentService";
@@ -27,6 +26,24 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editUserId, setEditUserId] = useState<string | null>(null);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setIsLoading(true);
+      try {
+        const allUsersData = await getAllUsers();
+        setAllUsers(allUsersData);
+      } catch (error) {
+        console.error("Error fetching all users:", error);
+        setError("Error fetching users.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,6 +106,11 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
     setEditUserId(id);
   };
 
+  const findUserNameById = (userId: string) => {
+    const user = allUsers.find((user) => user.userId === userId);
+    return user ? `${user.firstName} ${user.surname}` : "Unknown";
+  };
+
   const columns = useMemo<MRT_ColumnDef<User>[]>(
     () => [
       {
@@ -118,6 +140,30 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
               align: "left",
               sx: { fontWeight: "bold" },
             },
+          },
+          {
+            id: "isActiveColumn",
+            accessorKey: "isActive",
+            header: "Active",
+            enableHiding: false,
+            size: 60,
+            muiTableHeadCellProps: { align: "center" },
+            Cell: ({ row }) => (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    backgroundColor: row.original.isActive ? "green" : "red",
+                    fontWeight: "bold",
+                    borderRadius: "5px",
+                    width: "40px",
+                  }}
+                >
+                  {row.original.isActive ? "Yes" : "No"}
+                </div>
+              </div>
+            ),
           },
           {
             id: "roleColumn",
@@ -329,7 +375,7 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
             Created By:
             <br />
             <span className={styles.detailsSpanText}>
-              {row.original.createdBy}
+              {findUserNameById(row.original.createdBy)}
             </span>
           </p>
           <p>
