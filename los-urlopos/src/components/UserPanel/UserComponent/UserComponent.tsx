@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { useProfileImage } from "../../../contexts/ProfileImageContext";
 import useUserData from "../../../contexts/ViewDataContext";
+import pfp from "../../../images/Unknown_person.jpg"; // Default profile picture
 import { toUserView } from "../../../mappers/ViewObjectsMapper";
 import { UserView } from "../../../types-obj/objectViewTypes";
 import { UserStatistics } from "../../../types-obj/statisticsTypes";
@@ -9,8 +11,6 @@ import { getReqStatisticForUser } from "../../../utils/StatisticActions";
 import RequestStatusChartComponent from "../../StatisticsCharts/RequestStatusChartComponent";
 import RequestTypeChartComponent from "../../StatisticsCharts/RequstTypeChartComponent";
 import styles from "./userComponent.module.css";
-import { useProfileImage } from "../../../contexts/ProfileImageContext";
-import pfp from "../../../images/Unknown_person.jpg"; // Default profile picture
 
 export function UserComponent() {
   const [profileImage, setProfileImage] = useState<string>(pfp); // Start with default image
@@ -36,7 +36,7 @@ export function UserComponent() {
   useEffect(() => {
     if (userData) {
       const savedImage = localStorage.getItem(
-        `profileImage_${userData.email}_${userData.id}`
+        `profileImage_${userData.email}_${userData.userId}`
       );
       if (savedImage) {
         setProfileImage(savedImage);

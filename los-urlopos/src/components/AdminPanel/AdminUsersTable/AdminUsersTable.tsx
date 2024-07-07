@@ -1,19 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import { User } from "../../../types-obj/types-obj";
 import {
-  deleteUser,
-  getUserById,
+  getAllUsers,
+  updateUser,
   subscribeToUsers,
 } from "../../../services/UserService";
 import { getDepartment } from "../../../services/DepartmentService";
-import styles from "./adminUsersTable.module.css";
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { deleteAllRequestsByUserId } from "../../../services/LeaveRequestService";
+import { User } from "../../../types-obj/types-obj";
 import EditUser from "../AddUser/EditUser";
+import styles from "./adminUsersTable.module.css";
+import { useEffect, useMemo, useState } from "react";
 
 type AdminUsersTableProps = {
   onAddUserBtnClick: () => void;
@@ -27,6 +28,24 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
   const [userIdToDelete, setUserIdToDelete] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editUserId, setEditUserId] = useState<string | null>(null);
+  const [allUsers, setAllUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      setIsLoading(true);
+      try {
+        const allUsersData = await getAllUsers();
+        setAllUsers(allUsersData);
+      } catch (error) {
+        console.error("Error fetching all users:", error);
+        setError("Error fetching users.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,9 +82,8 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
 
   const handleDeleteUser = async (id: string) => {
     try {
-      await deleteUser(id);
-      setUsers((prevUsers) => prevUsers.filter((user) => user.userId !== id));
-      setError(null);
+      updateUser(id, { isActive: false });
+      deleteAllRequestsByUserId(id);
     } catch (error) {
       console.error("Error deleting user: ", error);
       setError("Error deleting user.");
@@ -87,6 +105,11 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
 
   const handleEditClick = (id: string) => {
     setEditUserId(id);
+  };
+
+  const findUserNameById = (userId: string) => {
+    const user = allUsers.find((user) => user.userId === userId);
+    return user ? `${user.firstName} ${user.surname}` : "Unknown";
   };
 
   const columns = useMemo<MRT_ColumnDef<User>[]>(
@@ -118,6 +141,30 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
               align: "left",
               sx: { fontWeight: "bold" },
             },
+          },
+          {
+            id: "isActiveColumn",
+            accessorKey: "isActive",
+            header: "Active",
+            enableHiding: false,
+            size: 60,
+            muiTableHeadCellProps: { align: "center" },
+            Cell: ({ row }) => (
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <div
+                  style={{
+                    textAlign: "center",
+                    color: "white",
+                    backgroundColor: row.original.isActive ? "green" : "red",
+                    fontWeight: "bold",
+                    borderRadius: "5px",
+                    width: "40px",
+                  }}
+                >
+                  {row.original.isActive ? "Yes" : "No"}
+                </div>
+              </div>
+            ),
           },
           {
             id: "roleColumn",
@@ -329,7 +376,7 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
             Created By:
             <br />
             <span className={styles.detailsSpanText}>
-              {row.original.createdBy}
+              {findUserNameById(row.original.createdBy)}
             </span>
           </p>
           <p>

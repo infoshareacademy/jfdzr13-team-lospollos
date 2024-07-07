@@ -19,7 +19,12 @@ export const getUserById = async (id: string) => {
   try {
     const fetchUserData = await getDoc(docRef);
     user = fetchUserData.data() as User;
+
+    if (!user.isActive) {
+      throw new Error("User is inactive!");
+    }
   } catch (error) {
+    console.error(error);
   } finally {
     return user;
   }
@@ -50,10 +55,12 @@ export const subscribeToUsers = (
   const unsub = onSnapshot(
     usersCollection,
     (snapshot) => {
-      const usersData: User[] = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...(doc.data() as User),
-      }));
+      const usersData: User[] = snapshot.docs
+        .filter((doc) => doc.data().isActive)
+        .map((doc) => ({
+          id: doc.id,
+          ...(doc.data() as User),
+        }));
       onUpdate(usersData);
     },
     (error) => {
@@ -72,12 +79,17 @@ export const fetchSupervisors = async (): Promise<User[]> => {
     const q = query(usersCollection, where("roleSupervisor", "==", true));
     const querySnapshot = await getDocs(q);
 
-    const supervisors: User[] = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as User),
-    }));
+    const supervisors: User[] = querySnapshot.docs
+      .filter((doc) => doc.data().isActive)
+      .map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as User)
+      );
 
-    return supervisors;
+    return supervisors ?? [];
   } catch (error) {
     console.error("Error fetching supervisors: ", error);
     throw error;
@@ -91,13 +103,15 @@ export const getUsersByDeptId = async (departmentId: string) => {
       where("deptId", "==", departmentId)
     );
 
-    const supervisors: User[] = (await getDocs(docQuery)).docs.map(
-      (doc) =>
-        ({
-          id: doc.id,
-          ...doc.data(),
-        } as User)
-    );
+    const supervisors: User[] = (await getDocs(docQuery)).docs
+      .filter((doc) => doc.data().isActive)
+      .map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as User)
+      );
 
     return supervisors;
   } catch (error) {
