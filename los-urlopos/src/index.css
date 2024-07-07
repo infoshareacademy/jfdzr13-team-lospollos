@@ -1,8 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Phudu:wght@300..900&family=Preahvihear&display=swap");
+
 * {
   margin: 0;
   padding: 0;
+  font-family: "Phudu", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
-
-body {
-  background-color: rgb(212, 212, 212);
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }

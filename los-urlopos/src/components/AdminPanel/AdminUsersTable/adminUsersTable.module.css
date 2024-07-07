@@ -1,0 +1,37 @@
+.container {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.detailsSpanText {
+  color: rgb(163, 159, 159);
+  letter-spacing: 1.2px;
+}
+
+.spinner {
+  width: 88px;
+  height: 88px;
+  margin-top: 50px;
+  border-radius: 50%;
+  padding: 3.8px;
+  background: conic-gradient(#0000 10%, #000000) content-box;
+  -webkit-mask: repeating-conic-gradient(
+      #0000 0deg,
+      #000 1deg 20deg,
+      #0000 21deg 36deg
+    ),
+    radial-gradient(
+      farthest-side,
+      #0000 calc(100% - 14.1px),
+      #000 calc(100% - 14.1px)
+    );
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+  animation: spinner-d55elj 0.8s infinite steps(10);
+}
+
+@keyframes spinner-d55elj {
+  to {
+    transform: rotate(1turn);
+  }
+}

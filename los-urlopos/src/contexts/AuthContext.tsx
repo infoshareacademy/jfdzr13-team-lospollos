@@ -14,7 +14,7 @@ const defaultState: ContextType = {
   authUser: null,
   login: (email, password) => new Promise((resolve) => resolve),
   logout: () => new Promise((resolve) => resolve),
-  changePassword: (newPassword) => {}
+  changePassword: (newPassword) => {},
 };
 
 const AuthContext = createContext(defaultState);
@@ -22,10 +22,18 @@ const useAuth = (): ContextType => useContext(AuthContext);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      user != null ? setAuthUser({id: user.uid, email: user?.email ?? "", name: user?.displayName ?? ""}) : setAuthUser(null);
+      user != null
+        ? setAuthUser({
+            id: user.uid,
+            email: user?.email ?? "",
+            name: user?.displayName ?? "",
+          })
+        : setAuthUser(null);
+      setIsLoading(false);
     });
 
     return () => unsubscribe();
@@ -35,10 +43,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     authUser,
     login,
     logout,
-    changePassword
+    changePassword,
   };
 
-  return (
+  return isLoading ? (
+    <span>Loading...</span>
+  ) : (
     <AuthContext.Provider value={authHandler}>{children}</AuthContext.Provider>
   );
 };

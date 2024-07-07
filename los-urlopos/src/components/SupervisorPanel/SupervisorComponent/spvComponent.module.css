@@ -1,0 +1,129 @@
+.spvBusinessCard {
+  box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
+
+  width: 95%;
+  height: 220px;
+  margin: 1% 0 0 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 2fr 2fr;
+  grid-template-rows: 100%;
+  grid-template-areas: "profilePicture spvDetails importantSpvInfo reqStatusStats reqTypeStats";
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
+}
+.spvBusinessCard .profilePicture {
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  grid-area: profilePicture;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spvBusinessCard .profilePictureImg {
+  height: 180px;
+  width: 180px;
+  border-radius: 100px;
+  box-shadow: 0px 3px 8px 2px rgba(160, 160, 160, 1);
+}
+
+.spvBusinessCard .spvDetails {
+  grid-area: spvDetails;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.spvBusinessCard .userStatistics {
+  grid-area: userStatistics;
+  display: flex;
+  flex-direction: column;
+}
+
+.spvBusinessCard .importantSpvInfo {
+  grid-area: importantSpvInfo;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 1fr 0.5fr 1fr;
+  grid-template-areas:
+    "expiredTitle"
+    "expiried"
+    "onLeaveTitle"
+    "onLeave";
+  justify-items: center;
+  align-items: center;
+}
+
+.spvBusinessCard .expiredTitle {
+  grid-area: expiredTitle;
+  align-self: end;
+  font-size: medium;
+  font-weight: bold;
+}
+
+.spvBusinessCard .onLeaveTitle {
+  grid-area: onLeaveTitle;
+  align-self: end;
+  font-size: medium;
+  font-weight: bold;
+}
+
+.spvBusinessCard .expired {
+  grid-area: expiried;
+  font-size: x-large;
+  font-weight: bold;
+}
+
+.spvBusinessCard .onLeave {
+  grid-area: onLeave;
+  font-size: x-large;
+}
+
+.spvBusinessCard .spvDetails h2 {
+  font-weight: bold;
+}
+
+.spvBusinessCard .importantSpvInfo .expired span {
+  font-size: x-large;
+}
+
+.spvBusinessCard .importantSpvInfo .onLeave span {
+  font-size: large;
+}
+
+.spvBusinessCard .reqStatusStats {
+  height: 100%;
+  max-width: 100%;
+  padding: 5px 50px;
+}
+
+.spvBusinessCard .reqStatusStatsLabel {
+  grid-area: reqStatusStatsLabel;
+  justify-self: end;
+}
+
+.spvBusinessCard .reqStatusStatsChart {
+  grid-area: reqStatusStatsChart;
+  height: 100%;
+  max-width: 100%;
+}
+
+.spvBusinessCard .reqTypeStats {
+  height: 100%;
+  max-width: 100%;
+  padding: 5px 5px;
+}
+
+.spvBusinessCard .reqTypeStatsLabel {
+  grid-area: reqTypeStatsLabel;
+  justify-self: end;
+}
+
+.spvBusinessCard .reqTypeStatsChart {
+  grid-area: reqTypeStatsChart;
+  height: 100%;
+  width: 100%;
+}

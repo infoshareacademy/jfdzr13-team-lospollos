@@ -1,19 +1,20 @@
 import { UserCredential } from "firebase/auth";
 
 export type Holidays = { day: string };
-export type Departments = { dept: string; head: string };
+export type Departments = { deptId: string; dept: string; head: string };
 export type Request = {
+  id: string;
   dayFrom: string;
   dayTo: string;
   daysReq: number;
   daysLeft: number;
-  dept: string;
+  deptId: string;
   requestType: string;
   status: string;
-  supervisor: string;
-  user: string;
+  userId: string;
   comment: string;
   createdAt: number;
+  rejectReason: string;
 };
 
 export type Type = { type: string };
@@ -25,13 +26,14 @@ export type User = {
   days: number;
   deptId: string;
   email: string;
-  name: string;
+  firstName: string;
   surname: string;
   onDemand: number;
   roleAdmin: boolean;
   roleUser: boolean;
   roleSupervisor: boolean;
   userId: string;
+  isActive: boolean;
 };
 
 export type AuthContext = {
@@ -45,4 +47,14 @@ export type AuthUser = {
   id: string;
   email: string;
   name: string;
+  roles: {
+    roleUser: boolean;
+    roleSupervisor: boolean;
+    roleAdmin: boolean;
+  };
+};
+export type DateToShowOptions = {
+  year: string;
+  day: string;
+  month: string;
 };

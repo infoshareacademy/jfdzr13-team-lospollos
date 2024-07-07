@@ -1,0 +1,68 @@
+.userHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.userDetails {
+  margin-top: 10px;
+}
+
+.tableWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.adminUsersList {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.addUserBtn {
+  padding: 5px 10px;
+  background-color: #4f79e2;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.addUserBtn:hover {
+  background-color: #3457d5;
+  scale: 1.1;
+  transition: 0.3s;
+}
+
+.spinner {
+  width: 88px;
+  height: 88px;
+  margin-top: 50px;
+  border-radius: 50%;
+  padding: 3.8px;
+  background: conic-gradient(#0000 10%, #000000) content-box;
+  -webkit-mask: repeating-conic-gradient(
+      #0000 0deg,
+      #000 1deg 20deg,
+      #0000 21deg 36deg
+    ),
+    radial-gradient(
+      farthest-side,
+      #0000 calc(100% - 14.1px),
+      #000 calc(100% - 14.1px)
+    );
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+  animation: spinner-d55elj 0.8s infinite steps(10);
+}
+
+@keyframes spinner-d55elj {
+  to {
+    transform: rotate(1turn);
+  }
+}

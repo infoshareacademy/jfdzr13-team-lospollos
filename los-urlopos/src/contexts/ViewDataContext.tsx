@@ -1,8 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserById } from "../services/UserService";
 import { getBankHolidays } from "../services/BankHolidaysService";
 import { getDepartment } from "../services/DepartmentService";
+import { getUserById } from "../services/UserService";
 
+import { Departments, User } from "../types-obj/types-obj";
 import useAuth from "./AuthContext";
 
 const UserDataContext = createContext({});
@@ -11,11 +12,12 @@ const useUserData = () => useContext(UserDataContext);
 export const UserDataProvider = ({ children }) => {
   const { authUser } = useAuth();
 
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<User | null>(null);
   const [bankHolidaysData, setBankHolidaysData] = useState(null);
-  const [departmentsList, setDepartmentsList] = useState(null);
+  const [departmentsList, setDepartmentsList] = useState<Departments[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const getUserData = async () => {
+  const refreshUserViewData = async () => {
     try {
       const user = await getUserById(authUser!.id);
       setUserData(user);
@@ -43,27 +45,25 @@ export const UserDataProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getUserData();
-  }, []);
-
-  useEffect(() => {
+    refreshUserViewData();
     getBankHoliydaysData();
-  }, []);
-
-  useEffect(() => {
     getDepartmentList();
+
+    setIsLoading(false);
   }, []);
 
   const userDataHandler = {
     userData,
-    getUserData,
+    refreshUserViewData,
     bankHolidaysData,
     getBankHoliydaysData,
     departmentsList,
     getDepartmentList,
   };
 
-  return (
+  return isLoading || !userData ? (
+    <span>Loading...</span>
+  ) : (
     <UserDataContext.Provider value={userDataHandler}>
       {children}
     </UserDataContext.Provider>
