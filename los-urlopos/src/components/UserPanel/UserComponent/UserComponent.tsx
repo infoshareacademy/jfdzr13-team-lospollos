@@ -60,7 +60,6 @@ export function UserComponent() {
           alt="User profile picture"
         />
       </div>
-
       <div className={styles.userDetails}>
         <div>
           <h2>

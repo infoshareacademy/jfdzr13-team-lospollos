@@ -319,12 +319,12 @@ export default function UserRequestsTable({ onAddButtonClick }) {
     initialState: {
       density: "compact",
       pagination: {
-        pageSize: 10,
+        pageSize: 8,
         pageIndex: 0,
       },
       sorting: [
         {
-          id: "createdAtColumn",
+          id: "dayFromColumn",
           desc: true,
         },
       ],
