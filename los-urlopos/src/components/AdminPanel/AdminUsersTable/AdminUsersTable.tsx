@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
 import {
   MaterialReactTable,
   useMaterialReactTable,
@@ -11,9 +11,11 @@ import {
   subscribeToUsers,
 } from "../../../services/UserService";
 import { getDepartment } from "../../../services/DepartmentService";
-import styles from "./adminUsersTable.module.css";
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
+import { deleteAllRequestsByUserId } from "../../../services/LeaveRequestService";
+import { subscribeToUsers, updateUser } from "../../../services/UserService";
+import { User } from "../../../types-obj/types-obj";
 import EditUser from "../AddUser/EditUser";
+import styles from "./adminUsersTable.module.css";
 
 type AdminUsersTableProps = {
   onAddUserBtnClick: () => void;
@@ -81,9 +83,8 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
 
   const handleDeleteUser = async (id: string) => {
     try {
-      await deleteUser(id);
-      setUsers((prevUsers) => prevUsers.filter((user) => user.userId !== id));
-      setError(null);
+      updateUser(id, { isActive: false });
+      deleteAllRequestsByUserId(id);
     } catch (error) {
       console.error("Error deleting user: ", error);
       setError("Error deleting user.");
