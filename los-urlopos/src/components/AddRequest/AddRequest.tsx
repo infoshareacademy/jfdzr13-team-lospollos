@@ -2,7 +2,7 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import useUserData from "../../contexts/ViewDataContext";
 import REQUEST_STATUS from "../../enums/requestStatus";
-import { GetTypeOfLeaveOptions } from "../../enums/typeOfLeave";
+import TYPE_OF_LEAVE, { GetTypeOfLeaveOptions } from "../../enums/typeOfLeave";
 import { addNewLeaveRequest } from "../../services/LeaveRequestService";
 import { Request } from "../../types-obj/types-obj";
 import {
@@ -94,10 +94,14 @@ export function AddRequest({ onClose }: AddRequestProps) {
         daysLeft: daysOffLeft,
         deptId: departmentId,
         requestType: requestType,
-        status: REQUEST_STATUS.Pending,
+        status:
+          requestType === TYPE_OF_LEAVE.OnDemandLeave
+            ? REQUEST_STATUS.Approved
+            : REQUEST_STATUS.Pending,
         userId: userData.userId,
         comment: comment,
         createdAt: Date.now(),
+        rejectReason: "",
       };
 
       const isRequestValid = ValidateLeaveRequest(
