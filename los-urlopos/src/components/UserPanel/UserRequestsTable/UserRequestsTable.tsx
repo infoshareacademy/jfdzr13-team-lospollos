@@ -335,28 +335,37 @@ export default function UserRequestsTable({ onAddButtonClick }) {
         <div
           style={{
             display: "flex",
+            alignContent: "center",
+            justifyContent: "space-around",
           }}
         >
           <div
             style={{
-              display: "flex",
               width: "50%",
+              display: "flex",
               justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <span>Comment: {row.original.comment || "No comment"}</span>
+            <div>
+              <p style={{ textAlign: "center" }}>
+                Comment:
+                <br />
+                <span className={styles.detailsSpanText}>
+                  {row.original.comment || "No comment"}
+                </span>
+              </p>
+            </div>
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "50%",
-              justifyContent: "center",
-            }}
-          >
+          <div style={{ width: "50%" }}>
             {row.original.rejectReason && (
-              <span style={{ color: "red" }}>
-                Reject Reason: {row.original.rejectReason}
-              </span>
+              <p style={{ textAlign: "center" }}>
+                Reject Reason:
+                <br />
+                <span className={styles.detailsRejectSpan}>
+                  {row.original.rejectReason}
+                </span>
+              </p>
             )}
           </div>
         </div>
