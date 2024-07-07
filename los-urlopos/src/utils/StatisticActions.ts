@@ -46,7 +46,7 @@ export async function getReqStatisticForUser(userId: string) {
           (x) => x.requestType === TYPE_OF_LEAVE.SpecialLeave
         ).length,
         sickLeave: requestList.filter(
-          (x) => x.status === TYPE_OF_LEAVE.SickLeave
+          (x) => x.requestType === TYPE_OF_LEAVE.SickLeave
         ).length,
         childLeave: requestList.filter(
           (x) => x.requestType === TYPE_OF_LEAVE.ChildLeave
@@ -112,7 +112,7 @@ export async function getReqStatisticForSupervisor(
           (x) => x.requestType === TYPE_OF_LEAVE.SpecialLeave
         ).length,
         sickLeave: requestList.filter(
-          (x) => x.status === TYPE_OF_LEAVE.SickLeave
+          (x) => x.requestType === TYPE_OF_LEAVE.SickLeave
         ).length,
         childLeave: requestList.filter(
           (x) => x.requestType === TYPE_OF_LEAVE.ChildLeave
