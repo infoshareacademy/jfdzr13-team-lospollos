@@ -4,18 +4,17 @@ import {
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-import { User } from "../../../types-obj/types-obj";
 import {
-  deleteUser,
   getAllUsers,
+  updateUser,
   subscribeToUsers,
 } from "../../../services/UserService";
 import { getDepartment } from "../../../services/DepartmentService";
 import { deleteAllRequestsByUserId } from "../../../services/LeaveRequestService";
-import { subscribeToUsers, updateUser } from "../../../services/UserService";
 import { User } from "../../../types-obj/types-obj";
 import EditUser from "../AddUser/EditUser";
 import styles from "./adminUsersTable.module.css";
+import { useEffect, useMemo, useState } from "react";
 
 type AdminUsersTableProps = {
   onAddUserBtnClick: () => void;
