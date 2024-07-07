@@ -1,9 +1,10 @@
+import { useEffect, useMemo, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import {
   MaterialReactTable,
   useMaterialReactTable,
   type MRT_ColumnDef,
 } from "material-react-table";
-
 import {
   Select,
   MenuItem,
@@ -13,20 +14,19 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import styles from "./spvRequestsTable.module.css";
 
-import { useEffect, useMemo, useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
 import useUserData from "../../../contexts/ViewDataContext";
-import REQUEST_STATUS from "../../../enums/requestStatus";
-import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
 import { getDepartment } from "../../../services/DepartmentService";
 import {
   getRequestAll,
   getRequestDeptId,
 } from "../../../services/LeaveRequestService";
-import { DateToShowOptions, Request } from "../../../types-obj/types-obj";
 import { acceptRequest, rejectRequest } from "../../../utils/RequestActions";
-import styles from "./spvRequestsTable.module.css";
+import { DateToShowOptions, Request } from "../../../types-obj/types-obj";
+import REQUEST_STATUS from "../../../enums/requestStatus";
+import TYPE_OF_LEAVE from "../../../enums/typeOfLeave";
+import { getAllUsers } from "../../../services/UserService";
 
 const dateOptions: DateToShowOptions = {
   day: "2-digit",
@@ -38,66 +38,83 @@ export default function SpvRequestsTable({ getDeptContext }) {
   const { userData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<string>("");
   const [spvDepartments, setSpvDepartments] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [currentAction, setCurrentAction] = useState("");
   const [currentRequest, setCurrentRequest] = useState({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        if (selectedDepartment && selectedDepartment !== "allRequests") {
-          const response = await getRequestDeptId(selectedDepartment);
-          setData(response);
-          getDeptContext(selectedDepartment);
-        } else if (selectedDepartment === "allRequests") {
-          const response = await getRequestAll();
-          const allRequests = response.filter((request) =>
-            spvDepartments.some(
-              (department) => department.deptId === request.deptId
-            )
-          );
-          setData(allRequests);
-          getDeptContext(null);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
+  const fetchUsers = async () => {
+    setIsLoading(true);
+    try {
+      const allUsers = await getAllUsers();
+      setUsers(allUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchDepartments = async () => {
+    setIsLoading(true);
+    try {
+      const response = await getDepartment();
+      const userDepartments = response.filter(
+        (department) => department.head === userData.userId
+      );
+      setSpvDepartments(userDepartments);
+      if (userDepartments.length === 1) {
+        setSelectedDepartment(userDepartments[0].deptId);
+      } else if (
+        userDepartments.length > 1 &&
+        location.pathname === "/supervisor-panel"
+      ) {
+        setSelectedDepartment("allRequests");
       }
-    };
+    } catch (error) {
+      console.error("Error fetching departments:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    fetchData();
-  }, [selectedDepartment, spvDepartments]);
-
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getDepartment();
-        const userDepartments = response.filter(
-          (department) => department.head === userData.userId
+  const fetchDeptRequestsData = async () => {
+    setIsLoading(true);
+    try {
+      if (selectedDepartment && selectedDepartment !== "allRequests") {
+        const response = await getRequestDeptId(selectedDepartment);
+        setData(response);
+        getDeptContext(selectedDepartment);
+      } else if (selectedDepartment === "allRequests") {
+        const response = await getRequestAll();
+        const allRequests = response.filter((request) =>
+          spvDepartments.some(
+            (department) => department.deptId === request.deptId
+          )
         );
-        setSpvDepartments(userDepartments);
-        if (userDepartments.length === 1) {
-          setSelectedDepartment(userDepartments[0].deptId);
-        } else if (
-          userDepartments.length > 1 &&
-          location.pathname === "/supervisor-panel"
-        ) {
-          setSelectedDepartment("allRequests");
-        }
-      } catch (error) {
-        console.error("Error fetching departments:", error);
-      } finally {
-        setIsLoading(false);
+        setData(allRequests);
+        getDeptContext(null);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
     fetchDepartments();
   }, [userData.userId]);
+
+  useEffect(() => {
+    fetchDeptRequestsData();
+  }, [selectedDepartment, spvDepartments, getDeptContext]);
 
   const handleButtonClick = (row: Request, action: string) => {
     setCurrentAction(action);
@@ -127,29 +144,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
       }
     }
     setDialogOpen(false);
-    fetchData();
-  };
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      if (selectedDepartment && selectedDepartment !== "allRequests") {
-        const response = await getRequestDeptId(selectedDepartment);
-        setData(response);
-      } else if (selectedDepartment === "allRequests") {
-        const response = await getRequestAll();
-        const allRequests = response.filter((request) =>
-          spvDepartments.some(
-            (department) => department.deptId === request.deptId
-          )
-        );
-        setData(allRequests);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    fetchDeptRequestsData();
   };
 
   const columns = useMemo<MRT_ColumnDef<Request>[]>(
@@ -160,8 +155,7 @@ export default function SpvRequestsTable({ getDeptContext }) {
         columns: [
           {
             id: "userNameColumn",
-            accessorFn: (userData) =>
-              `${userData.firstName} ${userData.surname}`,
+            accessorKey: "userId",
             header: "Employee's name",
             enableHiding: false,
             size: 150,
@@ -169,6 +163,18 @@ export default function SpvRequestsTable({ getDeptContext }) {
             muiTableBodyCellProps: {
               align: "center",
               sx: { fontWeight: "bold" },
+            },
+            Cell: ({ row }) => {
+              const userId = row.original.userId;
+              const user = users.find((user) => user.userId === userId);
+              const name = user
+                ? `${user.firstName} ${user.surname}`
+                : "Unknown";
+              return (
+                <div style={{ fontWeight: "bold", fontSize: "1.2em" }}>
+                  {name}
+                </div>
+              );
             },
           },
           {
