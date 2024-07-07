@@ -6,6 +6,7 @@ import {
 } from "material-react-table";
 import { useEffect, useMemo, useState } from "react";
 import { getDepartment } from "../../../services/DepartmentService";
+import { deleteAllRequestsByUserId } from "../../../services/LeaveRequestService";
 import { subscribeToUsers, updateUser } from "../../../services/UserService";
 import { User } from "../../../types-obj/types-obj";
 import EditUser from "../AddUser/EditUser";
@@ -60,6 +61,7 @@ export function AdminUsersTable({ onAddUserBtnClick }: AdminUsersTableProps) {
   const handleDeleteUser = async (id: string) => {
     try {
       updateUser(id, { isActive: false });
+      deleteAllRequestsByUserId(id);
     } catch (error) {
       console.error("Error deleting user: ", error);
       setError("Error deleting user.");
