@@ -174,8 +174,10 @@ const AddUser: FC<AddUserProps> = ({ onUserAdded, onClose }) => {
               <input
                 className={styles.addUserInput}
                 type="text"
+                id="passwordField"
                 name="password"
-                placeholder="Password"
+                minLength={6}
+                placeholder="Password (min 6 characters)"
                 value={password}
                 onChange={handleInputChange}
                 required

@@ -324,7 +324,7 @@ export default function UserRequestsTable({ onAddButtonClick }) {
       },
       sorting: [
         {
-          id: "createdAtColumn",
+          id: "dayFromColumn",
           desc: true,
         },
       ],
