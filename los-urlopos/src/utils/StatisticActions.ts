@@ -71,7 +71,7 @@ export async function getReqStatisticForSupervisor(
   departmentId: string | null,
   userId: string
 ) {
-  const currentDate = new Date().setHours(0, 0, 0, 0);
+  const currentDate = new Date().setUTCHours(0, 0, 0, 0);
   let requestList: Request[] = [];
   let employeeList: User[] = [];
 
