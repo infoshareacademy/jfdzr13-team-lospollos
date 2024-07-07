@@ -28,7 +28,7 @@ const dateOptions: DateToShowOptions = {
 };
 
 export default function UserRequestsTable({ onAddButtonClick }) {
-  const { userData } = useUserData();
+  const { userData, refreshUserViewData } = useUserData();
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [department, setDepartment] = useState<string>("");
@@ -66,6 +66,7 @@ export default function UserRequestsTable({ onAddButtonClick }) {
   const handleActionConfirm = async () => {
     if (currentAction === "cancel") {
       await cancelRequest(currentRequest);
+      await refreshUserViewData();
     }
     setDialogOpen(false);
     fetchRequests();
